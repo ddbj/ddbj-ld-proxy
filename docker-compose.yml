@@ -1,5 +1,17 @@
 version: '3'
 services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
+    command: ["bash", "/usr/local/bin/entrypoint.sh"]
+
   proxy-api:
     build: ./docker/proxy-api
     ports:
