@@ -3,9 +3,15 @@ Proxy API for DDBJ search ElasticSearch cluster
 
 ## Prerequisites
 
+require root permission
+
 ```
-# Need root permission
 $ sysctl -w vm.max_map_count=262144
+```
+
+```
+$ cat /etc/sysctl.conf
+vm.max_map_count=262144
 ```
 
 ## Migration
