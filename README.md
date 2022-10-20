@@ -4,11 +4,10 @@ Proxy API for DDBJ search ElasticSearch cluster
 ## Migration
 
 ```
-$ mkdir db
-$ tar xf /path/to/ddbjsearch_elasticsearch.tar --directory ./db
-$ ls ./db
+$ tar xf /path/to/ddbjsearch_elasticsearch.tar --directory .
+$ ls ./data
 elasticsearch
-$ mkdir ./db/elasticsearch2
-$ chmod a+w -R ./db
+$ mkdir ./data/elasticsearch2
+$ chmod a+w -R ./data
 $ docker-compose up
 ```
