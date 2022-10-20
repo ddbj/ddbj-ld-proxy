@@ -1,15 +1,37 @@
 version: '3'
 services:
-  es01:
+  elasticsearch01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     ports:
       - "9200:9200"
       - "9300:9300"
+    environment:
+      node.name: elasticsearch01
+      discovery.seed_hosts: elasticsearch02
+      cluster.initial_master_nodes: elasticsearch01, elasticsearch02
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
       - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
+    user: ${UID:-1000}:${GID:-0}
+    command: ["bash", "/usr/local/bin/entrypoint.sh"]
+    depends_on:
+      - elasticsearch02
+
+  elasticsearch02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    ports:
+      - "9201:9200"
+      - "9301:9300"
+    environment:
+      node.name: elasticsearch02
+      discovery.seed_hosts: elasticsearch01
+      cluster.initial_master_nodes: elasticsearch01, elasticsearch02
+    volumes:
+      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
+      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch2:/usr/share/elasticsearch/data
+    user: ${UID:-1000}:${GID:-0}
     command: ["bash", "/usr/local/bin/entrypoint.sh"]
 
   proxy-api:
@@ -18,7 +40,7 @@ services:
       - "4001:4001"
     command: npm start
     environment:
-      ELASTICSEARCH_HOST: $ELASTICSEARCH_HOST
+      ELASTICSEARCH_HOST: "http://elasticsearch01:9200"
       LOGGER: $PROXY_API_LOGGER
       PORT: $PROXY_API_PORT
     depends_on:
