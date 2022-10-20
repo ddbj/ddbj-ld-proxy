@@ -9,6 +9,7 @@ services:
       node.name: elasticsearch01
       discovery.seed_hosts: elasticsearch02
       cluster.initial_master_nodes: elasticsearch01, elasticsearch02
+      ES_JAVA_OPTS: "-Xms16g -Xmx16g"
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
@@ -27,6 +28,7 @@ services:
       node.name: elasticsearch02
       discovery.seed_hosts: elasticsearch01
       cluster.initial_master_nodes: elasticsearch01, elasticsearch02
+      ES_JAVA_OPTS: "-Xms16g -Xmx16g"
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
