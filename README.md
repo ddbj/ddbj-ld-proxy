@@ -1,6 +1,13 @@
 # ddbj-ld-proxy
 Proxy API for DDBJ search ElasticSearch cluster
 
+## Prerequisites
+
+```
+# Need root permission
+$ sysctl -w vm.max_map_count=262144
+```
+
 ## Migration
 
 ```
