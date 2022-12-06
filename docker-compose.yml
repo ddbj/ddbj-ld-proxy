@@ -1,16 +1,47 @@
 version: '3'
 services:
-  es01:
+
+  elasticsearch01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
     ports:
       - "9200:9200"
       - "9300:9300"
+    environment:
+      node.name: elasticsearch01
+      discovery.seed_hosts: elasticsearch02
+      cluster.initial_master_nodes: elasticsearch01, elasticsearch02
+      ES_JAVA_OPTS: "-Xms8g -Xmx8g"
     volumes:
-      - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
-      - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
-      - ${ELASTICSEARCH_LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
+            # - ./esdata:/usr/share/elasticsearch/data
+      - ./docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
+      - ./docker/elasticsearch:/usr/share/elasticsearch/config
+    user: ${UID:-1000}:${GID:-0}
+    #command: ["bash", "/usr/local/bin/entrypoint.sh"]
+    depends_on:
+      elasticsearch02:
+        condition: service_healthy
+
+  elasticsearch02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    ports:
+      - "9201:9200"
+      - "9301:9300"
+    environment:
+      node.name: elasticsearch02
+      discovery.seed_hosts: elasticsearch01
+      cluster.initial_master_nodes: elasticsearch01, elasticsearch02
+      ES_JAVA_OPTS: "-Xms8g -Xmx8g"
+    volumes:
+            #- ./esdata2:/usr/share/elasticsearch/data
+     - ./docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
+     - ./docker/elasticsearch:/usr/share/elasticsearch/config
+    user: ${UID:-1000}:${GID:-0}
+    healthcheck:
+      test: exit 0
+      interval: 3s
+      timeout: 120s
+      retries: 5
+      start_period: 1s
 
   proxy-api:
     build: ./docker/proxy-api
@@ -18,8 +49,8 @@ services:
       - "4001:4001"
     command: npm start
     environment:
-      ELASTICSEARCH_HOST: $ELASTICSEARCH_HOST
+      ELASTICSEARCH_HOST: "http://elasticsearch01:9200"
       LOGGER: $PROXY_API_LOGGER
       PORT: $PROXY_API_PORT
     depends_on:
-      - elasticsearch
+      - elasticsearch01
