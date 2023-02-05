@@ -21,4 +21,4 @@ services:
       LOGGER: $PROXY_API_LOGGER
       PORT: $PROXY_API_PORT
     depends_on:
-      - elasticsearch
+      - es01
