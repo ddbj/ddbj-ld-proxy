@@ -8,9 +8,8 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
+      # - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${ELASTICSEARCH_LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
-    command: ["bash", "/usr/local/bin/entrypoint.sh"]
 
   proxy-api:
     build: ./docker/proxy-api
