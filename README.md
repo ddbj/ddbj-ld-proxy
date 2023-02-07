@@ -1,10 +1,23 @@
 # ddbj-ld-proxy
 Proxy API for DDBJ search ElasticSearch cluster
 
-## /
+## 起動とデータのロード
+
+```
+git clone -b 2023-oec ....
+cd ddbj-ld-proxy
+docker-compose up -d
+
+# bioproject_acc_test.jsonplusと同じ階層に移動
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @bioproject_acc_test.jsonplus
+```
+
+## API reference
+
+### /
 部分一致検索だが、現在インデックスが正しく設定しておらず何も返さない
 
-## /test
+### /test
 
 **削除予定**
 ElasticSearchとのコネクションのテスト用のAPI. bioprojectインデックスを対象にmatch_allクエリで問い合わせを行う.
@@ -13,7 +26,7 @@ ElasticSearchとのコネクションのテスト用のAPI. bioprojectインデ�
 curl -XGET 'http://127.0.0.1:4001/test'
 ```
 
-## /plotly_view
+### /plotly_view
 
 prameters
 - id: strings 
@@ -29,7 +42,7 @@ curl -XGET 'http://127.0.0.1:4001/plotly_view?id=H73F2DSXY_PG3460_605A3535,H73F2
 **現在何を引数にしてもモックデータを返します**. モックデータは早々に削除予定.
 
 
-## /msearch
+### /msearch
 
 ElasticSearchのmsearchをラップする（予定）
 
