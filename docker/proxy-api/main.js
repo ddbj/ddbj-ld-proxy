@@ -13,11 +13,11 @@ const client = new Client({
 })
 
 fastify.get('/', async (req) => {
-  // console.log(req.query)
+  console.log(req.query)
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
-    return { hits: [] }
+    return { hits: ["test2"] }
   }
 
   const q = req.query.q.toLowerCase()
@@ -46,7 +46,7 @@ fastify.get('/', async (req) => {
       }
     }
   })
-  // console.log(res.hits)
+  //console.log(res.hits)
   return {
     hits: res.hits.hits
   }
