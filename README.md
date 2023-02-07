@@ -7,7 +7,7 @@ Proxy API for DDBJ search ElasticSearch cluster
 ## /test
 
 **削除予定**
-ElasticSearchとのコネクションのテスト用のAPI. bioprojectインデックスを対象にmaltch_matchクエリを投げる.
+ElasticSearchとのコネクションのテスト用のAPI. bioprojectインデックスを対象にmatch_allクエリで問い合わせを行う.
 
 ```
 curl -XGET 'http://127.0.0.1:4001/test'
@@ -25,7 +25,8 @@ view: int
 curl -XGET 'http://127.0.0.1:4001/plotly_view?id=H73F2DSXY_PG3460_605A3535,H73F2DSXY_PG3460_666A0202&view=1'
 ```
 
-**現在何を引数にしてもモックデータを返します**
+**現在何を引数にしてもモックデータを返します**. モックデータは早々に削除予定.
+
 
 ## /msearch
 
