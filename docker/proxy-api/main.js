@@ -61,7 +61,7 @@ fastify.post('/msearch', async (req, reply) => {
   }
 })
 
-fastify.get('/plotly_view', async (req) => {
+fastify.get('/plotly_data', async (req) => {
     const view_id = req.query.view;
     const sample_id = req.query.id;
 
