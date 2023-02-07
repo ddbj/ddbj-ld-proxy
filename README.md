@@ -16,9 +16,10 @@ curl -XGET 'http://127.0.0.1:4001/test'
 ## /plotly_view
 
 prameters
-id: strings 
+- id: strings 
     カンマ区切りのID
-view: int
+    
+- view: int
     plotly viewに対応するIDを引数として渡す.responseのスキーマが選択される（予定）
 
 ```
