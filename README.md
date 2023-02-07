@@ -54,6 +54,12 @@ curl 'http://127.0.0.1:4001/msearch' --data '
 ]}' -X POST -H 'Content-Type:application/json'  
 ```
 
+### /bioproject/_search
+
+やりたいこと
+
+- ttps://mb.ddbj.nig.ac.jp/bioproject/_search →localhost:9200/bioproject/_search
+
 
 
 
