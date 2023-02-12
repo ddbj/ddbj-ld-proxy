@@ -57,13 +57,17 @@ fastify.post('/msearch', async (req, reply) => {
 
 
   return {
-    hits: ["/msearch test"]
+    hits: []
   }
 })
 
 fastify.get('/plotly_data', async (req) => {
     const view_id = req.query.view;
     const sample_id = req.query.id;
+
+    if (view_id != ""){
+      // 本来はviewを指定し処理を追加していく
+    }
 
     let sample_list = sample_id.split(',');
     // name(あるいは_id)が sample_listに含まれるレコードを選択する

@@ -53,13 +53,4 @@ curl 'http://127.0.0.1:4001/msearch' --data '
 {"from": 0,"size": 10,"source": ["identifier", "name"],"sort": ["_id"], "query": {"multi_match": {"fields": [ "title", "description"],"query": "metagenomics","operator": "and"} }}
 ]}' -X POST -H 'Content-Type:application/json'  
 ```
-
 ### /bioproject/_search
-
-やりたいこと
-
-- ttps://mb.ddbj.nig.ac.jp/bioproject/_search →localhost:9200/bioproject/_search
-
-
-
-
