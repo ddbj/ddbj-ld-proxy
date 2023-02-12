@@ -1,7 +1,7 @@
 # ddbj-ld-proxy
 Proxy API for DDBJ search ElasticSearch cluster
 
-## 起動とデータのロード
+## 起動とBioProjectデータのロード
 
 ```
 git clone -b 2023-oec ....
@@ -11,6 +11,14 @@ docker-compose up -d
 # bioproject_acc_test.jsonplusと同じ階層に移動
 curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @bioproject_acc_test.jsonplus
 ```
+
+## plotly用データのロード
+
+plotlyの系統組成比較チャート用のインデックスをElasticSearchにbulk importする
+```
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @taxonomic_comparion.jsonl
+```
+
 
 ## API reference
 
@@ -26,7 +34,7 @@ ElasticSearchとのコネクションのテスト用のAPI. bioprojectインデ�
 curl -XGET 'http://127.0.0.1:4001/test'
 ```
 
-### /plotly_view
+### /plotly_data
 
 prameters
 - id: strings 
@@ -36,7 +44,7 @@ prameters
     plotly viewに対応するIDを引数として渡す.responseのスキーマが選択される（予定）
 
 ```
-curl -XGET 'http://127.0.0.1:4001/plotly_view?id=H73F2DSXY_PG3460_605A3535,H73F2DSXY_PG3460_666A0202&view=1'
+curl -XGET 'http://127.0.0.1:4001/plotly_data?id=H73F2DSXY_PG3460_605A3535,H73F2DSXY_PG3460_666A0202&view=taxonomic_comparison'
 ```
 
 **現在何を引数にしてもモックデータを返します**. モックデータは早々に削除予定.
