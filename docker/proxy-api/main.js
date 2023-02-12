@@ -80,10 +80,29 @@ fastify.get('/plotly_data', async (req) => {
                         }
             }
         }
-
     })
-    return {hits: res.hits}
+    let res_tmp = res.hits.hits
+    // ESのレスポンスが引数の順番と限らないためsample_listをとりなおす
+    sample_list = res_tmp.map(spl => {
+      return _source.taxonomic_comparison.name
+    })
+    // [{taxon: , value: },,]の配列をサンプルごと取得 => List[List[dict]]
+    let tax_value = res_tmp.map(spl => {
+      return spl._source.taxonomic_comparison.composition
+    })
+    // taxonoごとの雛形のobjectを作成する
+    let res_taxonomic_comparison = tax_value[0].map(taxon => {
+      return {x: sample_list, y: [], name: taxon.name, type: "bar"}
+    })
 
+    res_taxonomic_comparison.forEach(element => {
+      // サンプル毎各taxonの値をyにpushする
+      tax_value.forEach(tax => {
+        element.y.push(tax.value)
+      })
+    })
+
+    return res_taxonomic_comparison
 })
 
 fastify.get('/test', async () => {
