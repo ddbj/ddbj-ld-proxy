@@ -17,13 +17,15 @@ fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
-    return { hits: ["test2"] }
+    return { hits: [] }
   }
 
   const q = req.query.q.toLowerCase()
 
   const res = await client.search({
-    "size": 1000,
+    index: "bioproject",
+    body: {
+    "size": 10,
     "query": {
       "bool": {
         "should": [
@@ -45,7 +47,8 @@ fastify.get('/', async (req) => {
         "minimum_should_match": 1
       }
     }
-  })
+  }
+})
   //console.log(res.hits)
   return {
     hits: res.hits.hits
@@ -66,7 +69,7 @@ fastify.get('/plotly_data', async (req) => {
     const sample_id = req.query.id;
 
     if (view_id != ""){
-      // 本来はviewを指定し処理を追加していく
+      // TODO: viewを指定し対応する処理の結果を返す
     }
 
     let sample_list = sample_id.split(',');
