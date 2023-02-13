@@ -65,4 +65,4 @@ curl 'http://127.0.0.1:4001/bioproject' --data '
 }' -X POST -H 'Content-Type:application/json'
 ```
 
-### /bioproject/_search
+### /metastanza_data
