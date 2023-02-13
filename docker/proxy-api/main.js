@@ -49,13 +49,13 @@ fastify.get('/', async (req) => {
     }
   }
 })
-  //console.log(res.hits)
+  console.log(res.hits)
   return {
     hits: res.hits.hits
   }
 })
 
-fastify.post('/msearch', async (req, reply) => {
+fastify.post('/bioproject', async (req, reply) => {
   console.log(req.body)
 
 
