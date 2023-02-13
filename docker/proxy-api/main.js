@@ -23,31 +23,31 @@ fastify.get('/', async (req) => {
   const q = req.query.q.toLowerCase()
 
   const res = await client.search({
-    index: "bioproject",
-    body: {
-    "size": 10,
-    "query": {
-      "bool": {
-        "should": [
-          {
-            "wildcard": {
-              "id": {
-                "value": `*${q}*`
+    "index": "bioproject",
+    "body": {
+      "size": 10,
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "wildcard": {
+                "id": {
+                  "value": `*${q}*`
+                }
               }
-            }
-          },
-          {
-            "wildcard": {
-              "label": {
-                "value": `*${q}*`
+            },
+            {
+              "wildcard": {
+                "label": {
+                  "value": `*${q}*`
+                }
               }
-            }
-          },
-        ],
-        "minimum_should_match": 1
+            },
+          ],
+          "minimum_should_match": 1
+        }
       }
     }
-  }
 })
   console.log(res.hits)
   return {
@@ -57,10 +57,13 @@ fastify.get('/', async (req) => {
 
 fastify.post('/bioproject', async (req, reply) => {
   console.log(req.body)
-
+  const res = await client.search({
+    "index": "bioproject",
+    "body": req.body
+  })
 
   return {
-    hits: []
+    hits: [res.hits.hits]
   }
 })
 
