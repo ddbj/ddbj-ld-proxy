@@ -47,7 +47,7 @@ prameters
 curl -XGET 'http://127.0.0.1:4001/plotly_data?id=H73F2DSXY_PG3460_605A3535,H73F2DSXY_PG3460_666A0202&view=taxonomic_comparison'
 ```
 
-**現在何を引数にしてもモックデータを返します**. モックデータは早々に削除予定.
+ElasticSearchのtaxonomic_comparisonインデックスをの検索結果を整形して返すため、データの登録が必要。
 
 
 ### /bioproject
