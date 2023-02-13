@@ -50,15 +50,19 @@ curl -XGET 'http://127.0.0.1:4001/plotly_data?id=H73F2DSXY_PG3460_605A3535,H73F2
 **現在何を引数にしてもモックデータを返します**. モックデータは早々に削除予定.
 
 
-### /msearch
+### /bioproject
 
-ElasticSearchのmsearchをラップする（予定）
+postするクエリbodyをそのままnode.jsのsearchメソッドに渡し、ElasticSearchの_searhを利用して検索を行う。現在シンプルなmatchクエリ、termクエリの動作は確認している。
 
 ```
-curl 'http://127.0.0.1:4001/msearch' --data '
-{"body":[
-{"index": "meo","type":"mdb_common"},
-{"from": 0,"size": 10,"source": ["identifier", "name"],"sort": ["_id"], "query": {"multi_match": {"fields": [ "title", "description"],"query": "metagenomics","operator": "and"} }}
-]}' -X POST -H 'Content-Type:application/json'  
+curl 'http://127.0.0.1:4001/bioproject' --data '
+{"query": {"term": {"title":{"value": "disease"}}}
+}' -X POST -H 'Content-Type:application/json'
 ```
+```
+curl 'http://127.0.0.1:4001/bioproject' --data '
+{"query": {"match": {"title":"disease"}}
+}' -X POST -H 'Content-Type:application/json'
+```
+
 ### /bioproject/_search
