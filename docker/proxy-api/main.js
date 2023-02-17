@@ -53,19 +53,22 @@ fastify.get('/', async (req) => {
   }
 })
 
-fastify.post('/bioproject/_doc/:id', async (req, reply) => {
+fastify.get('/bioproject/_doc/:id', async (req, reply) => {
+  if (!req.params.id) {
+    return { hits: [] }
+  }
   let id = req.params.id
-  const res = await client.search({
+  const index = await client.get({
     "index": "bioproject",
-    "body": req.body
+    "id": id
   })
 
   return {
-    hits: [res.hits.hits]
+    index
   }
 })
 
-fastify.post('/bioproject/_searech', async (req, reply) => {
+fastify.get('/bioproject/_search', async (req, reply) => {
   if (!req.query.q) {
     return { hits: [] }
   }
