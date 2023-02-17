@@ -76,4 +76,8 @@ curl 'http://127.0.0.1:4001/bioproject' --data '
 }' -X POST -H 'Content-Type:application/json'
 ```
 
+### /bioproject/_doc/:id
+
+### /bioproject/_search?q=
+
 ### /metastanza_data
