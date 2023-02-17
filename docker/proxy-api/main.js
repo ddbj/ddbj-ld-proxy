@@ -117,7 +117,7 @@ fastify.get('/plotly_data', async (req) => {
     let res_tmp = res.hits.hits
     // ESのレスポンスが引数の順番と限らないためsample_listを再取得
     sample_list = res_tmp.map(spl => {
-      return _source.taxonomic_comparison.name
+      return spl._source.taxonomic_comparison.name
     })
     // [{taxon: , value: },,]の配列をサンプルごと取得
     let tax_value = res_tmp.map(spl => {
