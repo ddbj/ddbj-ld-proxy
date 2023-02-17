@@ -13,7 +13,6 @@ const client = new Client({
 })
 
 fastify.get('/', async (req) => {
-  console.log(req.query)
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
@@ -49,14 +48,39 @@ fastify.get('/', async (req) => {
       }
     }
 })
-  console.log(res.hits)
   return {
     hits: res.hits.hits
   }
 })
 
+fastify.post('/bioproject/_doc/:id', async (req, reply) => {
+  let id = req.params.id
+  const res = await client.search({
+    "index": "bioproject",
+    "body": req.body
+  })
+
+  return {
+    hits: [res.hits.hits]
+  }
+})
+
+fastify.post('/bioproject/_searech', async (req, reply) => {
+  if (!req.query.q) {
+    return { hits: [] }
+  }
+  const q = req.query.q.toLowerCase()
+  const res = await client.search({
+    "index": "bioproject",
+    "q": q
+  })
+
+  return {
+    hits: [res.hits.hits]
+  }
+})
+
 fastify.post('/bioproject', async (req, reply) => {
-  console.log(req.body)
   const res = await client.search({
     "index": "bioproject",
     "body": req.body
