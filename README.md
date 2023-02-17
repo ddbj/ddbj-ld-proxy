@@ -3,20 +3,31 @@ Proxy API for DDBJ search ElasticSearch cluster
 
 ## 起動とBioProjectデータのロード
 
+### コンテナの起動
 ```
 git clone -b 2023-oec ....
 cd ddbj-ld-proxy
 docker-compose up -d
-
-# bioproject_acc_test.jsonplusと同じ階層に移動
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @bioproject_acc_test.jsonplus
 ```
 
-## plotly用データのロード
+### ElasticSearchへのデータのインポート
 
-plotlyの系統組成比較チャート用のインデックスをElasticSearchにbulk importする
 ```
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @taxonomic_comparion.jsonl
+# importするjsonlと同じ階層に移動（ddbj-ld-proxyディレクトリから）
+cd data
+
+# インデックスがすでに存在していた場合一度indexを捨てる
+curl -XDELETE http://localhost:9200/bioproject  
+
+# bulk import 
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @bioproject_plus_31.jsonl
+```
+
+## plotlyの系統組成比較チャート用のデータのインポート（ddbj-ld-proxyディレクトリから）
+
+```
+cd data
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @taxonomic_comparison.jsonl
 ```
 
 
