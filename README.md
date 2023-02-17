@@ -10,7 +10,7 @@ cd ddbj-ld-proxy
 docker-compose up -d
 ```
 
-### ElasticSearchへのデータのインポート
+### ElasticSearchへのBioProject+データのインポート
 
 ```
 # importするjsonlと同じ階層に移動（ddbj-ld-proxyディレクトリから）
@@ -23,7 +23,7 @@ curl -XDELETE http://localhost:9200/bioproject
 curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @bioproject_plus_31.jsonl
 ```
 
-## plotlyの系統組成比較チャート用のデータのインポート（ddbj-ld-proxyディレクトリから）
+### ElasticSearchへの系統組成比較データのインポート
 
 ```
 cd data
