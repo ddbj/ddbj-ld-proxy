@@ -116,26 +116,31 @@ fastify.get('/plotly_data', async (req) => {
     })
     let res_tmp = res.hits.hits
     // ESのレスポンスが引数の順番と限らないためsample_listを再取得
-    sample_list = res_tmp.map(spl => {
-      return spl._source.taxonomic_comparison.name
-    })
-    // [{taxon: , value: },,]の配列をサンプルごと取得
-    let tax_value = res_tmp.map(spl => {
-      return spl._source.taxonomic_comparison.composition
-    })
-    // taxonoごとの雛形のobjectを作成する
-    let res_taxonomic_comparison = tax_value[0].map(taxon => {
-      return {x: sample_list, y: [], name: taxon.taxon, type: "bar"}
-    })
-
-    res_taxonomic_comparison.forEach((element, index) => {
-      // サンプル毎各taxonの値をyにpushする
-      tax_value.forEach(tax => {
-        element.y.push(tax[index].value)
+    if (res_tmp.length){
+      return []
+    } else {
+      sample_list = res_tmp.map(spl => {
+        return spl._source.taxonomic_comparison.name
       })
-    })
+      // [{taxon: , value: },,]の配列をサンプルごと取得
+      let tax_value = res_tmp.map(spl => {
+        return spl._source.taxonomic_comparison.composition
+      })
+      // taxonoごとの雛形のobjectを作成する
+      let res_taxonomic_comparison = tax_value[0].map(taxon => {
+        return {x: sample_list, y: [], name: taxon.taxon, type: "bar"}
+      })
+  
+      res_taxonomic_comparison.forEach((element, index) => {
+        // サンプル毎各taxonの値をyにpushする
+        tax_value.forEach(tax => {
+          element.y.push(tax[index].value)
+        })
+      })
+  
+      return res_taxonomic_comparison
+    }
 
-    return res_taxonomic_comparison
 })
 
 fastify.get('/test', async () => {
