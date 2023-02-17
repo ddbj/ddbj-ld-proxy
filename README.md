@@ -5,7 +5,7 @@ Proxy API for DDBJ search ElasticSearch cluster
 
 ### コンテナの起動
 ```
-git clone -b 2023-oec ....
+git clone -b 2023-oec https://github.com/ddbj/ddbj-ld-proxy.git
 cd ddbj-ld-proxy
 docker-compose up -d
 ```
