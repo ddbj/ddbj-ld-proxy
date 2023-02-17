@@ -117,8 +117,6 @@ fastify.get('/plotly_data', async (req) => {
     let res_tmp = res.hits.hits
     // ESのレスポンスが引数の順番と限らないためsample_listを再取得
     if (res_tmp.length){
-      return []
-    } else {
       sample_list = res_tmp.map(spl => {
         return spl._source.taxonomic_comparison.name
       })
@@ -139,6 +137,8 @@ fastify.get('/plotly_data', async (req) => {
       })
   
       return res_taxonomic_comparison
+    } else {
+      return []
     }
 
 })
