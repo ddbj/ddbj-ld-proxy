@@ -36,15 +36,6 @@ curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty
 ### /
 部分一致検索だが、現在インデックスが正しく設定しておらず何も返さない
 
-### /test
-
-**削除予定**
-ElasticSearchとのコネクションのテスト用のAPI. bioprojectインデックスを対象にmatch_allクエリで問い合わせを行う.
-
-```
-curl -XGET 'http://127.0.0.1:4001/test'
-```
-
 ### /plotly_data
 
 prameters
@@ -81,3 +72,9 @@ curl 'http://127.0.0.1:4001/bioproject' --data '
 ### /bioproject/_search?q=
 
 ### /metastanza_data
+
+- /metastanza_data/bioproject/{acc}
+    - BioProjectのaccessionでメタデータを取得しmetastanza(Hash table)形式のJSONを返します
+
+- /metastanza_data/bioproject?q={}
+    - ElasticSearchを検索しmetastanza(pagination table)形式のJSONを返します
