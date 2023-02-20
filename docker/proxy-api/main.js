@@ -143,21 +143,50 @@ fastify.get('/plotly_data', async (req) => {
 
 })
 
-fastify.get('/test', async () => {
-  const res = await client.search({
-          "index": 'bioproject',
-          "type": 'metadata', //Specifying types in search requests is deprecated
-          "body": {
-                  "query": {
-                          "match_all" : {}
-               },
-                  "size": 2
-          }
+fastify.get('/metastanza/bioproject/:id', async () => {
+  if (!req.params.id) {
+    return {}
+  }else{
+    const id = req.params.id.toLowerCase()
+    //const view = req.query.view.toLowerCase()
+    // idを引数に検索結果をhash_table用にフォーマットして返す
+    const index = await client.get({
+      "index": "bioproject",
+      "id": q
+    })
 
-  })
+    return {identifier: index._source.identifier, 
+      organism: index._source.organism,
+      title: index._source.title,
+      description: index._source.description,
+      organisazion: index._source.organization,
+      created: index._source.dateCreated,
+      modified: index._source.dateModified
+    }
+  }
+})
 
-  return {
-          hits: res.hits.hits
+fastify.get('/metastanza/bioproject', async () => {
+  if (!req.query.q) {
+    return { hits: [] }
+  }else{
+    const q = req.query.q.toLowerCase()
+    const res = await client.search({
+      "index": "bioproject",
+      "q": q
+    })
+
+    let jsn = res.hits.hits.map(h => {
+      return {
+          identifier: h._source.identifier,
+          organism: h._source.organism,
+          title: h._source.title,
+          created: h._source.dateCreated,
+          modified: h._source.dateModified
+      }
+    })
+
+    return jsn
   }
 })
 
