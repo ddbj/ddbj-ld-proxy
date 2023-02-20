@@ -143,7 +143,7 @@ fastify.get('/plotly_data', async (req) => {
 
 })
 
-fastify.get('/metastanza/bioproject/:id', async () => {
+fastify.get('/metastanza/bioproject/:id', async (req) => {
   if (!req.params.id) {
     return {}
   }else{
@@ -166,7 +166,7 @@ fastify.get('/metastanza/bioproject/:id', async () => {
   }
 })
 
-fastify.get('/metastanza/bioproject', async () => {
+fastify.get('/metastanza/bioproject', async (req) => {
   if (!req.query.q) {
     return { hits: [] }
   }else{
