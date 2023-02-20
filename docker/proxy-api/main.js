@@ -152,7 +152,7 @@ fastify.get('/metastanza/bioproject/:id', async (req) => {
     // idを引数に検索結果をhash_table用にフォーマットして返す
     const index = await client.get({
       "index": "bioproject",
-      "id": q
+      "id": id
     })
 
     return {identifier: index._source.identifier, 
