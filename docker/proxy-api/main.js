@@ -147,7 +147,7 @@ fastify.get('/metastanza/bioproject/:id', async (req) => {
   if (!req.params.id) {
     return {}
   }else{
-    const id = req.params.id.toLowerCase()
+    const id = req.params.id.toUpperCase()
     //const view = req.query.view.toLowerCase()
     // idを引数に検索結果をhash_table用にフォーマットして返す
     const index = await client.get({
