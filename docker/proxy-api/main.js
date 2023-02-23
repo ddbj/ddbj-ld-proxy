@@ -110,7 +110,8 @@ fastify.get('/plotly_data', async (req) => {
                 "query": {
                         "terms" : {
                             "_id": sample_list
-                        }
+                        },
+                "size": 50
             }
         }
     })
@@ -183,6 +184,27 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
           title: h._source.title,
           created: h._source.dateCreated,
           modified: h._source.dateModified
+      }
+    })
+
+    return jsn
+  }
+})
+
+
+fastify.get('/metastanza_data/:index_name/:id', async (req) => {
+  if (!req.params.index_name || !req.params.id) {
+    return {}
+  }else{
+    const q = req.query.q.toLowerCase()
+    const res = await client.search({
+      "index": "bioproject",
+      "q": q
+    })
+
+    let jsn = res.hits.hits.map(h => {
+      return {
+          // 全てのk:vをマップ
       }
     })
 
