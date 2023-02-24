@@ -111,7 +111,8 @@ fastify.get('/plotly_data', async (req) => {
                         "terms" : {
                             "_id": sample_list
                         }
-            }
+            },
+		"size": 50
         }
     })
     let res_tmp = res.hits.hits
