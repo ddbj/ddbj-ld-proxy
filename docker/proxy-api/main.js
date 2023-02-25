@@ -206,60 +206,6 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
   }
 })
 
-fastify.get('/metastanza_data/biosample/:id', async (req) => {
-  if (!req.params.id) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
-  }else{
-    const id = req.params.id.toUpperCase()
-    const index = await client.get({
-      "index": "biosample",
-      "id": id
-    })
-    return {
-      identifier: index._source.identifier, 
-      taxonomy_id: index._source.taxonomy_id,
-      taxonomy_name: index._source.taxonomy_name,
-      title: index._source.title,
-      package: index._source.package,
-      last_update: index._source.last_update,
-      publication_date: index._source.publication_date,
-      submission_date: index._source.submission_date
-    }
-  }
-})
-
-fastify.get('/metastanza_data/biosample', async (req) => {
-  if (!req.query.q && !req.query.d) {
-    return { hits: [] }
-  }else if(req.query.q){
-    const q = req.query.q.toLowerCase()
-    const res = await client.search({
-      "index": "biosample",
-      "q": q
-    })
-
-    let jsn = res.hits.hits.map(h => {
-      return {
-        identifier: h._source.identifier, 
-        taxonomy_id: h._source.taxonomy_id,
-        taxonomy_name: h._source.taxonomy_name,
-        title: h._source.title,
-        package: h._source.package,
-        last_update: h._source.last_update,
-        publication_date: h._source.publication_date,
-        submission_date: h._source.submission_date
-      }
-    })
-
-    return jsn
-  }else if(req.query.d){
-
-
-
-
-  }
-})
-
 
 
 
