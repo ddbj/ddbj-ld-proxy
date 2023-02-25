@@ -13,8 +13,7 @@ const client = new Client({
   maxResponseSize: 15
 })
 
-
-ERRROS = {
+const ERRORS = {
   "INCORRECT_PARAMETER": "Please check that the parameters and values are correct",
 }
 
@@ -22,7 +21,7 @@ fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }
 
   const q = req.query.q.toLowerCase()
@@ -61,7 +60,7 @@ fastify.get('/', async (req) => {
 
 fastify.get('/bioproject/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }
   let id = req.params.id
   const index = await client.get({
@@ -76,7 +75,7 @@ fastify.get('/bioproject/_doc/:id', async (req, reply) => {
 
 fastify.get('/bioproject/_search', async (req, reply) => {
   if (!req.query.q) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }
   const q = req.query.q.toLowerCase()
   const res = await client.search({
@@ -156,7 +155,7 @@ fastify.get('/plotly_data', async (req) => {
 
 fastify.get('/metastanza_data/bioproject/:id', async (req) => {
   if (!req.params.id) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }else{
     const id = req.params.id.toUpperCase()
     //const view = req.query.view.toLowerCase()
@@ -179,7 +178,7 @@ fastify.get('/metastanza_data/bioproject/:id', async (req) => {
 
 fastify.get('/metastanza_data/bioproject', async (req) => {
   if (!req.query.q && !req.query.d) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }else if(req.query.q){
     const q = req.query.q.toLowerCase()
     const res = await client.search({
@@ -208,7 +207,7 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
 
 fastify.get('/metastanza_data/biosample/:id', async (req) => {
   if (!req.params.id) {
-    return {message: ERRROS.INCORRECT_PARAMETER}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }else{
     const id = req.params.id.toUpperCase()
     const index = await client.get({
@@ -230,7 +229,7 @@ fastify.get('/metastanza_data/biosample/:id', async (req) => {
 
 fastify.get('/metastanza_data/biosample', async (req) => {
   if (!req.query.q && !req.query.d) {
-    return { hits: [] }
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }else if(req.query.q){
     const q = req.query.q.toLowerCase()
     const res = await client.search({
@@ -268,7 +267,7 @@ fastify.get('/metastanza_data/biosample', async (req) => {
 
 fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   if (!req.params.index_name || !req.params.id) {
-    return {}
+    return {message: ERRORS.INCORRECT_PARAMETER}
   }else{
     const q = req.query.q.toLowerCase()
     const res = await client.search({
