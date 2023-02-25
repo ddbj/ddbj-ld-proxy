@@ -9,8 +9,7 @@ const fastify = Fastify({
 fastify.register(fastifyCors)
 
 const client = new Client({
-  node: process.env.ELASTICSEARCH_HOST,
-  maxResponseSize: 15
+  node: process.env.ELASTICSEARCH_HOST
 })
 
 const ERRORS = {
