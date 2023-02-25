@@ -10,6 +10,7 @@ fastify.register(fastifyCors)
 
 const client = new Client({
   node: process.env.ELASTICSEARCH_HOST,
+  maxResponseSize: 15
 })
 
 fastify.get('/', async (req) => {
