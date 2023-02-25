@@ -13,11 +13,16 @@ const client = new Client({
   maxResponseSize: 15
 })
 
+
+ERRROS = {
+  "INCORRECT_PARAMETER": "Please check that the parameters and values are correct",
+}
+
 fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
-    return { hits: [] }
+    return {message: ERRROS.INCORRECT_PARAMETER}
   }
 
   const q = req.query.q.toLowerCase()
@@ -56,7 +61,7 @@ fastify.get('/', async (req) => {
 
 fastify.get('/bioproject/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
-    return { hits: [] }
+    return {message: ERRROS.INCORRECT_PARAMETER}
   }
   let id = req.params.id
   const index = await client.get({
@@ -71,7 +76,7 @@ fastify.get('/bioproject/_doc/:id', async (req, reply) => {
 
 fastify.get('/bioproject/_search', async (req, reply) => {
   if (!req.query.q) {
-    return { hits: [] }
+    return {message: ERRROS.INCORRECT_PARAMETER}
   }
   const q = req.query.q.toLowerCase()
   const res = await client.search({
@@ -113,7 +118,7 @@ fastify.get('/plotly_data', async (req) => {
                             "_id": sample_list
                         },
             },
-            "size": 1000
+            "size": 50
         }
     })
     let res_tmp = res.hits.hits
@@ -145,9 +150,13 @@ fastify.get('/plotly_data', async (req) => {
 
 })
 
+//
+// APIs for SRA Search
+//
+
 fastify.get('/metastanza_data/bioproject/:id', async (req) => {
   if (!req.params.id) {
-    return {}
+    return {message: ERRROS.INCORRECT_PARAMETER}
   }else{
     const id = req.params.id.toUpperCase()
     //const view = req.query.view.toLowerCase()
@@ -169,9 +178,9 @@ fastify.get('/metastanza_data/bioproject/:id', async (req) => {
 })
 
 fastify.get('/metastanza_data/bioproject', async (req) => {
-  if (!req.query.q) {
-    return { hits: [] }
-  }else{
+  if (!req.query.q && !req.query.d) {
+    return {message: ERRROS.INCORRECT_PARAMETER}
+  }else if(req.query.q){
     const q = req.query.q.toLowerCase()
     const res = await client.search({
       "index": "bioproject",
@@ -179,19 +188,83 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
     })
 
     let jsn = res.hits.hits.map(h => {
+      let cols = {
+        identifier: h._source.identifier,
+        organism: h._source.organism,
+        description: h._source.description,
+        title: h._source.title,
+        submitted: h._source.dateCreated,
+        last_updated: h._source.dateModified
+      }
+      if (index._source.organization) {cols.organization = index._source.organization};
+      if (index._source.description) {cols.test = index._source.description}
+      return cols
+    })
+    return jsn
+  }else if(req.query.d){
+
+  }
+})
+
+fastify.get('/metastanza_data/biosample/:id', async (req) => {
+  if (!req.params.id) {
+    return {message: ERRROS.INCORRECT_PARAMETER}
+  }else{
+    const id = req.params.id.toUpperCase()
+    const index = await client.get({
+      "index": "biosample",
+      "id": id
+    })
+    return {
+      identifier: index._source.identifier, 
+      taxonomy_id: index._source.taxonomy_id,
+      taxonomy_name: index._source.taxonomy_name,
+      title: index._source.title,
+      package: index._source.package,
+      last_update: index._source.last_update,
+      publication_date: index._source.publication_date,
+      submission_date: index._source.submission_date
+    }
+  }
+})
+
+fastify.get('/metastanza_data/biosample', async (req) => {
+  if (!req.query.q && !req.query.d) {
+    return { hits: [] }
+  }else if(req.query.q){
+    const q = req.query.q.toLowerCase()
+    const res = await client.search({
+      "index": "biosample",
+      "q": q
+    })
+
+    let jsn = res.hits.hits.map(h => {
       return {
-          identifier: h._source.identifier,
-          organism: h._source.organism,
-          title: h._source.title,
-          created: h._source.dateCreated,
-          modified: h._source.dateModified
+        identifier: h._source.identifier, 
+        taxonomy_id: h._source.taxonomy_id,
+        taxonomy_name: h._source.taxonomy_name,
+        title: h._source.title,
+        package: h._source.package,
+        last_update: h._source.last_update,
+        publication_date: h._source.publication_date,
+        submission_date: h._source.submission_date
       }
     })
 
     return jsn
+  }else if(req.query.d){
+
+
+
+
   }
 })
 
+
+
+
+
+// 汎用 hash table API
 
 fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   if (!req.params.index_name || !req.params.id) {
