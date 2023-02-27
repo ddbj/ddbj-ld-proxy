@@ -209,7 +209,7 @@ fastify.get('/metastanza_data/biosample/:id', async (req) => {
       "index": "biosample",
       "id": id
     })
-    // Todo: _source以下全て　のk:vを展開するようにする
+    // Todo: attributesを展開しFlattenする
     let cols =  {
       identifier: index._source.identifier, 
       taxonomy_id: index._source.taxonomy_id,
@@ -289,11 +289,37 @@ fastify.get('/metastanza_data/study/:id', async (req) => {
 
 
 fastify.get('/metastanza_data/experiment', async (req) => {
-
+  if (!req.query.q && !req.query.d) {
+    return {message: ERRORS.INCORRECT_PARAMETER}
+  }else if(req.query.q){
+    const q = req.query.q.toLowerCase()
+    const res = await client.search({
+      "index": "experiment",
+      "q": q
+    })
+    let jsn = res.hits.hits.map(h => {
+      // Todo: h._sourceのk:vをflatに展開する
+      let cols = flatten(h._source)
+      return cols
+    })
+    return jsn
+  }else if(req.query.d){
+      // Todo: experiment JSONのパーサ
+  }
 })
 
 fastify.get('/metastanza_data/experiment/:id', async (req) => {
-
+  if (!req.params.id) {
+    return {message: ERRORS.INCORRECT_PARAMETER}
+  }else{
+    const id = req.params.id.toUpperCase()
+    const index = await client.get({
+      "index": "experiment",
+      "id": id
+    })
+    // Todo: index._sourceをflattenする
+    return flatten(index._source)
+  }
 })
 
 fastify.get('/metastanza_data/srasearch/barplot', async () => {
@@ -343,7 +369,7 @@ fastify.get('/metastanza_data/srasearch/linechart', async () => {
   })
   let cumlutive_counts = counts.map(cumulativeSum)
   let items = b.map((d, index)=> {
-    return {"year": d.key_as_string.substr(0,4), "reegistrations": cumlutive_counts[index]}
+    return {"year": d.key_as_string.substr(0,4), "registrations": cumlutive_counts[index]}
   })
   return items
 })
@@ -372,8 +398,14 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
 
 const cumulativeSum = (sum => value => sum += value)(0);
 
-const flatten = () => {
-  return {}
+const flatten = (obj) => {
+  // Todo: annotationsにnestした属性をflattenしてオブジェクトを返す
+  let attributes = obj["attributes"]
+  delete obj["attributes"]
+  for (attr of attributes) {
+    Object.keys(attr)[0] = Object.values(attr)[0]
+  }
+  return obj
 }
 
 const start = async () => {
