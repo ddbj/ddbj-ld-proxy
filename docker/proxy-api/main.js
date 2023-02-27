@@ -287,6 +287,7 @@ fastify.get('/metastanza_data/study/:id', async (req) => {
   }
 })
 
+
 fastify.get('/metastanza_data/experiment', async (req) => {
 
 })
@@ -295,7 +296,28 @@ fastify.get('/metastanza_data/experiment/:id', async (req) => {
 
 })
 
-fastify.get('/metasatanza_data/srasearch/barplot', async (req) => {
+fastify.get('/metastanza_data/srasearch/barplot', async () => {
+  const res = await client.search({
+    index: 'bioproject',
+    body: {
+      "aggs": {
+        "biproject_organism": {
+          "terms": {
+            "field": "organism.keyword",
+            "size": 20
+          }
+        }
+      },
+      "size": 0
+    }
+  })
+  console.log(res)
+  let b = res.aggregations.biproject_organism.buckets
+  console.log(b)
+  let item =  b.map(d => {
+    return {"organism": d.key, "count": d.doc_count}
+  })
+  return item
 
 })
 
@@ -344,7 +366,6 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
           // 全てのk:vをマップ
       }
     })
-
     return jsn
   }
 })
