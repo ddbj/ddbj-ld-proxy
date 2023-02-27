@@ -315,14 +315,15 @@ fastify.get('/metastanza_data/srasearch/linechart', async () => {
     }
   })
   let b = res.aggregations.bioproject_datatype.buckets
-  console.log(res)
-  console.log(res.aggregations)
-  let items = b.map(d => {
-      return {"year": d.key_as_string, "count": d.doc_count}
+  let counts = b.map(d => {
+    return d.doc_count
+    //return {"year": d.key_as_string.substr(0,4), "count": d.doc_count}
   })
-
+  let cumlutive_counts = counts.map(cumulativeSum)
+  let items = b.map((d, index)=> {
+    return {"year": d.key_as_string.substr(0,4), "reegistrations": cumlutive_counts[index]}
+  })
   return items
-
 })
 
 //
@@ -348,6 +349,7 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   }
 })
 
+const cumulativeSum = (sum => value => sum += value)(0);
 
 const flatten = () => {
   return {}
