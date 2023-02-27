@@ -8,7 +8,7 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      # - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${ELASTICSEARCH_LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
 
   proxy-api:
@@ -22,3 +22,15 @@ services:
       PORT: $PROXY_API_PORT
     depends_on:
       - es01
+
+  kib01:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
+    depends_on:
+      - es01
+
+

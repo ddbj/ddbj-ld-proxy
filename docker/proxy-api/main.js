@@ -116,7 +116,7 @@ fastify.get('/plotly_data', async (req) => {
                             "_id": sample_list
                         },
             },
-            "size": 50
+            "size": 1000
         }
     })
     let res_tmp = res.hits.hits
@@ -140,7 +140,6 @@ fastify.get('/plotly_data', async (req) => {
           element.y.push(tax[index].value)
         })
       })
-  
       return res_taxonomic_comparison
     } else {
       return []
@@ -184,7 +183,6 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
       "index": "bioproject",
       "q": q
     })
-
     let jsn = res.hits.hits.map(h => {
       let cols = {
         identifier: h._source.identifier,
@@ -194,8 +192,6 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
         submitted: h._source.dateCreated,
         last_updated: h._source.dateModified
       }
-      if (index._source.organization) {cols.organization = index._source.organization};
-      if (index._source.description) {cols.test = index._source.description}
       return cols
     })
     return jsn
@@ -213,7 +209,8 @@ fastify.get('/metastanza_data/biosample/:id', async (req) => {
       "index": "biosample",
       "id": id
     })
-    return {
+    // Todo: _source以下全て　のk:vを展開するようにする
+    let cols =  {
       identifier: index._source.identifier, 
       taxonomy_id: index._source.taxonomy_id,
       taxonomy_name: index._source.taxonomy_name,
@@ -223,6 +220,9 @@ fastify.get('/metastanza_data/biosample/:id', async (req) => {
       publication_date: index._source.publication_date,
       submission_date: index._source.submission_date
     }
+    if (index._source.tissue){ cols.tissue = index._source.tissue};
+    if (index._source.gap_accession){cols.gap_accession = index._source.gap_accession}
+    return cols
   }
 })
 
@@ -250,19 +250,84 @@ fastify.get('/metastanza_data/biosample', async (req) => {
     })
 
     return jsn
+  }else if(req.query.d){  }
+})
+
+fastify.get('/metastanza_data/study', async (req) => {
+  if (!req.query.q && !req.query.d) {
+    return {message: ERRORS.INCORRECT_PARAMETER}
+  }else if(req.query.q){
+    const q = req.query.q.toLowerCase()
+    const res = await client.search({
+      "index": "study",
+      "q": q
+    })
+    let jsn = res.hits.hits.map(h => {
+      // Todo: h._sourceのk:vをflatに展開する
+      let cols = flatten(h._source)
+      return cols
+    })
+    return jsn
   }else if(req.query.d){
-
-
-
 
   }
 })
 
+fastify.get('/metastanza_data/study/:id', async (req) => {
+  if (!req.params.id) {
+    return {message: ERRORS.INCORRECT_PARAMETER}
+  }else{
+    const id = req.params.id.toUpperCase()
+    const index = await client.get({
+      "index": "study",
+      "id": id
+    })
+    // Todo: index._sourceをflattenする
+    return flatten(index._source)
+  }
+})
 
+fastify.get('/metastanza_data/experiment', async (req) => {
 
+})
 
+fastify.get('/metastanza_data/experiment/:id', async (req) => {
+
+})
+
+fastify.get('/metasatanza_data/srasearch/barplot', async (req) => {
+
+})
+
+fastify.get('/metastanza_data/srasearch/linechart', async () => {
+  const res = await client.search({
+    index: 'bioproject',
+    body: {
+      "aggs": {
+        "bioproject_datatype": {
+          "date_histogram": {
+            "field": "dateCreated",
+            "calendar_interval": "year"
+          }
+        }
+      },
+      "size": 0
+    }
+  })
+  let b = res.aggregations.bioproject_datatype.buckets
+  console.log(res)
+  console.log(res.aggregations)
+  let items = b.map(d => {
+      return {"year": d.key_as_string, "count": d.doc_count}
+  })
+
+  return items
+
+})
+
+//
 // 汎用 hash table API
-
+//
 fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   if (!req.params.index_name || !req.params.id) {
     return {message: ERRORS.INCORRECT_PARAMETER}
@@ -283,6 +348,10 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   }
 })
 
+
+const flatten = () => {
+  return {}
+}
 
 const start = async () => {
   try {
