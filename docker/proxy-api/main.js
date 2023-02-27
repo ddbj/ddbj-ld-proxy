@@ -339,9 +339,7 @@ fastify.get('/metastanza_data/srasearch/barplot', async () => {
       "size": 0
     }
   })
-  console.log(res)
   let b = res.aggregations.biproject_organism.buckets
-  console.log(b)
   let item =  b.map(d => {
     return {"organism": d.key, "count": d.doc_count}
   })
