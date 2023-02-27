@@ -192,6 +192,8 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
         submitted: h._source.dateCreated,
         last_updated: h._source.dateModified
       }
+      if (index._source.organization) {cols.organization = h._source.organization};
+      if (index._source.description) {cols.test = h._source.description}
       return cols
     })
     return jsn
@@ -344,7 +346,6 @@ fastify.get('/metastanza_data/srasearch/barplot', async () => {
     return {"organism": d.key, "count": d.doc_count}
   })
   return item
-
 })
 
 fastify.get('/metastanza_data/srasearch/linechart', async () => {
