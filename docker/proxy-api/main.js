@@ -300,6 +300,7 @@ fastify.get('/metasatanza_data/srasearch/barplot', async (req) => {
 })
 
 fastify.get('/metastanza_data/srasearch/linechart', async () => {
+  // datecreatedを年毎にaggregationし累積和をmetasatanza/linechartのフォーマットで返す
   const res = await client.search({
     index: 'bioproject',
     body: {
@@ -317,7 +318,6 @@ fastify.get('/metastanza_data/srasearch/linechart', async () => {
   let b = res.aggregations.bioproject_datatype.buckets
   let counts = b.map(d => {
     return d.doc_count
-    //return {"year": d.key_as_string.substr(0,4), "count": d.doc_count}
   })
   let cumlutive_counts = counts.map(cumulativeSum)
   let items = b.map((d, index)=> {
