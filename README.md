@@ -69,7 +69,19 @@ curl 'http://127.0.0.1:4001/bioproject' --data '
 
 ### /bioproject/_doc/:id
 
+登録されたbioprojectのindex検索を行います。　
+
+```
+curl 'http://127.0.0.1:4001/bioproject/_doc/PRJNA192445'
+```
+
 ### /bioproject/_search?q=
+
+登録されたbioproject全体ををBasic Match Queryで検索します
+
+```
+curl 'http://127.0.0.1:4001/bioproject/_search?q=gut'
+```
 
 ### /metastanza_data
 
