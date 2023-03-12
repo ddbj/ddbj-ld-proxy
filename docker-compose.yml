@@ -22,7 +22,7 @@ services:
       PORT: $PROXY_API_PORT
     depends_on:
       - es01
-      
+
   nginx:
       image: nginx:1.17.9
       container_name: nginx
@@ -32,6 +32,4 @@ services:
         - ${PWD}/default.conf:/etc/nginx/conf.d/default.conf:ro
       ports:
         - 5000:5000
-      networks:
-        - mb_front
       restart: always   
