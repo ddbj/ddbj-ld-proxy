@@ -8,7 +8,7 @@ services:
     volumes:
       - ${PWD}/docker/elasticsearch:/usr/share/elasticsearch/config
       - ${PWD}/docker/elasticsearch/entrypoint.sh:/usr/local/bin/entrypoint.sh
-      # - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
+      - ${ELASTICSEARCH_PERSISTENCE_DIR}/elasticsearch:/usr/share/elasticsearch/data
       - ${ELASTICSEARCH_LOG_DIR}/elasticsearch:/usr/share/elasticsearch/logs
 
   proxy-api:
@@ -22,3 +22,16 @@ services:
       PORT: $PROXY_API_PORT
     depends_on:
       - es01
+      
+  nginx:
+      image: nginx:1.17.9
+      container_name: nginx
+      volumes:
+          #- ${PWD}/nginx:/etc/nginx
+        - ${PWD}/html:/usr/share/nginx/html
+        - ${PWD}/default.conf:/etc/nginx/conf.d/default.conf:ro
+      ports:
+        - 5000:5000
+      networks:
+        - mb_front
+      restart: always   
