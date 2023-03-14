@@ -1,6 +1,8 @@
 # ddbj-ld-proxy
 Proxy API for DDBJ search ElasticSearch cluster
 
+
+
 ## 起動とBioProjectデータのロード
 
 ### コンテナの起動
@@ -8,6 +10,13 @@ Proxy API for DDBJ search ElasticSearch cluster
 git clone -b 2023-oec https://github.com/ddbj/ddbj-ld-proxy.git
 cd ddbj-ld-proxy
 docker-compose up -d
+```
+
+## ElasticSearchデータ永続化のためのボリューム設定
+環境変数で設定されたディレクトリ（例えば"dbs"）をリポジトリのルートディレクトリに作り、
+さらにディレクトリ内に"elasticsearch/nodes"の階層を作ります。
+```
+mkdir dbs/elasticsearch/nodes -p
 ```
 
 ### ElasticSearchへのBioProject+データのインポート
@@ -77,11 +86,20 @@ curl 'http://127.0.0.1:4001/bioproject/_doc/PRJNA192445'
 
 ### /bioproject/_search?q=
 
-登録されたbioproject全体ををBasic Match Queryで検索します
+登録されたbioprojectメタデータ全体ををBasic Match Queryで検索します。
 
 ```
 curl 'http://127.0.0.1:4001/bioproject/_search?q=gut'
 ```
+
+### /gnome/_doc/:id
+登録されたゲノム情報のindex検索をおこないます。
+
+### /genome/_search?q=
+登録されたgenomeのメタデータ全体をBasic Match Queryで検索します。
+
+### /genome
+POSTされたクエリボディをそのままElasticSearchに渡しその結果を返します。
 
 ### /metastanza_data
 

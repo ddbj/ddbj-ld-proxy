@@ -94,6 +94,41 @@ fastify.post('/bioproject', async (req, reply) => {
   }
 })
 
+fastify.get('/genome/_doc/:id', async(req, reply) => {
+  const res = await client.search({
+    "index": "bioproject",
+    "body": req.body
+  })
+  return {
+    hits: [res.hits.hits]
+  }
+})
+
+fastify.get('/genome/_search', async(req, reply) => {
+  if (!req.query.q) {
+    return { hits: [] }
+  }
+  const q = req.query.q.toLowerCase()
+  const res = await client.search({
+    "index": "bioproject",
+    "q": q
+  })
+  return {
+    hits: [res.hits.hits]
+  }
+})
+
+fastify.post('/genome', async(req, reply) => {
+  const res = await client.search({
+    "index": "bioproject",
+    "body": req.body
+  })
+
+  return {
+    hits: [res.hits.hits]
+  }
+})
+
 fastify.get('/plotly_data', async (req) => {
     const view_id = req.query.view;
     const sample_id = req.query.id;
