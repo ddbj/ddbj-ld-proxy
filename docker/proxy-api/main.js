@@ -96,7 +96,7 @@ fastify.post('/bioproject', async (req, reply) => {
 
 fastify.get('/genome/_doc/:id', async(req, reply) => {
   const res = await client.search({
-    "index": "bioproject",
+    "index": "genome",
     "body": req.body
   })
   return {
@@ -110,7 +110,7 @@ fastify.get('/genome/_search', async(req, reply) => {
   }
   const q = req.query.q.toLowerCase()
   const res = await client.search({
-    "index": "bioproject",
+    "index": "genome",
     "q": q
   })
   return {
@@ -120,7 +120,7 @@ fastify.get('/genome/_search', async(req, reply) => {
 
 fastify.post('/genome', async(req, reply) => {
   const res = await client.search({
-    "index": "bioproject",
+    "index": "genome",
     "body": req.body
   })
 
