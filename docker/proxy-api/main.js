@@ -95,9 +95,9 @@ fastify.post('/bioproject', async (req, reply) => {
 })
 
 fastify.get('/genome/_doc/:id', async(req, reply) => {
-  const index = await client.search({
+  const res = await client.search({
     "index": "genome",
-    "body": req.body
+    "id": id
   })
   return {
     index
