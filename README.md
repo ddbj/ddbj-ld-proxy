@@ -20,17 +20,19 @@ docker-compose upの前に
 mkdir dbs/elasticsearch/nodes -p
 ```
 
-### ElasticSearchへのBioProject+データのインポート
+### ElasticSearchへのBioProject+, genoemデータのインポート
 
 ```
 # importするjsonlと同じ階層に移動（ddbj-ld-proxyディレクトリから）
-cd data
+cd dataflow_prototype
 
 # インデックスがすでに存在していた場合一度indexを捨てる
 curl -XDELETE http://localhost:9200/bioproject  
+curl -XDELETE http://localhost:9200/genome  
 
 # bulk import 
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @bioproject_plus_31.jsonl
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @mdatahub_bioproject_test.jsonl
+curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @mdatahub_genome_test.jsonl
 ```
 
 ### ElasticSearchへの系統組成比較データのインポート
@@ -93,7 +95,7 @@ curl 'http://127.0.0.1:4001/bioproject/_doc/PRJNA192445'
 curl 'http://127.0.0.1:4001/bioproject/_search?q=gut'
 ```
 
-### /gnome/_doc/:id
+### /genome/_doc/:id
 登録されたゲノム情報のindex検索をおこないます。
 
 ### /genome/_search?q=

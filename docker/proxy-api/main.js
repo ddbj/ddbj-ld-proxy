@@ -78,9 +78,7 @@ fastify.get('/bioproject/_search', async (req, reply) => {
     "q": q
   })
 
-  return {
-    hits: [res.hits.hits]
-  }
+  return res
 })
 
 fastify.post('/bioproject', async (req, reply) => {
@@ -89,9 +87,7 @@ fastify.post('/bioproject', async (req, reply) => {
     "body": req.body
   })
 
-  return {
-    hits: [res.hits.hits]
-  }
+  return res
 })
 
 fastify.get('/genome/_doc/:id', async(req, reply) => {
@@ -115,9 +111,7 @@ fastify.get('/genome/_search', async(req, reply) => {
     "index": "genome",
     "q": q
   })
-  return {
-    hits: [res.hits.hits]
-  }
+  return res
 })
 
 fastify.post('/genome', async(req, reply) => {
@@ -126,9 +120,7 @@ fastify.post('/genome', async(req, reply) => {
     "body": req.body
   })
 
-  return {
-    hits: [res.hits.hits]
-  }
+  return res
 })
 
 fastify.get('/plotly_data', async (req) => {
