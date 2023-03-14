@@ -12,9 +12,10 @@ cd ddbj-ld-proxy
 docker-compose up -d
 ```
 
-## ElasticSearchデータ永続化のためのボリューム設定
+### ElasticSearchデータ永続化のためのボリューム設定
+docker-compose upの前に
 環境変数で設定されたディレクトリ（例えば"dbs"）をリポジトリのルートディレクトリに作り、
-さらにディレクトリ内に"elasticsearch/nodes"の階層を作ります。
+さらにディレクトリ内に"elasticsearch/nodes"の階層を作成しておきます。
 ```
 mkdir dbs/elasticsearch/nodes -p
 ```
