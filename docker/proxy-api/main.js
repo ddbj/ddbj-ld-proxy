@@ -55,7 +55,7 @@ fastify.get('/', async (req) => {
 
 fastify.get('/bioproject/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
-    return { hits: [] }
+    return { }
   }
   let id = req.params.id
   const index = await client.get({
@@ -95,6 +95,10 @@ fastify.post('/bioproject', async (req, reply) => {
 })
 
 fastify.get('/genome/_doc/:id', async(req, reply) => {
+  if (!req.params.id) {
+    return { }
+  }
+  let id = req.params.id
   const index = await client.search({
     "index": "genome",
     "id": id
