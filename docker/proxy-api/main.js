@@ -99,7 +99,7 @@ fastify.get('/genome/_doc/:id', async(req, reply) => {
     return { }
   }
   let id = req.params.id
-  const index = await client.search({
+  const index = await client.get({
     "index": "genome",
     "id": id
   })
