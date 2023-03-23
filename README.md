@@ -20,6 +20,18 @@ docker-compose upの前に
 mkdir dbs/elasticsearch/nodes -p
 ```
 
+### number_of_shards, number_of_replicasの設定
+インデックスの存在しない状態で下記を実行する
+```
+curl -XPUT localhost:9200/_template/general_template -H 'Content-Type: application/json' -d '{
+    "index_patterns" : ["*"],
+    "settings": {
+    "number_of_shards": "1",
+    "number_of_replicas" : "0"
+  }
+}' 
+```
+
 ### ElasticSearchへのBioProject+, genoemデータのインポート
 
 ```
