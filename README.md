@@ -110,11 +110,24 @@ curl 'http://127.0.0.1:4001/bioproject/_search?q=gut'
 ### /genome/_doc/:id
 登録されたゲノム情報のindex検索をおこないます。
 
+```
+https://mdatahub.org/api/genome/_doc/PRJDB11811_OceanDNA-a1001
+```
+
 ### /genome/_search?q=
 登録されたgenomeのメタデータ全体をBasic Match Queryで検索します。
 
+```
+https://mdatahub.org/api/genome/_search?q=hogehoge
+```
+
 ### /genome
 POSTされたクエリボディをそのままElasticSearchに渡しその結果を返します。
+
+```
+curl 'https://mdatahub.org/api/genome' --data '{"query": {"match": {"data type":"MAG"}}}' -X POST -H 'Content-Type:application/json'
+```
+
 
 ### /metastanza_data
 
