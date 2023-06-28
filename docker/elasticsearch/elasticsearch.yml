@@ -6,7 +6,7 @@ network.host: 0.0.0.0
 # Details: https://github.com/elastic/elasticsearch/pull/17288
 discovery.type: single-node
 discovery.zen.minimum_master_nodes: 1
-
+max_result_window: 300000
 
 http.cors.enabled: true
 http.cors.allow-origin: "*"
