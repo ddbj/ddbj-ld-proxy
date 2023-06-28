@@ -99,7 +99,7 @@ fastify.get('/genome/_doc/:id', async(req, reply) => {
     "index": "genome",
     "id": id
   })
-  return index["_source"]
+  return index
 })
 
 fastify.get('/genome/_search', async(req, reply) => {
