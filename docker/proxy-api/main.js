@@ -90,6 +90,46 @@ fastify.post('/bioproject', async (req, reply) => {
   return res
 })
 
+// Copies　of the above apis as bioproject~
+
+fastify.get('/project/_doc/:id', async (req, reply) => {
+  if (!req.params.id) {
+    return { }
+  }
+  let id = req.params.id
+  const index = await client.get({
+    "index": "project",
+    "id": id
+  })
+
+  return {
+    index
+  }
+})
+
+fastify.get('/project/_search', async (req, reply) => {
+  if (!req.query.q) {
+    return { hits: [] }
+  }
+  const q = req.query.q.toLowerCase()
+  const res = await client.search({
+    "index": "project",
+    "q": q
+  })
+
+  return res
+})
+
+fastify.post('/project', async (req, reply) => {
+  const res = await client.search({
+    "index": "poject",
+    "body": req.body
+  })
+
+  return res
+})
+
+
 fastify.get('/genome/_doc/:id', async(req, reply) => {
   if (!req.params.id) {
     return { }
