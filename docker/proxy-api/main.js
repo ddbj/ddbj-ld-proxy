@@ -122,7 +122,7 @@ fastify.get('/project/_search', async (req, reply) => {
 
 fastify.post('/project', async (req, reply) => {
   const res = await client.search({
-    "index": "poject",
+    "index": "project",
     "body": req.body
   })
 
