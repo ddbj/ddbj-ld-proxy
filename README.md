@@ -31,6 +31,42 @@ curl -XPUT localhost:9200/_template/general_template -H 'Content-Type: applicati
   }
 }' 
 ```
+### index templateファイルによる個々のインデックス設定
+
+下記curlコマンドでtemplateファイルに記述した設定をElasticsearchの個々のインデックスに登録することができる。
+
+```
+curl -H "Content-Type: application/json" -XPUT localhost:9200/_template/mdatahub_project -d @mdatahub_project.json
+curl -H "Content-Type: application/json" -XPUT localhost:9200/_template/mdatahub_genome -d @mdatahub_genome.json
+```
+実行後データは再インポートする。
+現在のtemplateファイルは以下の通り。
+
+```
+## mdatahub_project.json
+{
+  "index_patterns": ["bioproject"],
+  "aliases": {
+    "project": {}
+  }, 
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "max_result_window": 300000
+  }
+}
+```
+```
+## mdatahub_genome.json
+{
+  "index_patterns": ["genome"],
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "max_result_window": 300000
+  }
+}
+```
 
 ### ElasticSearchへのBioProject+, genoemデータのインポート
 
