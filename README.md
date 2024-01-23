@@ -1,95 +1,9 @@
 # ddbj-ld-proxy
 Proxy API for DDBJ search ElasticSearch cluster
 
-
-
-## 起動とBioProjectデータのロード
-
-### コンテナの起動
-```
-git clone -b 2023-oec https://github.com/ddbj/ddbj-ld-proxy.git
-cd ddbj-ld-proxy
-docker-compose up -d
-```
-
-### ElasticSearchデータ永続化のためのボリューム設定
-docker-compose upの前に
-環境変数で設定されたディレクトリ（例えば"dbs"）をリポジトリのルートディレクトリに作り、
-さらにディレクトリ内に"elasticsearch/nodes"の階層を作成しておきます。
-```
-mkdir dbs/elasticsearch/nodes -p
-```
-
-### number_of_shards, number_of_replicasの設定
-インデックスの存在しない状態で下記を実行する
-```
-curl -XPUT localhost:9200/_template/general_template -H 'Content-Type: application/json' -d '{
-    "index_patterns" : ["*"],
-    "settings": {
-    "number_of_shards": "1",
-    "number_of_replicas" : "0"
-  }
-}' 
-```
-### index templateファイルによる個々のインデックス設定
-
-下記curlコマンドでtemplateファイルに記述した設定をElasticsearchの個々のインデックスに登録することができる。
-
-```
-curl -H "Content-Type: application/json" -XPUT localhost:9200/_template/mdatahub_project -d @mdatahub_project.json
-curl -H "Content-Type: application/json" -XPUT localhost:9200/_template/mdatahub_genome -d @mdatahub_genome.json
-```
-実行後データは再インポートする。
-現在のtemplateファイルは以下の通り。
-
-```
-## mdatahub_project.json
-{
-  "index_patterns": ["bioproject"],
-  "aliases": {
-    "project": {}
-  }, 
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 0,
-    "max_result_window": 300000
-  }
-}
-```
-```
-## mdatahub_genome.json
-{
-  "index_patterns": ["genome"],
-  "settings": {
-    "number_of_shards": 1,
-    "number_of_replicas": 0,
-    "max_result_window": 300000
-  }
-}
-```
-
-### ElasticSearchへのBioProject+, genoemデータのインポート
-
-```
-# importするjsonlと同じ階層に移動（ddbj-ld-proxyディレクトリから）
-cd dataflow_prototype
-
-# インデックスがすでに存在していた場合一度indexを捨てる
-curl -XDELETE http://localhost:9200/bioproject  
-curl -XDELETE http://localhost:9200/genome  
-
-# bulk import 
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @mdatahub_bioproject_test.jsonl
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @mdatahub_genome_test.jsonl
-```
-
-### ElasticSearchへの系統組成比較データのインポート
-
-```
-cd data
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @taxonomic_comparison.jsonl
-```
-
+## 起動とデータロード
+- **最新のコンテナの起動方法などは以下に従う**
+    - https://github.com/microbiomedatahub/docker-microbiome-datahub/blob/main/README.md
 
 ## API reference
 
