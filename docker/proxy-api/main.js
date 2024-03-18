@@ -1,9 +1,14 @@
 import Fastify from 'fastify'
 import { Client } from '@elastic/elasticsearch'
 import fastifyCors from '@fastify/cors'
+import fs from 'fs';
+import archiver from 'archiver';
+
+import helper from './helper.js';
 
 const fastify = Fastify({
   logger: process.env.LOGGER === 'on' ? true : false,
+  maxParamLength: 2500,
 })
 
 fastify.register(fastifyCors)
@@ -279,6 +284,91 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
 
     return jsn
   }
+})
+
+
+
+fastify.get('/dl/project/metadata/:ids', async (req, rep) => {
+  if (!req.params.ids) {
+    rep
+      .code(400)
+      .type('text/plain')
+      .send('Bad Request. (no id set.)')
+  }
+  const data = await helper.get_metadata(req.params.ids, "project")
+
+  // クエリストリングで type=json が指定されている場合はJSONで応答する
+  if (req.query.type === 'json') {
+    rep.header('Content-Disposition', 'attachment; filename=project_metadata.json')
+    rep.send(data)
+  } else {
+    rep.header('Content-Disposition', 'attachment; filename=project_metadata.tsv')
+    rep.type('text/tab-separated-values')
+    rep.send(helper.dict2tsv(data))
+  }
+})
+
+fastify.get('/dl/genome/metadata/:ids', async (req, rep) => {
+  if (!req.params.ids) {
+    rep
+      .code(400)
+      .type('text/plain')
+      .send('Bad Request. (no id set.)')
+  }
+  const data = await helper.get_metadata(req.params.ids, "genome")
+
+  // クエリストリングで type=json が指定されている場合はJSONで応答する
+  if (req.query.type === 'json') {
+    rep.header('Content-Disposition', 'attachment; filename=genome_metadata.json')
+    rep.send(data)
+  } else {
+    rep.header('Content-Disposition', 'attachment; filename=genome_metadata.tsv')
+    rep.type('text/tab-separated-values')
+    rep.send(helper.dict2tsv(data))
+  }
+})
+
+fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
+  if (!req.params.ids) {
+    rep
+      .code(400)
+      .type('text/plain')
+      .send('Bad Request. (no id set.)')
+  }
+  // TODO: ids から pathMap を取得するメソッドを作成
+  //const pathMap = getSequencePathList(req.params.id)
+  const pathMap = new Map()
+  const pathList = [
+    '/mnt/data/mdatahub_sample/c0/ref16s_500k.fasta',
+    '/mnt/data/mdatahub_sample/c1/ref16s_500k.fasta',
+    '/mnt/data/mdatahub_sample/c2/ref16s_500k.fasta',
+  ]
+  req.params.ids.slit(',').forEach((id, index) => {
+    pathMap.set(id, pathList[index])
+  })
+
+  // TODO: 一時ディレクトリは暫定（決まったら変更）
+  const tempDir = '/mnt/data/tmp'
+
+  const timestamp = Date.now().toString()
+  const zipFilePath = tempDir + `/${timestamp}.zip`
+  const output = fs.createWriteStream(zipFilePath)
+  const archive = archiver('zip')
+  archive.pipe(output)
+
+  pathMap.forEach((v, k) => {
+    if (v === '') {
+      return
+    }
+    const fileName = v.split('/').at(-1)
+    archive.file(v, { name: `${k}/${fileName}` })
+  })
+  archive.finalize()
+
+  output.on('close', () => {
+    rep.type('application/zip')
+    rep.send(fs.createReadStream(zipFilePath))
+  })
 })
 
 

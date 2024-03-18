@@ -13,7 +13,8 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.2.0-patch.1",
     "@fastify/cors": "^7.0.0",
-    "fastify": "^3.29.0"
+    "fastify": "^3.29.0",
+    "archiver": "^6.0.1"
   },
   "type": "module"
 }
