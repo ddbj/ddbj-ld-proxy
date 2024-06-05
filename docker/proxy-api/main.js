@@ -286,7 +286,7 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   }
 })
 
-
+//　DL用API
 
 fastify.get('/dl/project/metadata/:ids', async (req, rep) => {
   if (!req.params.ids) {
@@ -328,6 +328,65 @@ fastify.get('/dl/genome/metadata/:ids', async (req, rep) => {
   }
 })
 
+fastify.get('/dl/project/composition/:ids', async(req, rep) => {
+  if (!req.params.ids) {
+    rep
+      .code(400)
+      .type('text/plain')
+      .send('Bad Request. (no id set.)')
+  }
+
+  const project_ids = req.params.ids
+  const project_id_list = project_ids.split(',')
+  const pathMap = new Map()
+  // inputファイルのパスを定義する
+  const pathList = project_id_list.map(bp => {
+    let project_prefix = bp.slice(0,5)
+    let project_number = bp.slice(5,)
+    let converted_number = project_number.padStart(6,0)
+    let converted_number_3d = converted_number.slice(0,3)
+    let converted_name = project_prefix + converted_number
+
+    // Todo: dockerから見えるディレクトリか確認？？
+    // Todo: 必要であればvolumeの設定を行う
+    //let path = `/work1/mdatahub/public/project/{project_prefix}/{converted_number(0,3)/{converted_name}/compositions}`
+    let path = `/mnt/data/mdatahub_sample/c/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
+    return path
+  })
+
+  // Mapに(bp,path)のセットを保存
+  project_id_list.forEach((id, index) => {
+    pathMap.set(id, pathList[index])
+  })
+
+  // TODO: 本番環境でtmpファイルのパスが動作するか確認
+  const tempDir = '/mnt/data/tmp'
+  const timestamp = Date.now().toString()
+  const zipFilePath = tempDir + `/${timestamp}.zip`
+  const output = fs.createWriteStream(zipFilePath)
+  const archive = archiver('zip')
+  archive.pipe(output)
+
+  pathMap.forEach((path, pid) => {
+    if (path === '') {
+      return
+    }
+    const fileName = `${pid}_composition`
+    // 第一引数でパス、第二引数で展開時のディレクトリ構造を渡す
+    archive.directory(path, `${pid}_compositions`)
+  })
+  archive.finalize()
+
+  output.on('close', () => {
+    //rep.type('application/zip')
+    rep.headers({
+      'Content-Type': 'application/zip',
+      'Content-Disposition': 'inline; filename="compositions.zip"'
+    })
+    rep.send(fs.createReadStream(zipFilePath))
+  })
+})
+
 fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
   if (!req.params.ids) {
     rep
@@ -335,9 +394,11 @@ fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
       .type('text/plain')
       .send('Bad Request. (no id set.)')
   }
+
   // TODO: ids から pathMap を取得するメソッドを作成
   //const pathMap = getSequencePathList(req.params.id)
   const pathMap = new Map()
+  // idsとpathlistのindexが一致する
   const pathList = [
     '/mnt/data/mdatahub_sample/c0/ref16s_500k.fasta',
     '/mnt/data/mdatahub_sample/c1/ref16s_500k.fasta',
@@ -366,7 +427,11 @@ fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
   archive.finalize()
 
   output.on('close', () => {
-    rep.type('application/zip')
+    //rep.type('application/zip')
+    rep.headers({
+      'Content-Type': 'application/zip',
+      'Content-Disposition': 'inline; filename="sequence_genome.zip"'
+    })
     rep.send(fs.createReadStream(zipFilePath))
   })
 })
