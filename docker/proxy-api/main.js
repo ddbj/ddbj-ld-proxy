@@ -347,7 +347,8 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
     let converted_number_3d = converted_number.slice(0,3)
     let converted_name = project_prefix + converted_number
 
-    let path = `/srv/project/{project_prefix}/{converted_number(0,3)/{converted_name}/compositions}`
+    let path = `/srv/project/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
+    //let path = `/mnt/data/mdatahub_sample/c/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
     return path
   })
 
