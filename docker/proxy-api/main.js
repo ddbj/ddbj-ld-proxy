@@ -347,10 +347,7 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
     let converted_number_3d = converted_number.slice(0,3)
     let converted_name = project_prefix + converted_number
 
-    // Todo: dockerから見えるディレクトリか確認？？
-    // Todo: 必要であればvolumeの設定を行う
-    //let path = `/work1/mdatahub/public/project/{project_prefix}/{converted_number(0,3)/{converted_name}/compositions}`
-    let path = `/mnt/data/mdatahub_sample/c/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
+    let path = `/srv/project/{project_prefix}/{converted_number(0,3)/{converted_name}/compositions}`
     return path
   })
 
@@ -360,7 +357,7 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
   })
 
   // TODO: 本番環境でtmpファイルのパスが動作するか確認
-  const tempDir = '/mnt/data/tmp'
+  const tempDir = '/mnt'
   const timestamp = Date.now().toString()
   const zipFilePath = tempDir + `/${timestamp}.zip`
   const output = fs.createWriteStream(zipFilePath)
