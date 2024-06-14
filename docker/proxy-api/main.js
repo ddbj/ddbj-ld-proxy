@@ -348,7 +348,6 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
     let converted_name = project_prefix + converted_number
 
     let path = `/srv/project/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
-    //let path = `/mnt/data/mdatahub_sample/c/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
     return path
   })
 
@@ -357,7 +356,6 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
     pathMap.set(id, pathList[index])
   })
 
-  // TODO: 本番環境でtmpファイルのパスが動作するか確認
   const tempDir = '/mnt'
   const timestamp = Date.now().toString()
   const zipFilePath = tempDir + `/${timestamp}.zip`
@@ -385,7 +383,7 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
   })
 })
 
-fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
+fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) => {
   if (!req.params.ids) {
     rep
       .code(400)
@@ -393,22 +391,40 @@ fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
       .send('Bad Request. (no id set.)')
   }
 
-  // TODO: ids から pathMap を取得するメソッドを作成
-  //const pathMap = getSequencePathList(req.params.id)
+  const project_ids = req.params.ids
+  const project_id_list = project_ids.split(',')
+  const type = req.params.type
+  let file_name;
+  switch (type){
+    case "genome":
+      file_name = "dfast/genome.fna";
+      break;
+    case "cds":
+      file_name = "dfast/css.fna";
+      break;
+    case "protein":
+      file_name = "dfast/protein.faa"
+  }
   const pathMap = new Map()
-  // idsとpathlistのindexが一致する
-  const pathList = [
-    '/mnt/data/mdatahub_sample/c0/ref16s_500k.fasta',
-    '/mnt/data/mdatahub_sample/c1/ref16s_500k.fasta',
-    '/mnt/data/mdatahub_sample/c2/ref16s_500k.fasta',
-  ]
-  req.params.ids.slit(',').forEach((id, index) => {
-    pathMap.set(id, pathList[index])
+  // ファイルのパスを定義する
+  const pathList = project_id_list.map(id => {
+    // idより数字部分を取得
+    let prefix = id.slice(0,3)
+    let regex = /\d+/g;
+    let figs = id.match(regex);
+    let first3 = figs[0].slice(0,3)
+    let middle3 = figs[0].slice(3,6)
+    let final3 = figs[0].slice(6,)
+    // 数字部分を3文字づつ変数に入れる
+    let path = `/srv/genome/${prefix}/${first3}/${middle3}/${final3}/${id}/${file_name}`
+    return path
   })
+    // Mapに(bp,path)のセットを保存
+    project_id_list.forEach((id, index) => {
+      pathMap.set(id, pathList[index])
+    })
 
-  // TODO: 一時ディレクトリは暫定（決まったら変更）
-  const tempDir = '/mnt/data/tmp'
-
+  const tempDir = '/mnt'
   const timestamp = Date.now().toString()
   const zipFilePath = tempDir + `/${timestamp}.zip`
   const output = fs.createWriteStream(zipFilePath)
@@ -428,7 +444,7 @@ fastify.get('/dl/sequence/genome/:ids', async (req, rep) => {
     //rep.type('application/zip')
     rep.headers({
       'Content-Type': 'application/zip',
-      'Content-Disposition': 'inline; filename="sequence_genome.zip"'
+      'Content-Disposition': 'inline; filename="sequence.zip"'
     })
     rep.send(fs.createReadStream(zipFilePath))
   })
