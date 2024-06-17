@@ -86,3 +86,32 @@ curl 'https://mdatahub.org/api/genome' --data '{"query": {"match": {"data type":
 
 - /metastanza_data/bioproject?q={}
     - ElasticSearchを検索しmetastanza(pagination table)形式のJSONを返します
+
+
+## ダウンロードAPI
+
+## メタデータのダウンロード
+projectおよびgenomeのメタデータをtsv形式でダウンロードすることができます。
+
+```
+# project
+https://mdatahub.org/api/dl/project/metadata/PRJNA13694,PRJNA13696
+
+# genome
+https://mdatahub.org/api/dl/genome/metadata/GCA_029762495.1,GCA_000208265.2
+```
+
+## 系統組成データのダウンロード
+系統組成データをプロジェクトごとに系統組成のランクに分かれたtsvファイルとしてダウンロードすることができます。
+
+```https://mdatahub.org/api/dl/project/composition/PRJNA464990,PRJNA464992,PRJNA464993
+```
+
+## 配列ダウンロード
+
+genome,cds,proteinの配列（fna,faa）をAPIを利用してダウンロードすることができます。
+
+```
+http://mdatahub.org/api/dl/sequence/{type}/{GCA[,]}
+```
+typeにはgenoem,protein,cdsのいずれかの文字列、GCAはバージョンまで含めたGCA IDを指定する

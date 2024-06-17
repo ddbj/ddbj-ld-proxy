@@ -400,7 +400,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
       file_name = "dfast/genome.fna";
       break;
     case "cds":
-      file_name = "dfast/css.fna";
+      file_name = "dfast/cds.fna";
       break;
     case "protein":
       file_name = "dfast/protein.faa"
