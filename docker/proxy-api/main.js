@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
-import { Client } from '@elastic/elasticsearch'
 import fastifyCors from '@fastify/cors'
+import { Client } from '@elastic/elasticsearch'
 import fs from 'fs';
 import archiver from 'archiver';
 
@@ -14,14 +14,14 @@ const fastify = Fastify({
 fastify.register(fastifyCors)
 
 const client = new Client({
-  node: process.env.ELASTICSEARCH_HOST,
+  // node: process.env.ELASTICSEARCH_HOST,
+  node: "http://192.168.11.20:9200"
 })
 
 fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
-
   if (!req.query.q) {
-    return { hits: [] }
+    return { hits: [44] }
   }
 
   const q = req.query.q.toLowerCase()
@@ -58,7 +58,7 @@ fastify.get('/', async (req) => {
   }
 })
 
-fastify.get('/bioproject/_doc/:id', async (req, reply) => {
+fastify.get('/bioproject/_doc/:id', async (req, rep) => {
   if (!req.params.id) {
     return { }
   }
@@ -68,12 +68,10 @@ fastify.get('/bioproject/_doc/:id', async (req, reply) => {
     "id": id
   })
 
-  return {
-    index
-  }
+  rep.send({ index })
 })
 
-fastify.get('/bioproject/_search', async (req, reply) => {
+fastify.get('/bioproject/_search', async (req, rep) => {
   if (!req.query.q) {
     return { hits: [] }
   }
@@ -83,21 +81,21 @@ fastify.get('/bioproject/_search', async (req, reply) => {
     "q": q
   })
 
-  return res
+  rep.send(res)
 })
 
-fastify.post('/bioproject', async (req, reply) => {
+fastify.post('/bioproject', async (req, rep) => {
   const res = await client.search({
     "index": "bioproject",
     "body": req.body
   })
 
-  return res
+  rep.send(res)
 })
 
 // Copies　of the above apis as bioproject~
 
-fastify.get('/project/_doc/:id', async (req, reply) => {
+fastify.get('/project/_doc/:id', async (req, rep) => {
   if (!req.params.id) {
     return { }
   }
@@ -107,12 +105,10 @@ fastify.get('/project/_doc/:id', async (req, reply) => {
     "id": id
   })
 
-  return {
-    index
-  }
+  rep.send({ index })
 })
 
-fastify.get('/project/_search', async (req, reply) => {
+fastify.get('/project/_search', async (req, rep) => {
   if (!req.query.q) {
     return { hits: [] }
   }
@@ -122,50 +118,53 @@ fastify.get('/project/_search', async (req, reply) => {
     "q": q
   })
 
-  return res
+  rep.send(res)
 })
 
-fastify.post('/project', async (req, reply) => {
+fastify.post('/project', async (req, rep) => {
   const res = await client.search({
     "index": "project",
     "body": req.body
   })
 
-  return res
+  rep.send(res)
 })
 
 
-fastify.get('/genome/_doc/:id', async(req, reply) => {
+fastify.get('/genome/_doc/:id', async(req, rep) => {
   if (!req.params.id) {
-    return { }
+    rep
+      .code(400)
+      .type('text/plain')
+      .send('Bad Request. (no id set.)')
   }
   let id = req.params.id
   const index = await client.get({
     "index": "genome",
     "id": id
   })
-  return index
+  rep.send({ index })
 })
 
-fastify.get('/genome/_search', async(req, reply) => {
+fastify.get('/genome/_search', async(req, rep) => {
   if (!req.query.q) {
-    return { hits: [] }
+    rep.send({ hits: [] })
   }
   const q = req.query.q.toLowerCase()
   const res = await client.search({
     "index": "genome",
     "q": q
   })
-  return res
+  rep.send(res)
 })
 
-fastify.post('/genome', async(req, reply) => {
+fastify.post('/genome', async(req, rep) => {
   const res = await client.search({
     "index": "genome",
     "body": req.body
   })
 
-  return res
+  rep.send(res)
 })
 
 fastify.get('/plotly_data', async (req) => {
@@ -286,7 +285,8 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   }
 })
 
-//　DL用API
+
+//以下DL API
 
 fastify.get('/dl/project/metadata/:ids', async (req, rep) => {
   if (!req.params.ids) {
@@ -339,7 +339,7 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
   const project_ids = req.params.ids
   const project_id_list = project_ids.split(',')
   const pathMap = new Map()
-  // inputファイルのパスを定義する
+  // ファイルのパスを定義する
   const pathList = project_id_list.map(bp => {
     let project_prefix = bp.slice(0,5)
     let project_number = bp.slice(5,)
@@ -442,9 +442,10 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
 
   output.on('close', () => {
     //rep.type('application/zip')
+    let contentName = 'inline; filename="sequence' + '_' +  type + '.zip"'; 
     rep.headers({
       'Content-Type': 'application/zip',
-      'Content-Disposition': 'inline; filename="sequence.zip"'
+      'Content-Disposition': contentName
     })
     rep.send(fs.createReadStream(zipFilePath))
   })
