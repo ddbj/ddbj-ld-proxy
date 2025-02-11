@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
-import fastifyCors from '@fastify/cors'
 import { Client } from '@elastic/elasticsearch'
+import fastifyCors from '@fastify/cors'
 import fs from 'fs';
 import archiver from 'archiver';
 
@@ -14,14 +14,14 @@ const fastify = Fastify({
 fastify.register(fastifyCors)
 
 const client = new Client({
-  // node: process.env.ELASTICSEARCH_HOST,
-  node: "http://192.168.11.20:9200"
+  node: process.env.ELASTICSEARCH_HOST,
 })
 
 fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
+
   if (!req.query.q) {
-    return { hits: [44] }
+    return { hits: [] }
   }
 
   const q = req.query.q.toLowerCase()
@@ -58,9 +58,9 @@ fastify.get('/', async (req) => {
   }
 })
 
-fastify.get('/bioproject/_doc/:id', async (req, rep) => {
+fastify.get('/bioproject/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
-    return { }
+    return {}
   }
   let id = req.params.id
   const index = await client.get({
@@ -68,10 +68,12 @@ fastify.get('/bioproject/_doc/:id', async (req, rep) => {
     "id": id
   })
 
-  rep.send({ index })
+  return {
+    index
+  }
 })
 
-fastify.get('/bioproject/_search', async (req, rep) => {
+fastify.get('/bioproject/_search', async (req, reply) => {
   if (!req.query.q) {
     return { hits: [] }
   }
@@ -81,23 +83,23 @@ fastify.get('/bioproject/_search', async (req, rep) => {
     "q": q
   })
 
-  rep.send(res)
+  return res
 })
 
-fastify.post('/bioproject', async (req, rep) => {
+fastify.post('/bioproject', async (req, reply) => {
   const res = await client.search({
     "index": "bioproject",
     "body": req.body
   })
 
-  rep.send(res)
+  return res
 })
 
 // Copies　of the above apis as bioproject~
 
-fastify.get('/project/_doc/:id', async (req, rep) => {
+fastify.get('/project/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
-    return { }
+    return {}
   }
   let id = req.params.id
   const index = await client.get({
@@ -105,10 +107,12 @@ fastify.get('/project/_doc/:id', async (req, rep) => {
     "id": id
   })
 
-  rep.send({ index })
+  return {
+    index
+  }
 })
 
-fastify.get('/project/_search', async (req, rep) => {
+fastify.get('/project/_search', async (req, reply) => {
   if (!req.query.q) {
     return { hits: [] }
   }
@@ -118,53 +122,50 @@ fastify.get('/project/_search', async (req, rep) => {
     "q": q
   })
 
-  rep.send(res)
+  return res
 })
 
-fastify.post('/project', async (req, rep) => {
+fastify.post('/project', async (req, reply) => {
   const res = await client.search({
     "index": "project",
     "body": req.body
   })
 
-  rep.send(res)
+  return res
 })
 
 
-fastify.get('/genome/_doc/:id', async(req, rep) => {
+fastify.get('/genome/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
-    rep
-      .code(400)
-      .type('text/plain')
-      .send('Bad Request. (no id set.)')
+    return {}
   }
   let id = req.params.id
   const index = await client.get({
     "index": "genome",
     "id": id
   })
-  rep.send({ index })
+  return index
 })
 
-fastify.get('/genome/_search', async(req, rep) => {
+fastify.get('/genome/_search', async (req, reply) => {
   if (!req.query.q) {
-    rep.send({ hits: [] })
+    return { hits: [] }
   }
   const q = req.query.q.toLowerCase()
   const res = await client.search({
     "index": "genome",
     "q": q
   })
-  rep.send(res)
+  return res
 })
 
-fastify.post('/genome', async(req, rep) => {
+fastify.post('/genome', async (req, reply) => {
   const res = await client.search({
     "index": "genome",
     "body": req.body
   })
 
-  rep.send(res)
+  return res
 })
 
 fastify.get('/plotly_data', async (req) => {
@@ -181,7 +182,7 @@ fastify.get('/plotly_data', async (req) => {
         "index": 'taxonomic_comparison',
         "body": {
                 "query": {
-                        "terms" : {
+                        "terms": {
                             "_id": sample_list
                         },
             },
@@ -190,7 +191,7 @@ fastify.get('/plotly_data', async (req) => {
     })
     let res_tmp = res.hits.hits
     // ESのレスポンスが引数の順番と限らないためsample_listを再取得
-    if (res_tmp.length){
+    if (res_tmp.length) {
       sample_list = res_tmp.map(spl => {
         return spl._source.taxonomic_comparison.name
       })
@@ -220,7 +221,7 @@ fastify.get('/plotly_data', async (req) => {
 fastify.get('/metastanza_data/bioproject/:id', async (req) => {
   if (!req.params.id) {
     return {}
-  }else{
+  } else {
     const id = req.params.id.toUpperCase()
     //const view = req.query.view.toLowerCase()
     // idを引数に検索結果をhash_table用にフォーマットして返す
@@ -229,7 +230,8 @@ fastify.get('/metastanza_data/bioproject/:id', async (req) => {
       "id": id
     })
 
-    return {identifier: index._source.identifier, 
+    return { 
+      identifier: index._source.identifier,
       organism: index._source.organism,
       title: index._source.title,
       description: index._source.description,
@@ -243,7 +245,7 @@ fastify.get('/metastanza_data/bioproject/:id', async (req) => {
 fastify.get('/metastanza_data/bioproject', async (req) => {
   if (!req.query.q) {
     return { hits: [] }
-  }else{
+  } else {
     const q = req.query.q.toLowerCase()
     const res = await client.search({
       "index": "bioproject",
@@ -264,11 +266,10 @@ fastify.get('/metastanza_data/bioproject', async (req) => {
   }
 })
 
-
 fastify.get('/metastanza_data/:index_name/:id', async (req) => {
   if (!req.params.index_name || !req.params.id) {
     return {}
-  }else{
+  } else {
     const q = req.query.q.toLowerCase()
     const res = await client.search({
       "index": "bioproject",
@@ -284,9 +285,6 @@ fastify.get('/metastanza_data/:index_name/:id', async (req) => {
     return jsn
   }
 })
-
-
-//以下DL API
 
 fastify.get('/dl/project/metadata/:ids', async (req, rep) => {
   if (!req.params.ids) {
@@ -315,6 +313,7 @@ fastify.get('/dl/genome/metadata/:ids', async (req, rep) => {
       .type('text/plain')
       .send('Bad Request. (no id set.)')
   }
+  console.log(req.params.ids)
   const data = await helper.get_metadata(req.params.ids, "genome")
 
   // クエリストリングで type=json が指定されている場合はJSONで応答する
@@ -328,7 +327,7 @@ fastify.get('/dl/genome/metadata/:ids', async (req, rep) => {
   }
 })
 
-fastify.get('/dl/project/composition/:ids', async(req, rep) => {
+fastify.get('/dl/project/composition/:ids', async (req, rep) => {
   if (!req.params.ids) {
     rep
       .code(400)
@@ -339,18 +338,19 @@ fastify.get('/dl/project/composition/:ids', async(req, rep) => {
   const project_ids = req.params.ids
   const project_id_list = project_ids.split(',')
   const pathMap = new Map()
-  // ファイルのパスを定義する
+  // inputファイルのパスを定義する
   const pathList = project_id_list.map(bp => {
-    let project_prefix = bp.slice(0,5)
+    let project_prefix = bp.slice(0, 5)
     let project_number = bp.slice(5,)
-    let converted_number = project_number.padStart(6,0)
-    let converted_number_3d = converted_number.slice(0,3)
+    let converted_number = project_number.padStart(6, 0)
+    let converted_number_3d = converted_number.slice(0, 3)
     let converted_name = project_prefix + converted_number
 
     let path = `/srv/project/${project_prefix}/${converted_number_3d}/${converted_name}/compositions`
     return path
   })
 
+  // console.log(pathList)
   // Mapに(bp,path)のセットを保存
   project_id_list.forEach((id, index) => {
     pathMap.set(id, pathList[index])
@@ -395,7 +395,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
   const project_id_list = project_ids.split(',')
   const type = req.params.type
   let file_name;
-  switch (type){
+  switch (type) {
     case "genome":
       file_name = "dfast/genome.fna";
       break;
@@ -409,11 +409,11 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
   // ファイルのパスを定義する
   const pathList = project_id_list.map(id => {
     // idより数字部分を取得
-    let prefix = id.slice(0,3)
+    let prefix = id.slice(0, 3)
     let regex = /\d+/g;
     let figs = id.match(regex);
-    let first3 = figs[0].slice(0,3)
-    let middle3 = figs[0].slice(3,6)
+    let first3 = figs[0].slice(0, 3)
+    let middle3 = figs[0].slice(3, 6)
     let final3 = figs[0].slice(6,)
     // 数字部分を3文字づつ変数に入れる
     let path = `/srv/genome/${prefix}/${first3}/${middle3}/${final3}/${id}/${file_name}`
@@ -442,13 +442,106 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
 
   output.on('close', () => {
     //rep.type('application/zip')
-    let contentName = 'inline; filename="sequence' + '_' +  type + '.zip"'; 
+    let contentName = 'inline; filename="sequence' + '_' + type + '.zip"'; 
     rep.headers({
       'Content-Type': 'application/zip',
       'Content-Disposition': contentName
     })
     rep.send(fs.createReadStream(zipFilePath))
   })
+})
+
+// クエリのMAG IDに対応するMBGD Orthologのデータを各MAGAディレクトリより取得し返す
+fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
+  const genome_id = req.params.genome_id
+  try {
+    // genome_idよりJSONファイル取得先のパスを生成する
+    // idより数字部分を取得
+    let prefix = genome_id.slice(0, 3)
+    let regex = /\d+/g;
+    let figs = genome_id.match(regex);
+    let first3 = figs[0].slice(0, 3)
+    let middle3 = figs[0].slice(3, 6)
+    let final3 = figs[0].slice(6,)
+    // 数字部分を3文字づつ変数に入れる
+    const jsonPath = `/srv/genome/${prefix}/${first3}/${middle3}/${final3}/${genome_id}/mbgd.json`
+    // JSONファイルを読み込みオブジェクトに変換
+    const data = await fs.promises.readFile(jsonPath, 'utf8')
+    const jsonData = JSON.parse(data)
+    // 変換されたオブジェクトを返す
+    rep.header('Content-Type', 'application/json')
+    rep.send(jsonData)
+  } catch (error) {
+    console.error(error)
+    rep.code(500).send('Internal Server Error')
+  }
+})
+
+// for staging
+// simple es query generator
+const esQuery = (kv_pairs, kv_pairs) => {
+    /**
+     * kv_pairsのkeysとvaluesを使い定められた属性に対して検索を行う。
+     * kv_pairsは複数の属性と値を想定している。
+     * またkeywordを利用してid,title,descriptionのいずれかに対して検索を行う
+     * kv_pairsの検索とkeyword検索の結果はandで結合される
+     * Args:
+     *      kv_pairs (dict): 属性と値のペア。複数の属性が想定される。
+     *      keyword (str): 文字列検索のキーワード
+     * Returns:
+     *      dict: Elasticsearchの検索クエリ
+     */
+    const query = {
+      query: {
+        bool: {
+          must: [
+            {
+              bool: {
+                should: [
+                  {
+                    match: {
+                      id: kv_pairs.id,
+                    },
+                  },
+                  {
+                    match: {
+                      title: kv_pairs.title,
+                    },
+                  },
+                  {
+                    match: {
+                      description: kv_pairs.description,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              multi_match: {
+                query: keyword,
+                fields: ["id", "title", "description"],
+              },
+            },
+          ],
+        },
+      },
+    };
+    return query;
+  }
+
+fastify.get('/genome/search', async (req, rep) => {
+  if (!req.query.q) {
+    return { hits: [] }
+  }
+  const kv_pairs = {...req.query}
+  const keyword = kv_pairs.keyword
+  delete kv_pairs.keyword
+  const q = esQuery(req.query.q)
+  const res = await client.search({
+    "index": "bioproject",
+    "q": q
+  })
+  return res
 })
 
 
