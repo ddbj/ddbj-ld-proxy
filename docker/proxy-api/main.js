@@ -409,8 +409,6 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
   const pathMap = new Map()
   // ファイルのパスを定義する
   const pathList = project_id_list.map(id => {
-
-
     // idより数字部分を取得
     let prefix = id.slice(0, 3)
     let regex = /\d+/g;
@@ -424,7 +422,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
     // dfast/ディレクトリの有無を確認し存在しない場合file_nameから"dfast/"を削除する
     let dfast_dir = fs.existsSync(path)
     path = dfast_dir ? path : path.replace('dfast/', '')
-    
+
     return path
   })
     // Mapに(bp,path)のセットを保存
