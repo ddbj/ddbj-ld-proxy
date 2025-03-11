@@ -395,6 +395,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
   const project_id_list = project_ids.split(',')
   const type = req.params.type
   let file_name;
+
   switch (type) {
     case "genome":
       file_name = "dfast/genome.fna";
@@ -417,6 +418,11 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
     let final3 = figs[0].slice(6,)
     // 数字部分を3文字づつ変数に入れる
     let path = `/srv/genome/${prefix}/${first3}/${middle3}/${final3}/${id}/${file_name}`
+
+    // dfast/ディレクトリの有無を確認し存在しない場合file_nameから"dfast/"を削除する
+    let dfast_dir = fs.existsSync(path)
+    path = dfast_dir ? path : path.replace('dfast/', '')
+
     return path
   })
     // Mapに(bp,path)のセットを保存
@@ -544,6 +550,34 @@ fastify.get('/genome/search', async (req, rep) => {
   return res
 })
 
+// for staging ElasticsearchクエリをAPI側で組み立てる試作API
+// RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
+// Elasticsearchの検索を行う
+fastify.get('/dev/genome/search', async (req, rep) => {
+  if (!req.query.q) {
+    return { hits: [] }
+  }
+  const q = req.query.q.toLowerCase()
+  // クエリパラメータを取得し、key:value形式のオブジェクトに変換する
+  const kv_pairs = helper.query2dict(q)
+  // クエリパラメータをESのクエリに変換する
+  const res_query = fetch('http://es_converter:5000/search_query', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    // TODO: kvの定義が怪しい
+    body: JSON.stringify({q: kv_pairs}),
+  })
+  const query = await res_query.json();
+
+  // ESにクエリを投げる
+  const res = await client.search({
+    "index": "genome",
+    "q": query
+  })
+  return res
+})
 
 const start = async () => {
   try {
