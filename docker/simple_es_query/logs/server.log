@@ -1,0 +1,20 @@
+2025-03-14 06:47:59,373 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-14 06:47:59,373 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-14 06:47:59,374 - INFO -  * Restarting with stat
+2025-03-14 06:47:59,616 - WARNING -  * Debugger is active!
+2025-03-14 06:47:59,625 - INFO -  * Debugger PIN: 609-068-944
+2025-03-14 06:48:30,418 - INFO - /search_query called
+2025-03-14 06:48:30,419 - INFO - args: {'genome_taxon': 'coli', 'size': '1'}
+2025-03-14 06:48:30,419 - INFO - reserved_attributes
+2025-03-14 06:48:30,419 - INFO - es_q
+2025-03-14 06:48:30,419 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 1, "track_total_hits": true}
+2025-03-14 06:48:30,420 - INFO - 172.18.0.6 - - [14/Mar/2025 06:48:30] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 06:48:35,554 - INFO - /search_query called
+2025-03-14 06:48:35,554 - INFO - args: {'genome_taxon': 'coli', 'size': '3'}
+2025-03-14 06:48:35,554 - INFO - reserved_attributes
+2025-03-14 06:48:35,554 - INFO - es_q
+2025-03-14 06:48:35,554 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 3, "track_total_hits": true}
+2025-03-14 06:48:35,555 - INFO - 172.18.0.6 - - [14/Mar/2025 06:48:35] "POST /search_query HTTP/1.1" 200 -
