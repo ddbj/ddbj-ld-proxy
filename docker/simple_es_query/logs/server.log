@@ -393,3 +393,15 @@
 2025-03-14 05:12:47,389 - INFO - es_q
 2025-03-14 05:12:47,389 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 1, "track_total_hits": true}
 2025-03-14 05:12:47,389 - INFO - 172.18.0.6 - - [14/Mar/2025 05:12:47] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 05:30:12,513 - INFO - /search_query called
+2025-03-14 05:30:12,514 - INFO - args: {'genome_taxon': 'coli', 'size': '1'}
+2025-03-14 05:30:12,514 - INFO - reserved_attributes
+2025-03-14 05:30:12,514 - INFO - es_q
+2025-03-14 05:30:12,514 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 1, "track_total_hits": true}
+2025-03-14 05:30:12,515 - INFO - 172.18.0.6 - - [14/Mar/2025 05:30:12] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 05:30:21,421 - INFO - /search_query called
+2025-03-14 05:30:21,422 - INFO - args: {'genome_taxon': 'coli', 'size': '1'}
+2025-03-14 05:30:21,422 - INFO - reserved_attributes
+2025-03-14 05:30:21,422 - INFO - es_q
+2025-03-14 05:30:21,422 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 1, "track_total_hits": true}
+2025-03-14 05:30:21,423 - INFO - 172.18.0.6 - - [14/Mar/2025 05:30:21] "POST /search_query HTTP/1.1" 200 -
