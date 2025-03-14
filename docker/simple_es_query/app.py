@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from typing import List
 import requests
 import json
@@ -11,20 +11,20 @@ logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-@app.route('/search_query')
+@app.route('/search_query', methods=['POST'])
 def search_query():
     """
     受け取ったkey:valueのリストをESのクエリに変換します
     """
     logging.info('/search_query called')
-    args = request.args
+    args = request.get_json()
     logging.info(f"args: {str(args)}")
     args_list = {k: v for k,v in args.items()}
     # ES query生成
     query_generator = SimpleQueryGenerator()
     es_q = query_generator.create_query(args_list)
     logging.info(f"es_q: {str(es_q)}")
-    return es_q
+    return json.dumps(es_q)
 
 
 @app.route('/api')

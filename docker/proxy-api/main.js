@@ -557,9 +557,9 @@ fastify.get('/dev/genome/search', async (req, rep) => {
   if (!req.query.q) {
     return { hits: [] }
   }
-  const q = req.query.q.toLowerCase()
+  const kv_pairs = { ...req.query };
   // クエリパラメータを取得し、key:value形式のオブジェクトに変換する
-  const kv_pairs = helper.query2dict(q)
+  //const kv_pairs = helper.query2dict(q)
   // クエリパラメータをESのクエリに変換する
   const res_query = fetch('http://es_converter:5000/search_query', {
     method: 'POST',
@@ -574,7 +574,7 @@ fastify.get('/dev/genome/search', async (req, rep) => {
   // ESにクエリを投げる
   const res = await client.search({
     "index": "genome",
-    "q": query
+    "body": query
   })
   return res
 })

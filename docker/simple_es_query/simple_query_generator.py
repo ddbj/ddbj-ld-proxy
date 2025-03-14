@@ -1,4 +1,8 @@
 from typing import List
+import logging
+
+logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class SimpleQueryGenerator:
     """
@@ -26,6 +30,7 @@ class SimpleQueryGenerator:
     def __init__(self):
         self.keyword_attributes = ["keyword"]
         self.keyword_fields = ["identifier", "title", "description", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]
+        # reserved_attributesはそのままクエリに追加する。直整数を想定する
         self.reserved_attributes = ["size", "from", "sort"]
         self.track_total_hits = True
 
@@ -115,7 +120,8 @@ class SimpleQueryGenerator:
             # 属性が予約語の場合はそのままクエリに追加する
             elif k in self.reserved_attributes:
                 logging.info("reserved_attributes")
-                query_template[k] = v
+                # reserved_attributesの値はintに変換して追加する
+                query_template[k] = int(v)
             # レンジクエリの判定と処理
             # 同じ属性に対して_gteと_lteが同時に指定された場合は一つのレンジクエリを生成する
             elif k.endswith("_gte"):
