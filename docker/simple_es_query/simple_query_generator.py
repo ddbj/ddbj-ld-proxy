@@ -3,6 +3,10 @@ import logging
 
 logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
+<<<<<<< HEAD
+=======
+
+>>>>>>> c562df2 (rest api converter  updated)
 
 class SimpleQueryGenerator:
     """

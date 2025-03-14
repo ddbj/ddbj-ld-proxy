@@ -3,6 +3,7 @@ import { Client } from '@elastic/elasticsearch'
 import fastifyCors from '@fastify/cors'
 import fs from 'fs';
 import archiver from 'archiver';
+import fetch from "node-fetch";
 
 import helper from './helper.js';
 
@@ -21,7 +22,7 @@ fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
-    return { hits: [] }
+    return { hits: [20250312] }
   }
 
   const q = req.query.q.toLowerCase()
@@ -485,7 +486,7 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
 
 // for staging
 // simple es query generator
-const esQuery = (kv_pairs, kv_pairs) => {
+const esQuery = (kv_pairs) => {
     /**
      * kv_pairsのkeysとvaluesを使い定められた属性に対して検索を行う。
      * kv_pairsは複数の属性と値を想定している。
@@ -554,23 +555,24 @@ fastify.get('/genome/search', async (req, rep) => {
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search', async (req, rep) => {
-  if (!req.query.q) {
+  if  (!req.query || Object.keys(req.query).length === 0)  {
     return { hits: [] }
-  }
+  };
+  let query;
   const kv_pairs = { ...req.query };
   // クエリパラメータを取得し、key:value形式のオブジェクトに変換する
   //const kv_pairs = helper.query2dict(q)
   // クエリパラメータをESのクエリに変換する
-  const res_query = fetch('http://es_converter:5000/search_query', {
+  const res_query = await fetch('http://es_converter:5000/search_query',{
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+	'Content-Type': 'application/json',
     },
     // TODO: kvの定義が怪しい
-    body: JSON.stringify({q: kv_pairs}),
+    body: JSON.stringify(kv_pairs),
   })
-  const query = await res_query.json();
-
+  query = await res_query.json();
+  console.log(query)
   // ESにクエリを投げる
   const res = await client.search({
     "index": "genome",

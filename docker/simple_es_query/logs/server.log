@@ -18,3 +18,378 @@
 2025-03-14 06:48:35,554 - INFO - es_q
 2025-03-14 06:48:35,554 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 3, "track_total_hits": true}
 2025-03-14 06:48:35,555 - INFO - 172.18.0.6 - - [14/Mar/2025 06:48:35] "POST /search_query HTTP/1.1" 200 -
+2025-03-11 22:18:01,880 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-11 22:18:01,880 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 22:18:01,881 - INFO -  * Restarting with stat
+2025-03-11 22:18:02,114 - WARNING -  * Debugger is active!
+2025-03-11 22:18:02,114 - INFO -  * Debugger PIN: 609-068-944
+2025-03-11 22:23:26,312 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-03-11 22:23:26,313 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 22:23:26,313 - INFO -  * Restarting with stat
+2025-03-11 22:23:26,556 - WARNING -  * Debugger is active!
+2025-03-11 22:23:26,556 - INFO -  * Debugger PIN: 133-483-735
+2025-03-11 22:48:46,619 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 22:48:46,619 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 22:48:46,619 - INFO -  * Restarting with stat
+2025-03-11 22:48:46,837 - WARNING -  * Debugger is active!
+2025-03-11 22:48:46,837 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 22:54:33,524 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 22:54:33,524 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 22:54:33,524 - INFO -  * Restarting with stat
+2025-03-11 22:54:33,760 - WARNING -  * Debugger is active!
+2025-03-11 22:54:33,760 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 23:03:06,402 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 23:03:06,402 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:03:06,402 - INFO -  * Restarting with stat
+2025-03-11 23:03:06,628 - WARNING -  * Debugger is active!
+2025-03-11 23:03:06,628 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 23:05:55,284 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-11 23:05:55,284 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:05:55,284 - INFO -  * Restarting with stat
+2025-03-11 23:05:55,527 - WARNING -  * Debugger is active!
+2025-03-11 23:05:55,528 - INFO -  * Debugger PIN: 609-068-944
+2025-03-11 23:17:29,237 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 23:17:29,237 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:17:29,238 - INFO -  * Restarting with stat
+2025-03-11 23:17:29,474 - WARNING -  * Debugger is active!
+2025-03-11 23:17:29,475 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 23:22:57,326 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-11 23:22:57,326 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:22:57,326 - INFO -  * Restarting with stat
+2025-03-11 23:22:57,564 - WARNING -  * Debugger is active!
+2025-03-11 23:22:57,564 - INFO -  * Debugger PIN: 609-068-944
+2025-03-11 23:23:06,875 - INFO - 172.18.0.6 - - [11/Mar/2025 23:23:06] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:24:07,413 - INFO - 172.18.0.6 - - [11/Mar/2025 23:24:07] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:26:46,455 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-03-11 23:26:46,456 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:26:46,456 - INFO -  * Restarting with stat
+2025-03-11 23:26:46,696 - WARNING -  * Debugger is active!
+2025-03-11 23:26:46,696 - INFO -  * Debugger PIN: 133-483-735
+2025-03-11 23:27:28,304 - INFO - 172.18.0.6 - - [11/Mar/2025 23:27:28] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:27:30,786 - INFO - 172.18.0.6 - - [11/Mar/2025 23:27:30] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:27:31,225 - INFO - 172.18.0.6 - - [11/Mar/2025 23:27:31] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:27:50,313 - INFO - 172.18.0.6 - - [11/Mar/2025 23:27:50] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:31:23,810 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-03-11 23:31:23,810 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:31:23,810 - INFO -  * Restarting with stat
+2025-03-11 23:31:24,051 - WARNING -  * Debugger is active!
+2025-03-11 23:31:24,052 - INFO -  * Debugger PIN: 123-599-956
+2025-03-11 23:31:33,433 - INFO - 172.18.0.6 - - [11/Mar/2025 23:31:33] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:31:34,523 - INFO - 172.18.0.6 - - [11/Mar/2025 23:31:34] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:31:38,385 - INFO - 172.18.0.6 - - [11/Mar/2025 23:31:38] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:31:38,833 - INFO - 172.18.0.6 - - [11/Mar/2025 23:31:38] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:47:34,020 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 23:47:34,020 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:47:34,021 - INFO -  * Restarting with stat
+2025-03-11 23:47:34,255 - WARNING -  * Debugger is active!
+2025-03-11 23:47:34,256 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 23:47:40,695 - INFO - 172.18.0.6 - - [11/Mar/2025 23:47:40] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:47:41,671 - INFO - 172.18.0.6 - - [11/Mar/2025 23:47:41] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:53:57,376 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 23:53:57,377 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:53:57,377 - INFO -  * Restarting with stat
+2025-03-11 23:53:57,611 - WARNING -  * Debugger is active!
+2025-03-11 23:53:57,612 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 23:54:07,966 - INFO - 172.18.0.6 - - [11/Mar/2025 23:54:07] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:54:15,117 - INFO - 172.18.0.6 - - [11/Mar/2025 23:54:15] "[31m[1mPOST /search_query HTTP/1.1[0m" 405 -
+2025-03-11 23:59:34,009 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-11 23:59:34,009 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-11 23:59:34,010 - INFO -  * Restarting with stat
+2025-03-11 23:59:34,248 - WARNING -  * Debugger is active!
+2025-03-11 23:59:34,249 - INFO -  * Debugger PIN: 121-706-447
+2025-03-11 23:59:41,618 - INFO - /search_query called
+2025-03-11 23:59:41,618 - INFO - args: ImmutableMultiDict([])
+2025-03-11 23:59:41,619 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-11 23:59:41,619 - INFO - 172.18.0.6 - - [11/Mar/2025 23:59:41] "POST /search_query HTTP/1.1" 200 -
+2025-03-11 23:59:43,450 - INFO - /search_query called
+2025-03-11 23:59:43,450 - INFO - args: ImmutableMultiDict([])
+2025-03-11 23:59:43,450 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-11 23:59:43,451 - INFO - 172.18.0.6 - - [11/Mar/2025 23:59:43] "POST /search_query HTTP/1.1" 200 -
+2025-03-12 00:01:47,376 - INFO - /search_query called
+2025-03-12 00:01:47,376 - INFO - args: ImmutableMultiDict([])
+2025-03-12 00:01:47,377 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-12 00:01:47,377 - INFO - 172.18.0.6 - - [12/Mar/2025 00:01:47] "POST /search_query HTTP/1.1" 200 -
+2025-03-12 00:08:13,932 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-03-12 00:08:13,932 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 00:08:13,932 - INFO -  * Restarting with stat
+2025-03-12 00:08:14,175 - WARNING -  * Debugger is active!
+2025-03-12 00:08:14,175 - INFO -  * Debugger PIN: 133-483-735
+2025-03-12 00:08:37,930 - INFO - /search_query called
+2025-03-12 00:08:37,930 - INFO - args: ImmutableMultiDict([])
+2025-03-12 00:08:37,931 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-12 00:08:37,931 - INFO - 172.18.0.6 - - [12/Mar/2025 00:08:37] "POST /search_query HTTP/1.1" 200 -
+2025-03-12 00:09:06,484 - INFO - /search_query called
+2025-03-12 00:09:06,484 - INFO - args: ImmutableMultiDict([])
+2025-03-12 00:09:06,484 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-12 00:09:06,485 - INFO - 172.18.0.6 - - [12/Mar/2025 00:09:06] "POST /search_query HTTP/1.1" 200 -
+2025-03-12 00:10:18,879 - INFO - /search_query called
+2025-03-12 00:10:18,879 - INFO - args: ImmutableMultiDict([])
+2025-03-12 00:10:18,879 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-12 00:10:18,880 - INFO - 172.18.0.6 - - [12/Mar/2025 00:10:18] "POST /search_query HTTP/1.1" 200 -
+2025-03-12 00:10:23,659 - INFO - /search_query called
+2025-03-12 00:10:23,660 - INFO - args: ImmutableMultiDict([])
+2025-03-12 00:10:23,660 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-12 00:10:23,660 - INFO - 172.18.0.6 - - [12/Mar/2025 00:10:23] "POST /search_query HTTP/1.1" 200 -
+2025-03-12 00:12:33,005 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-03-12 00:12:33,005 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 00:12:33,005 - INFO -  * Restarting with stat
+2025-03-12 00:12:33,243 - WARNING -  * Debugger is active!
+2025-03-12 00:12:33,244 - INFO -  * Debugger PIN: 133-483-735
+2025-03-12 00:12:45,292 - INFO - /search_query called
+2025-03-12 00:12:45,292 - INFO - args: ImmutableMultiDict([])
+2025-03-12 00:12:45,292 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-12 00:12:45,293 - INFO - 172.18.0.6 - - [12/Mar/2025 00:12:45] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 08:01:44,769 - INFO - /search_query called
+2025-03-13 08:01:44,793 - INFO - args: ImmutableMultiDict([])
+2025-03-13 08:01:44,793 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-13 08:01:44,795 - INFO - 172.18.0.6 - - [13/Mar/2025 08:01:44] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 13:44:25,658 - INFO - /search_query called
+2025-03-13 13:44:25,659 - INFO - args: ImmutableMultiDict([])
+2025-03-13 13:44:25,659 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-13 13:44:25,660 - INFO - 172.18.0.6 - - [13/Mar/2025 13:44:25] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 13:46:09,728 - INFO - /search_query called
+2025-03-13 13:46:09,728 - INFO - args: ImmutableMultiDict([])
+2025-03-13 13:46:09,729 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-13 13:46:09,729 - INFO - 172.18.0.6 - - [13/Mar/2025 13:46:09] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 13:51:37,123 - INFO - /search_query called
+2025-03-13 13:51:37,123 - INFO - args: ImmutableMultiDict([])
+2025-03-13 13:51:37,123 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-13 13:51:37,124 - INFO - 172.18.0.6 - - [13/Mar/2025 13:51:37] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 14:20:09,814 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-13 14:20:09,814 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 14:20:09,814 - INFO -  * Restarting with stat
+2025-03-13 14:20:10,067 - WARNING -  * Debugger is active!
+2025-03-13 14:20:10,067 - INFO -  * Debugger PIN: 121-706-447
+2025-03-13 14:21:55,679 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-13 14:21:55,679 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 14:21:55,680 - INFO -  * Restarting with stat
+2025-03-13 14:21:55,915 - WARNING -  * Debugger is active!
+2025-03-13 14:21:55,916 - INFO -  * Debugger PIN: 609-068-944
+2025-03-13 14:22:18,019 - INFO - /search_query called
+2025-03-13 14:22:18,019 - INFO - args: ImmutableMultiDict([])
+2025-03-13 14:22:18,019 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-13 14:22:18,020 - INFO - 172.18.0.6 - - [13/Mar/2025 14:22:18] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 14:28:27,523 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-13 14:28:27,523 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 14:28:27,524 - INFO -  * Restarting with stat
+2025-03-13 14:28:27,762 - WARNING -  * Debugger is active!
+2025-03-13 14:28:27,762 - INFO -  * Debugger PIN: 121-706-447
+2025-03-13 14:28:38,819 - INFO - /search_query called
+2025-03-13 14:28:38,819 - INFO - args: ImmutableMultiDict([])
+2025-03-13 14:28:38,819 - INFO - es_q: {'query': {'bool': {'must': []}}, 'track_total_hits': True}
+2025-03-13 14:28:38,820 - INFO - 172.18.0.6 - - [13/Mar/2025 14:28:38] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 14:56:16,732 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-13 14:56:16,732 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 14:56:16,732 - INFO -  * Restarting with stat
+2025-03-13 14:56:16,957 - WARNING -  * Debugger is active!
+2025-03-13 14:56:16,958 - INFO -  * Debugger PIN: 609-068-944
+2025-03-13 14:56:36,702 - INFO - /search_query called
+2025-03-13 14:56:36,702 - INFO - args: {'keyword': 'homo'}
+2025-03-13 14:56:36,702 - INFO - es_q: {'query': {'bool': {'must': [{'multi_match': {'query': 'homo', 'fields': ['identifier', 'title', 'description', 'properties.assembly_accession', 'properties.bioproject', 'properties.biosample', 'MBGD ortholog cluster ID', 'Phenotype ID']}}]}}, 'track_total_hits': True}
+2025-03-13 14:56:36,703 - INFO - 172.18.0.6 - - [13/Mar/2025 14:56:36] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:00:03,361 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-13 15:00:03,361 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 15:00:03,362 - INFO -  * Restarting with stat
+2025-03-13 15:00:03,598 - WARNING -  * Debugger is active!
+2025-03-13 15:00:03,598 - INFO -  * Debugger PIN: 609-068-944
+2025-03-13 15:00:12,487 - INFO - /search_query called
+2025-03-13 15:00:12,487 - INFO - args: {'keyword': 'homo'}
+2025-03-13 15:00:12,487 - INFO - es_q: {'query': {'bool': {'must': [{'multi_match': {'query': 'homo', 'fields': ['identifier', 'title', 'description', 'properties.assembly_accession', 'properties.bioproject', 'properties.biosample', 'MBGD ortholog cluster ID', 'Phenotype ID']}}]}}, 'track_total_hits': True}
+2025-03-13 15:00:12,488 - INFO - 172.18.0.6 - - [13/Mar/2025 15:00:12] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:26:22,190 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-13 15:26:22,190 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 15:26:22,191 - INFO -  * Restarting with stat
+2025-03-13 15:26:22,428 - WARNING -  * Debugger is active!
+2025-03-13 15:26:22,428 - INFO -  * Debugger PIN: 121-706-447
+2025-03-13 15:26:45,364 - INFO - /search_query called
+2025-03-13 15:26:45,365 - INFO - args: {'keyword': 'homo'}
+2025-03-13 15:26:45,365 - INFO - es_q: {'query': {'bool': {'must': [{'multi_match': {'query': 'homo', 'fields': ['identifier', 'title', 'description', 'properties.assembly_accession', 'properties.bioproject', 'properties.biosample', 'MBGD ortholog cluster ID', 'Phenotype ID']}}]}}, 'track_total_hits': True}
+2025-03-13 15:26:45,366 - INFO - 172.18.0.6 - - [13/Mar/2025 15:26:45] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:43:09,153 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-03-13 15:43:09,153 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 15:43:09,153 - INFO -  * Restarting with stat
+2025-03-13 15:43:09,402 - WARNING -  * Debugger is active!
+2025-03-13 15:43:09,403 - INFO -  * Debugger PIN: 133-483-735
+2025-03-13 15:43:14,700 - INFO - /search_query called
+2025-03-13 15:43:14,701 - INFO - args: {'keyword': 'homo'}
+2025-03-13 15:43:14,701 - INFO - es_q: {'query': {'bool': {'must': [{'multi_match': {'query': 'homo', 'fields': ['identifier', 'title', 'description', 'properties.assembly_accession', 'properties.bioproject', 'properties.biosample', 'MBGD ortholog cluster ID', 'Phenotype ID']}}]}}, 'track_total_hits': True}
+2025-03-13 15:43:14,701 - INFO - 172.18.0.6 - - [13/Mar/2025 15:43:14] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:45:52,984 - INFO - /search_query called
+2025-03-13 15:45:52,984 - INFO - args: {'genome_taxon': 'coli'}
+2025-03-13 15:45:52,985 - INFO - es_q: {'query': {'bool': {'must': [{'wildcard': {'_annotation.sample_organism.keyword': '*coli*'}}]}}, 'track_total_hits': True}
+2025-03-13 15:45:52,985 - INFO - 172.18.0.6 - - [13/Mar/2025 15:45:52] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:46:37,233 - INFO - /search_query called
+2025-03-13 15:46:37,234 - INFO - args: {'genome_taxon': 'coli', 'size': '1'}
+2025-03-13 15:46:37,246 - INFO - 172.18.0.6 - - [13/Mar/2025 15:46:37] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-13 15:48:49,638 - INFO - /search_query called
+2025-03-13 15:48:49,638 - INFO - args: {'genome_taxon': 'coli', 'size': '1'}
+2025-03-13 15:48:49,645 - INFO - 172.18.0.6 - - [13/Mar/2025 15:48:49] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-13 15:49:18,143 - INFO - /search_query called
+2025-03-13 15:49:18,144 - INFO - args: {'genome_taxon': 'coli', 'size': '100'}
+2025-03-13 15:49:18,152 - INFO - 172.18.0.6 - - [13/Mar/2025 15:49:18] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-13 15:49:27,451 - INFO - /search_query called
+2025-03-13 15:49:27,451 - INFO - args: {'genome_taxon': 'coli', 'from': '10'}
+2025-03-13 15:49:27,459 - INFO - 172.18.0.6 - - [13/Mar/2025 15:49:27] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-13 15:49:33,003 - INFO - /search_query called
+2025-03-13 15:49:33,003 - INFO - args: {'genome_taxon': 'coli'}
+2025-03-13 15:49:33,003 - INFO - es_q: {'query': {'bool': {'must': [{'wildcard': {'_annotation.sample_organism.keyword': '*coli*'}}]}}, 'track_total_hits': True}
+2025-03-13 15:49:33,004 - INFO - 172.18.0.6 - - [13/Mar/2025 15:49:33] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:50:01,759 - INFO - /search_query called
+2025-03-13 15:50:01,759 - INFO - args: {'genome_taxon': 'coli', 'host_taxon': 'homo'}
+2025-03-13 15:50:01,759 - INFO - es_q: {'query': {'bool': {'must': [{'wildcard': {'_annotation.sample_organism.keyword': '*coli*'}}, {'wildcard': {'_annotation.sample_host_organism.keyword': '*homo*'}}]}}, 'track_total_hits': True}
+2025-03-13 15:50:01,760 - INFO - 172.18.0.6 - - [13/Mar/2025 15:50:01] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:51:12,765 - INFO - /search_query called
+2025-03-13 15:51:12,765 - INFO - args: {'genome_taxon': 'coli', 'quality': '2'}
+2025-03-13 15:51:12,765 - INFO - es_q: {'query': {'bool': {'must': [{'wildcard': {'_annotation.sample_organism.keyword': '*coli*'}}, {'wildcard': {'quality.keyword': '*2*'}}]}}, 'track_total_hits': True}
+2025-03-13 15:51:12,766 - INFO - 172.18.0.6 - - [13/Mar/2025 15:51:12] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:53:03,998 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-03-13 15:53:03,999 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-13 15:53:03,999 - INFO -  * Restarting with stat
+2025-03-13 15:53:04,238 - WARNING -  * Debugger is active!
+2025-03-13 15:53:04,239 - INFO -  * Debugger PIN: 121-706-447
+2025-03-13 15:53:12,120 - INFO - /search_query called
+2025-03-13 15:53:12,121 - INFO - args: {'genome_taxon': 'coli'}
+2025-03-13 15:53:12,121 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "track_total_hits": true}
+2025-03-13 15:53:12,121 - INFO - 172.18.0.6 - - [13/Mar/2025 15:53:12] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:54:14,287 - INFO - /search_query called
+2025-03-13 15:54:14,288 - INFO - args: {'genome_taxon': 'coli'}
+2025-03-13 15:54:14,288 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "track_total_hits": true}
+2025-03-13 15:54:14,289 - INFO - 172.18.0.6 - - [13/Mar/2025 15:54:14] "POST /search_query HTTP/1.1" 200 -
+2025-03-13 15:54:45,993 - INFO - /search_query called
+2025-03-13 15:54:45,994 - INFO - args: {'genome_taxon': 'coli', 'size': '2'}
+2025-03-13 15:54:46,006 - INFO - 172.18.0.6 - - [13/Mar/2025 15:54:46] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-13 15:58:02,518 - INFO - /search_query called
+2025-03-13 15:58:02,519 - INFO - args: {'keyword': 'coli'}
+2025-03-13 15:58:02,519 - INFO - es_q: {"query": {"bool": {"must": [{"multi_match": {"query": "coli", "fields": ["identifier", "title", "description", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]}}]}}, "track_total_hits": true}
+2025-03-13 15:58:02,520 - INFO - 172.18.0.6 - - [13/Mar/2025 15:58:02] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 04:50:31,895 - INFO - /search_query called
+2025-03-14 04:50:31,896 - INFO - args: {'keyword': 'coli'}
+2025-03-14 04:50:31,896 - INFO - es_q: {"query": {"bool": {"must": [{"multi_match": {"query": "coli", "fields": ["identifier", "title", "description", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]}}]}}, "track_total_hits": true}
+2025-03-14 04:50:31,897 - INFO - 172.18.0.6 - - [14/Mar/2025 04:50:31] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 04:50:59,699 - INFO - /search_query called
+2025-03-14 04:50:59,699 - INFO - args: {'genome_taxon': 'coli', 'size': '2'}
+2025-03-14 04:50:59,706 - INFO - 172.18.0.6 - - [14/Mar/2025 04:50:59] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-14 04:53:54,694 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-14 04:53:54,694 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-14 04:53:54,695 - INFO -  * Restarting with stat
+2025-03-14 04:53:54,936 - WARNING -  * Debugger is active!
+2025-03-14 04:53:54,936 - INFO -  * Debugger PIN: 609-068-944
+2025-03-14 04:54:08,450 - INFO - /search_query called
+2025-03-14 04:54:08,451 - INFO - args: {'genome_taxon': 'coli', 'size': '2'}
+2025-03-14 04:54:08,463 - INFO - 172.18.0.6 - - [14/Mar/2025 04:54:08] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-03-14 05:00:50,127 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-14 05:00:50,127 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-14 05:00:50,128 - INFO -  * Restarting with stat
+2025-03-14 05:00:50,370 - WARNING -  * Debugger is active!
+2025-03-14 05:00:50,371 - INFO -  * Debugger PIN: 609-068-944
+2025-03-14 05:00:54,001 - INFO - /search_query called
+2025-03-14 05:00:54,002 - INFO - args: {'genome_taxon': 'coli', 'size': '2'}
+2025-03-14 05:00:54,002 - INFO - reserved_attributes
+2025-03-14 05:00:54,002 - INFO - es_q
+2025-03-14 05:00:54,002 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": "2", "track_total_hits": true}
+2025-03-14 05:00:54,003 - INFO - 172.18.0.6 - - [14/Mar/2025 05:00:54] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 05:03:24,131 - INFO - /search_query called
+2025-03-14 05:03:24,131 - INFO - args: {'genome_taxon': 'coli'}
+2025-03-14 05:03:24,131 - INFO - es_q
+2025-03-14 05:03:24,132 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "track_total_hits": true}
+2025-03-14 05:03:24,132 - INFO - 172.18.0.6 - - [14/Mar/2025 05:03:24] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 05:11:44,655 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-03-14 05:11:44,655 - INFO - [33mPress CTRL+C to quit[0m
+2025-03-14 05:11:44,656 - INFO -  * Restarting with stat
+2025-03-14 05:11:44,887 - WARNING -  * Debugger is active!
+2025-03-14 05:11:44,888 - INFO -  * Debugger PIN: 609-068-944
+2025-03-14 05:12:35,838 - INFO - /search_query called
+2025-03-14 05:12:35,839 - INFO - args: {'genome_taxon': 'coli'}
+2025-03-14 05:12:35,839 - INFO - es_q
+2025-03-14 05:12:35,839 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "track_total_hits": true}
+2025-03-14 05:12:35,840 - INFO - 172.18.0.6 - - [14/Mar/2025 05:12:35] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 05:12:38,543 - INFO - /search_query called
+2025-03-14 05:12:38,543 - INFO - args: {'genome_taxon': 'coli', 'size': '2'}
+2025-03-14 05:12:38,543 - INFO - reserved_attributes
+2025-03-14 05:12:38,543 - INFO - es_q
+2025-03-14 05:12:38,543 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 2, "track_total_hits": true}
+2025-03-14 05:12:38,544 - INFO - 172.18.0.6 - - [14/Mar/2025 05:12:38] "POST /search_query HTTP/1.1" 200 -
+2025-03-14 05:12:47,388 - INFO - /search_query called
+2025-03-14 05:12:47,389 - INFO - args: {'genome_taxon': 'coli', 'size': '1'}
+2025-03-14 05:12:47,389 - INFO - reserved_attributes
+2025-03-14 05:12:47,389 - INFO - es_q
+2025-03-14 05:12:47,389 - INFO - es_q: {"query": {"bool": {"must": [{"wildcard": {"_annotation.sample_organism.keyword": "*coli*"}}]}}, "size": 1, "track_total_hits": true}
+2025-03-14 05:12:47,389 - INFO - 172.18.0.6 - - [14/Mar/2025 05:12:47] "POST /search_query HTTP/1.1" 200 -

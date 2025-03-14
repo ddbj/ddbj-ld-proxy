@@ -23,7 +23,7 @@ def search_query():
     # ES query生成
     query_generator = SimpleQueryGenerator()
     es_q = query_generator.create_query(args_list)
-    logging.info(f"es_q: {str(es_q)}")
+    logging.info(f"es_q: {json.dumps(es_q)}")
     return json.dumps(es_q)
 
 
