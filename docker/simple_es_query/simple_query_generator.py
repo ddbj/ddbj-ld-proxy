@@ -129,43 +129,53 @@ class SimpleQueryGenerator:
         query_template = {
             "query": {"bool": {"must": bool_must_list}}
         }
-        # (key,value)のリストとしてクエリを受け取るパーツを生成する
-        for k,v in query_items.items():
-            # wildcardフラグ設定
-            is_wildcard = "*" in v
-            # keyword属性の場合は全属性あるいは指定した属性を検索する
-            if k in self.keyword_attributes:
-                bool_must_list.append(self.multi_match(v))
-            # valueにカンマが含まれる場合、カンマで単語を分割しOR条件のクエリを生成する
-            elif "," in v:
-                values = v.split(",")
-                # TODO: should確認
-                bool_must_list.append(self.should(k, values, is_wildcard))
-
-            # 属性が予約語の場合はそのままクエリに追加する
-            elif k in self.reserved_attributes:
-                logging.info("reserved_attributes")
-                # reserved_attributesの値はintに変換して追加する
+        if len(query_items) == 0:
+            bool_must_list.append({"match_all": {}})
+            return query_template
+        elif set(query_items.keys()).issubset(set(["size", "sort", "from"])):
+            # size,sort,fromのみが指定された場合のmatch_all()クエリを生成するようにする
+            for k,v in query_items.items():
                 query_template[k] = int(v)
-            # レンジクエリの判定と処理
-            # 同じ属性に対して_gteと_lteが同時に指定された場合は一つのレンジクエリを生成する
-            elif k.endswith("_gte"):
-                field = k.replace("_gte", "")
-                bool_must_list.append(self.range(field, lte=None, gte=v))
-            # _gteまたは_lteの属性が指定された場合はレンジクエリを生成する
-            elif k.endswith("_lte"):
-                field = k.replace("_lte", "")
-                bool_must_list.append(self.range(field, lte=v, gte=None))
-            # それ以外の場合はmatchクエリを生成する
-            else:
-                if is_wildcard:
-                    bool_must_list.append(self.wildcard(k, v))
+            bool_must_list= [{"match_all": {}}]
+            return query_template
+        else:
+            # (key,value)のリストとしてクエリを受け取るパーツを生成する
+            for k,v in query_items.items():
+                # wildcardフラグ設定
+                is_wildcard = "*" in v            
+                # keyword属性の場合は全属性あるいは指定した属性を検索する
+                if k in self.keyword_attributes:
+                    bool_must_list.append(self.multi_match(v))
+                # valueにカンマが含まれる場合、カンマで単語を分割しOR条件のクエリを生成する
+                elif "," in v:
+                    values = v.split(",")
+                    # TODO: should確認
+                    bool_must_list.append(self.should(k, values, is_wildcard))
+
+                # 属性が予約語の場合はそのままクエリに追加する
+                elif k in self.reserved_attributes:
+                    # logging.info("reserved_attributes")
+                    # reserved_attributesの値はintに変換して追加する
+                    query_template[k] = int(v)
+                # レンジクエリの判定と処理
+                # 同じ属性に対して_gteと_lteが同時に指定された場合は一つのレンジクエリを生成する
+                elif k.endswith("_gte"):
+                    field = k.replace("_gte", "")
+                    bool_must_list.append(self.range(field, lte=None, gte=v))
+                # _gteまたは_lteの属性が指定された場合はレンジクエリを生成する
+                elif k.endswith("_lte"):
+                    field = k.replace("_lte", "")
+                    bool_must_list.append(self.range(field, lte=v, gte=None))
+                # それ以外の場合はmatchクエリを生成する
                 else:
-                    bool_must_list.append(self.match(k, v))
-        # 固定値
-        query_template["track_total_hits"] = self.track_total_hits
-        # 完成されたクエリを返す
-        return query_template
+                    if is_wildcard:
+                        bool_must_list.append(self.wildcard(k, v))
+                    else:
+                        bool_must_list.append(self.match(k, v))
+            # 固定値
+            query_template["track_total_hits"] = self.track_total_hits
+            # 完成されたクエリを返す
+            return query_template
 
 
 def field_mapping(key:str) -> str:
@@ -193,6 +203,8 @@ def field_mapping(key:str) -> str:
             return "properties.biosample"
         case "identifier":
             return "identifier"
+        case "data_source":
+            return "data_source"
         case _:
             return key   
 

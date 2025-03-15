@@ -11,12 +11,11 @@ logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-@app.route('/search_query', methods=['POST'])
+@app.route('/search_query', methods=['GET','POST'])
 def search_query():
     """
     受け取ったkey:valueのリストをESのクエリに変換します
     """
-    logging.info('/search_query called')
     args = request.get_json()
     logging.info(f"args: {str(args)}")
     args_list = {k: v for k,v in args.items()}

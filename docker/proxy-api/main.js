@@ -552,11 +552,13 @@ fastify.get('/genome/search', async (req, rep) => {
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search', async (req, rep) => {
+  let kv_pairs;
   if  (!req.query || Object.keys(req.query).length === 0)  {
-    return { hits: [] }
-  };
+    kv_pairs = {}
+  } else{
+    kv_pairs = { ...req.query }; 
+  }
   let query;
-  const kv_pairs = { ...req.query };
   // クエリパラメータを取得し、key:value形式のオブジェクトに変換する
   //const kv_pairs = helper.query2dict(q)
   // クエリパラメータをESのクエリに変換する
