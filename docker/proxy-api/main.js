@@ -314,7 +314,6 @@ fastify.get('/dl/genome/metadata/:ids', async (req, rep) => {
       .type('text/plain')
       .send('Bad Request. (no id set.)')
   }
-  console.log(req.params.ids)
   const data = await helper.get_metadata(req.params.ids, "genome")
 
   // クエリストリングで type=json が指定されている場合はJSONで応答する
@@ -351,7 +350,6 @@ fastify.get('/dl/project/composition/:ids', async (req, rep) => {
     return path
   })
 
-  // console.log(pathList)
   // Mapに(bp,path)のセットを保存
   project_id_list.forEach((id, index) => {
     pathMap.set(id, pathList[index])

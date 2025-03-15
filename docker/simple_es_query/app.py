@@ -57,21 +57,5 @@ def search():
         return ''
 
 
-class AggsQueryGenerator:
-    def __init__(self):
-        self.query = query
-
-    def generate(self):
-        return {
-            "aggs": {
-                "agg_name": {
-                    "terms": {
-                        "field": "field_name",
-                        "size": 10
-                    }
-                }
-            }
-        }
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
