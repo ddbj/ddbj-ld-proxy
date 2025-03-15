@@ -19,6 +19,8 @@
 - biosample
 - identifier
 
+その他に、size, from, sortをElasticsearchのクエリの設定値としてクエリパラメータに設定することができます
+
 
 ## API利用例
 
