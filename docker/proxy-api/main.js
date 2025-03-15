@@ -569,7 +569,7 @@ fastify.get('/dev/genome/search', async (req, rep) => {
     body: JSON.stringify(kv_pairs),
   })
   query = await res_query.json();
-  console.log(query)
+  console.log(JSON.stringify(query, null, 2))
   // ESにクエリを投げる
   const res = await client.search({
     "index": "genome",

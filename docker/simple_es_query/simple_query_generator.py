@@ -30,7 +30,7 @@ class SimpleQueryGenerator:
 
     def __init__(self):
         self.keyword_attributes = ["keyword"]
-        self.keyword_fields = ["identifier", "title", "description", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]
+        self.keyword_fields = ["identifier", "title", "description", "organization", "data type", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]
         # reserved_attributesはそのままクエリに追加する。直整数を想定する
         self.reserved_attributes = ["size", "from", "sort"]
         # matchクエリのを生成する際にワイルドカードを利用するかどうか

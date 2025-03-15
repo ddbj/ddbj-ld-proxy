@@ -46,3 +46,13 @@ fastifyの設定にconverterのHOSTを追記します（TODO: 現状ハードコ
 
 - /api/dev/genome/search?keyword=akkermansia&size=1
 - /api/dev/genome/search?genome_taxon=akkermansia&size=1
+- /api/dev/genome/search?genome_taxon=akkermansia&keyword=Alberta&size=1
+
+- 環境内でcurlで確認する場合
+  
+```
+curl -XGET "http://localhost:8081/api/dev/genome/search?genome_taxon=akkermansia&size=1" 
+```
+
+## 利用の制限
+- 現在ステージング環境のgenome_devインデックスのみでrest apiを利用できる（2025/3/15）
