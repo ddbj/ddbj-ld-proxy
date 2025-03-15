@@ -3,10 +3,6 @@ import logging
 
 logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
-<<<<<<< HEAD
-=======
-
->>>>>>> c562df2 (rest api converter  updated)
 
 class SimpleQueryGenerator:
     """
@@ -20,6 +16,7 @@ class SimpleQueryGenerator:
     - クエリの値をカンマで区切ると区切った文字のOR条件となるshouldクエリを生成する
     - レンジクエリを利用するときは属性の接尾語に*_gte, *_lteを付加した属性を用いる
     - size,from,sortなどElasticsearchの予約語となる様な属性はそのまま最終的なクエリに追加する
+    - クエリの文字列に"*"が含まれる場合"通常のmatchクエリに代わってワイルドカードクエリを利用する
     - track_total_hitsはデフォルトでTrueとする
 
     # TODO:
@@ -36,11 +33,30 @@ class SimpleQueryGenerator:
         self.keyword_fields = ["identifier", "title", "description", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]
         # reserved_attributesはそのままクエリに追加する。直整数を想定する
         self.reserved_attributes = ["size", "from", "sort"]
+        # matchクエリのを生成する際にワイルドカードを利用するかどうか
+        self.is_wildcard = False
         self.track_total_hits = True
 
     def match(self, field:str, value: str) -> dict:
         """
-        matchクエリのパーツを生成する
+        matchクエリのパーツを生成する,空白はand条件で検索する
+        Returns:
+            dict: 
+        """
+        field = field_mapping(field)
+        q = {
+            "match": {
+                field: {
+                    "query": f"{value}",
+                    "operator": "and"
+                }
+            }
+        }
+        return q
+    
+    def wildcard(self, field:str, value: str) -> dict:
+        """
+        ワイルドカードクエリのパーツを生成する
         Returns:
             dict: 
         """
@@ -52,7 +68,7 @@ class SimpleQueryGenerator:
         }
         return q
 
-    def should(self, field: str, values: List[str]) -> dict:
+    def should(self, field: str, values: List[str], is_wildcard=False) -> dict:
         """
         should条件で複数の値で検索するクエリのパーツを生成する
         OR条件はカンマで与えられたクエリの値を分解して生成する
@@ -60,7 +76,10 @@ class SimpleQueryGenerator:
             dict: 
         """
         field = field_mapping(field)
-        should_query = [{"wildcard": {f"{field}.keyword": f"*{v}*"}} for v in values]
+        if is_wildcard:
+            should_query = [{"wildcard": {f"{field}": f"{v}"}} for v in values]
+        else:
+            should_query = [{"match": {field: v}} for v in values]
         q = {
             "bool":{
                 "should":should_query
@@ -112,6 +131,8 @@ class SimpleQueryGenerator:
         }
         # (key,value)のリストとしてクエリを受け取るパーツを生成する
         for k,v in query_items.items():
+            # wildcardフラグ設定
+            is_wildcard = "*" in v
             # keyword属性の場合は全属性あるいは指定した属性を検索する
             if k in self.keyword_attributes:
                 bool_must_list.append(self.multi_match(v))
@@ -119,7 +140,7 @@ class SimpleQueryGenerator:
             elif "," in v:
                 values = v.split(",")
                 # TODO: should確認
-                bool_must_list.append(self.should(k, values))
+                bool_must_list.append(self.should(k, values, is_wildcard))
 
             # 属性が予約語の場合はそのままクエリに追加する
             elif k in self.reserved_attributes:
@@ -137,7 +158,10 @@ class SimpleQueryGenerator:
                 bool_must_list.append(self.range(field, lte=v, gte=None))
             # それ以外の場合はmatchクエリを生成する
             else:
-                bool_must_list.append(self.match(k, v))
+                if is_wildcard:
+                    bool_must_list.append(self.wildcard(k, v))
+                else:
+                    bool_must_list.append(self.match(k, v))
         # 固定値
         query_template["track_total_hits"] = self.track_total_hits
         # 完成されたクエリを返す
@@ -153,7 +177,7 @@ def field_mapping(key:str) -> str:
     """
     match key:
         case "genome_taxon":
-            return "_annotation.sample_organism"
+            return "_genome_taxon"
         case "mag_completeness":
             return "_annotation.completeness"
         case "host_taxon":

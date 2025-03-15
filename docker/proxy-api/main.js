@@ -482,8 +482,7 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
   }
 })
 
-// for staging
-// simple es query generator
+// DEP.
 const esQuery = (kv_pairs) => {
     /**
      * kv_pairsのkeysとvaluesを使い定められた属性に対して検索を行う。
