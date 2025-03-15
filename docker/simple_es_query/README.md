@@ -18,6 +18,7 @@
 - bioproject
 - biosample
 - identifier
+- data_source
 
 その他に、size, from, sortをElasticsearchのクエリの設定値としてクエリパラメータに設定することができます
 
