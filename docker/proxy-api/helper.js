@@ -15,6 +15,7 @@ const get_metadata = async function (ids, type) {
                 "_id": id_list
               },
       },
+      "size": id_list.length,
       "track_total_hits": true,
     }
   })
