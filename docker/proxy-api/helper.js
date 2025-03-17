@@ -14,7 +14,9 @@ const get_metadata = async function (ids, type) {
               "terms" : {
                 "_id": id_list
               },
-      }
+      },
+      "size": id_list.length,
+      "track_total_hits": true,
     }
   })
   const data = res.hits.hits
