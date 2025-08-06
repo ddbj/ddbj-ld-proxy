@@ -554,7 +554,7 @@ const start = async () => {
     await registerPlugins()
     await fastify.listen(process.env.PORT, '0.0.0.0')
   } catch (e) {
-    fastify.log.error(err)
+    fastify.log.error(e)
     process.exit(1)
   }
 }
