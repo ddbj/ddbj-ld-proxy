@@ -17,12 +17,12 @@ const fastify = Fastify({
 
 fastify.register(fastifyCors)
 
-async function buildServer() {
+async function registerPlugins() {
 // 1. Swaggerプラグインの登録
   await fastify.register(swagger, {
     openapi: {
       info: {
-        title: 'Fastify APIサンプル',
+        title: 'Fastify genome Search API',
         description: 'fastify-swaggerを使ったAPIドキュメント',
         version: '1.0.0'
       },
@@ -36,9 +36,11 @@ async function buildServer() {
     uiConfig: {
       deepLinking: false
     },
+    staticCSP: true,
+    transformSpecificationClone: true,
+    exposeRoute: true
   });
 
-  return fastify;
 }
 
 module.exports = buildServer;
@@ -551,6 +553,7 @@ type: 'object',
 
 const start = async () => {
   try {
+    await registerPlugins()
     await fastify.listen(process.env.PORT, '0.0.0.0')
   } catch (e) {
     fastify.log.error(err)
