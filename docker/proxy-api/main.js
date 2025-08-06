@@ -17,25 +17,31 @@ const fastify = Fastify({
 
 fastify.register(fastifyCors)
 
+async function buildServer() {
 // 1. Swaggerプラグインの登録
-await server.register(swagger, {
-  openapi: {
-    info: {
-      title: 'Fastify APIサンプル',
-      description: 'fastify-swaggerを使ったAPIドキュメント',
-      version: '1.0.0'
-    },
-    servers: [{ url: 'http://localhost:3000' }],
-  }
-})
+  await fastify.register(swagger, {
+    openapi: {
+      info: {
+        title: 'Fastify APIサンプル',
+        description: 'fastify-swaggerを使ったAPIドキュメント',
+        version: '1.0.0'
+      },
+      servers: [{ url: 'http://localhost:3000' }],
+    }
+  })
 
-// 2. Swagger UIプラグインの登録
-await server.register(swaggerUi, {
-  routePrefix: '/docs', // '/docs'にアクセスするとSwagger UIが表示される
-  uiConfig: {
-    deepLinking: false
-  },
-})
+  // 2. Swagger UIプラグインの登録
+  await fastify.register(swaggerUi, {
+    routePrefix: '/docs', // '/docs'にアクセスするとSwagger UIが表示される
+    uiConfig: {
+      deepLinking: false
+    },
+  });
+
+  return fastify;
+}
+
+module.exports = buildServer;
 
 const client = new Client({
   node: process.env.ELASTICSEARCH_HOST,
