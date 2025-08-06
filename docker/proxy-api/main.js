@@ -4,6 +4,9 @@ import fastifyCors from '@fastify/cors'
 import fs from 'fs';
 import archiver from 'archiver';
 import fetch from "node-fetch";
+// swagger
+import swagger from '@fastify/swagger'
+import swaggerUi from '@fastify/swagger-ui'
 
 import helper from './helper.js';
 
@@ -14,6 +17,26 @@ const fastify = Fastify({
 
 fastify.register(fastifyCors)
 
+// 1. Swaggerプラグインの登録
+await server.register(swagger, {
+  openapi: {
+    info: {
+      title: 'Fastify APIサンプル',
+      description: 'fastify-swaggerを使ったAPIドキュメント',
+      version: '1.0.0'
+    },
+    servers: [{ url: 'http://localhost:3000' }],
+  }
+})
+
+// 2. Swagger UIプラグインの登録
+await server.register(swaggerUi, {
+  routePrefix: '/docs', // '/docs'にアクセスするとSwagger UIが表示される
+  uiConfig: {
+    deepLinking: false
+  },
+})
+
 const client = new Client({
   node: process.env.ELASTICSEARCH_HOST,
 })
@@ -22,11 +45,11 @@ fastify.get('/', async (req) => {
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
-    return { hits: [20250312] }
+    // hitsの値としてtodayの日付を返す
+    return { hits: [new Date().toISOString()] }
   }
-
   const q = req.query.q.toLowerCase()
-
+  // TODO: DEP. クエリの組み立てを別サービスに移行する
   const res = await client.search({
     "index": "bioproject",
     "body": {
@@ -217,74 +240,6 @@ fastify.get('/plotly_data', async (req) => {
       return []
     }
 
-})
-
-fastify.get('/metastanza_data/bioproject/:id', async (req) => {
-  if (!req.params.id) {
-    return {}
-  } else {
-    const id = req.params.id.toUpperCase()
-    //const view = req.query.view.toLowerCase()
-    // idを引数に検索結果をhash_table用にフォーマットして返す
-    const index = await client.get({
-      "index": "bioproject",
-      "id": id
-    })
-
-    return { 
-      identifier: index._source.identifier,
-      organism: index._source.organism,
-      title: index._source.title,
-      description: index._source.description,
-      organisazion: index._source.organization,
-      created: index._source.dateCreated,
-      modified: index._source.dateModified
-    }
-  }
-})
-
-fastify.get('/metastanza_data/bioproject', async (req) => {
-  if (!req.query.q) {
-    return { hits: [] }
-  } else {
-    const q = req.query.q.toLowerCase()
-    const res = await client.search({
-      "index": "bioproject",
-      "q": q
-    })
-
-    let jsn = res.hits.hits.map(h => {
-      return {
-          identifier: h._source.identifier,
-          organism: h._source.organism,
-          title: h._source.title,
-          created: h._source.dateCreated,
-          modified: h._source.dateModified
-      }
-    })
-
-    return jsn
-  }
-})
-
-fastify.get('/metastanza_data/:index_name/:id', async (req) => {
-  if (!req.params.index_name || !req.params.id) {
-    return {}
-  } else {
-    const q = req.query.q.toLowerCase()
-    const res = await client.search({
-      "index": "bioproject",
-      "q": q
-    })
-
-    let jsn = res.hits.hits.map(h => {
-      return {
-          // 全てのk:vをマップ
-      }
-    })
-
-    return jsn
-  }
 })
 
 fastify.get('/dl/project/metadata/:ids', async (req, rep) => {
@@ -482,57 +437,6 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
   }
 })
 
-// DEP.
-const esQuery = (kv_pairs) => {
-    /**
-     * kv_pairsのkeysとvaluesを使い定められた属性に対して検索を行う。
-     * kv_pairsは複数の属性と値を想定している。
-     * またkeywordを利用してid,title,descriptionのいずれかに対して検索を行う
-     * kv_pairsの検索とkeyword検索の結果はandで結合される
-     * Args:
-     *      kv_pairs (dict): 属性と値のペア。複数の属性が想定される。
-     *      keyword (str): 文字列検索のキーワード
-     * Returns:
-     *      dict: Elasticsearchの検索クエリ
-     */
-    const query = {
-      query: {
-        bool: {
-          must: [
-            {
-              bool: {
-                should: [
-                  {
-                    match: {
-                      id: kv_pairs.id,
-                    },
-                  },
-                  {
-                    match: {
-                      title: kv_pairs.title,
-                    },
-                  },
-                  {
-                    match: {
-                      description: kv_pairs.description,
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              multi_match: {
-                query: keyword,
-                fields: ["id", "title", "description"],
-              },
-            },
-          ],
-        },
-      },
-    };
-    return query;
-  }
-
 fastify.get('/genome/search', async (req, rep) => {
   if (!req.query.q) {
     return { hits: [] }
@@ -548,17 +452,72 @@ fastify.get('/genome/search', async (req, rep) => {
   return res
 })
 
-// for staging ElasticsearchクエリをAPI側で組み立てる試作API
+// Staging環境用　ElasticsearchクエリをAPI側で組み立てる試作API
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
-fastify.get('/dev/genome/search', async (req, rep) => {
-  let kv_pairs;
-  if  (!req.query || Object.keys(req.query).length === 0)  {
-    kv_pairs = {}
-  } else{
-    kv_pairs = { ...req.query }; 
+fastify.get('/dev/genome/search',  {
+  schema: {
+    summary: 'アイテムを検索します',
+    description: 'クエリパラメータを用いた検索を行います。',
+    querystring: {
+type: 'object',
+      properties: {
+        sort: {
+          type: 'string',
+          enum: ['desc', 'asc'],
+          default: 'desc',
+          description: '結果の並び順を指定する'
+        },
+        keyword: {
+          type: 'string',
+          description: 'keywordフィールドを検索します。keywordは、identifier, title, description, organization, data type, properties.assembly_accession, properties.bioproject, properties.biosample, MBGD ortholog cluster ID, Phenotype IDのいずれかにマッチします。'
+        },
+        genome_taxon: {
+          type: 'string',
+          description: '_genome_taxonを検索する文字列を指定する'
+        },
+        host_taxon: {
+          type: 'string',
+          description: 'sample_host_organismを検索する文字列を指定する'
+        },
+        quality: {
+          type: 'array',
+          items: { type: 'integer' },
+          description: 'qualityを検索する整数をカンマ区切りで指定する',
+          style: 'form',
+          explode: false
+        },
+        bioproject: {
+          type: 'string',
+          description: 'bioprojectを検索する文字列'
+        },
+        biosample: {
+          type: 'string',
+          description: 'biosampleを検索する文字列'
+        },
+        identifier: {
+          type: 'string',
+          description: 'genome_idを検索する文字列'
+        },
+        data_source: {
+          type: 'array',
+          items: { type: 'string', enum: ['MAG', 'G'] },
+          description: 'data_sourceを検索する文字列'
+        }
+      },
+      additionalProperties: true
+
+    },
+    response: {
+      200: {
+        description: '検索結果のリスト',
+        type: 'object' // 適宜レスポンス構造を定義する
+      }
+    }
   }
-  let query;
+}, async (req, rep) => {
+  const kv_pairs = req.query && Object.keys(req.query).length > 0 ? { ...req.query } : {};
+
   // クエリパラメータを取得し、key:value形式のオブジェクトに変換する
   //const kv_pairs = helper.query2dict(q)
   // クエリパラメータをESのクエリに変換する
@@ -570,15 +529,19 @@ fastify.get('/dev/genome/search', async (req, rep) => {
     // TODO: kvの定義が怪しい
     body: JSON.stringify(kv_pairs),
   })
-  query = await res_query.json();
-  console.log(JSON.stringify(query, null, 2))
+  // const queryで良いのでは
+  const query = await res_query.json();
+  
+  //console.log(JSON.stringify(query, null, 2))
   // ESにクエリを投げる
   const res = await client.search({
     "index": "genome",
     "body": query
-  })
+  });
   return res
-})
+});
+
+
 
 const start = async () => {
   try {

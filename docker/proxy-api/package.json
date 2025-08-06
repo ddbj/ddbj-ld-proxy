@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^3.0.0",
     "@elastic/elasticsearch": "^8.2.0-patch.1",
     "@fastify/cors": "^7.0.0",
     "fastify": "^3.29.0",
