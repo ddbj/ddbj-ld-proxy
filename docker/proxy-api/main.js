@@ -43,8 +43,6 @@ async function registerPlugins() {
 
 }
 
-module.exports = buildServer;
-
 const client = new Client({
   node: process.env.ELASTICSEARCH_HOST,
 })
