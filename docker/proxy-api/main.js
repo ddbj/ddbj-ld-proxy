@@ -11,7 +11,10 @@ import swaggerUi from '@fastify/swagger-ui'
 import helper from './helper.js';
 
 const fastify = Fastify({
-  logger: process.env.LOGGER === 'on' ? true : false,
+  //logger: process.env.LOGGER === 'on' ? true : false,
+  logger: {
+    level: process.env.LOGGER_LEVEL || 'trace' 
+  },
   maxParamLength: 2500,
 })
 
@@ -26,8 +29,9 @@ async function registerPlugins() {
         description: 'fastify-swaggerを使ったAPIドキュメント',
         version: '1.0.0'
       },
-      servers: [{ url: 'http://localhost:3000' }],
-    }
+      servers: [{ url: 'http://localhost:4001' }],
+    },
+    stripBasePath: true,
   })
 
   // 2. Swagger UIプラグインの登録
@@ -43,11 +47,49 @@ async function registerPlugins() {
 
 }
 
+await registerPlugins()
+
+
 const client = new Client({
   node: process.env.ELASTICSEARCH_HOST,
 })
 
-fastify.get('/', async (req) => {
+
+// '/', の次の{}をswagger用に追加
+fastify.get('/', {
+  // ここからSwagger用のschema定義を追加
+  schema: {
+    summary: 'ルートパス',
+    description: 'クエリパラメータ "q" を使ってElasticsearchで検索を実行します。qが無い場合は現在時刻を返します。',
+    tags: ['search'], // APIをグループ化するためのタグ
+    querystring: { // クエリパラメータの定義
+      type: 'object',
+      properties: {
+        q: {
+          type: 'string',
+          description: '検索キーワード'
+        }
+      }
+    },
+    response: { // レスポンスの定義
+      200: {
+        description: '成功時のレスポンス',
+        type: 'object',
+        properties: {
+          hits: {
+            type: 'array',
+            description: '検索結果の配列',
+            items: { 
+              // 実際にはElasticsearchの返り値に合わせたより詳細な型を定義します
+              type: 'object' 
+            }
+          }
+        }
+      }
+    }
+  }
+  // ここまで
+}, async (req) => {
   req.log.info(JSON.stringify(req.query))
 
   if (!req.query.q) {
@@ -87,6 +129,7 @@ fastify.get('/', async (req) => {
     hits: res.hits.hits
   }
 })
+
 
 fastify.get('/bioproject/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
@@ -443,30 +486,31 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
   }
 })
 
-fastify.get('/genome/search', async (req, rep) => {
-  if (!req.query.q) {
-    return { hits: [] }
-  }
-  const kv_pairs = {...req.query}
-  const keyword = kv_pairs.keyword
-  delete kv_pairs.keyword
-  const q = esQuery(req.query.q)
-  const res = await client.search({
-    "index": "bioproject",
-    "q": q
-  })
-  return res
-})
+// 一時的にコメントアウト
+//fastify.get('/genome/search', async (req, rep) => {
+//  if (!req.query.q) {
+//    return { hits: [] }
+//  }
+//  const kv_pairs = {...req.query}
+//  const keyword = kv_pairs.keyword
+//  delete kv_pairs.keyword
+//  const q = esQuery(req.query.q)
+//  const res = await client.search({
+//    "index": "bioproject",
+//    "q": q
+//  })
+//  return res
+//})
 
 // Staging環境用　ElasticsearchクエリをAPI側で組み立てる試作API
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search',  {
+  summary: 'アイテムを検索します',
+  description: 'クエリパラメータを用いた検索を行います。',
   schema: {
-    summary: 'アイテムを検索します',
-    description: 'クエリパラメータを用いた検索を行います。',
     querystring: {
-type: 'object',
+      type: 'object',
       properties: {
         sort: {
           type: 'string',
@@ -490,8 +534,9 @@ type: 'object',
           type: 'array',
           items: { type: 'integer' },
           description: 'qualityを検索する整数をカンマ区切りで指定する',
-          style: 'form',
-          explode: false
+          // style属性は対応していないため削除
+          //style: 'form',
+          //explode: false
         },
         bioproject: {
           type: 'string',
@@ -532,14 +577,14 @@ type: 'object',
     headers: {
 	'Content-Type': 'application/json',
     },
-    // TODO: kvの定義が怪しい
+    // TODO: kvの定義が怪しいので再確認
     body: JSON.stringify(kv_pairs),
   })
-  // const queryで良いのでは
   const query = await res_query.json();
-  
-  //console.log(JSON.stringify(query, null, 2))
-  // ESにクエリを投げる
+  // queryの内容を確認する
+  // logger出力
+  req.log.info(JSON.stringify(query, null, 2))
+  // デバッグ用コンソール出力
   const res = await client.search({
     "index": "genome",
     "body": query
@@ -551,8 +596,8 @@ type: 'object',
 
 const start = async () => {
   try {
-    await registerPlugins()
-    await fastify.listen(process.env.PORT, '0.0.0.0')
+    await fastify.ready()
+    await fastify.listen({ port: process.env.PORT, host: '0.0.0.0' })
   } catch (e) {
     fastify.log.error(e)
     process.exit(1)
