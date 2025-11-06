@@ -1,0 +1,110 @@
+2025-10-15 02:03:13,129 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:03:13,129 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:03:13,130 - INFO -  * Restarting with stat
+2025-10-15 02:03:13,232 - WARNING -  * Debugger is active!
+2025-10-15 02:03:13,232 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:10:21,403 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:10:21,405 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:10:21,406 - INFO -  * Restarting with stat
+2025-10-15 02:10:21,505 - WARNING -  * Debugger is active!
+2025-10-15 02:10:21,505 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:18:42,765 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:18:42,766 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:18:42,766 - INFO -  * Restarting with stat
+2025-10-15 02:18:42,864 - WARNING -  * Debugger is active!
+2025-10-15 02:18:42,864 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:20:47,887 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:20:47,887 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:20:47,887 - INFO -  * Restarting with stat
+2025-10-15 02:20:47,981 - WARNING -  * Debugger is active!
+2025-10-15 02:20:47,981 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:26:22,736 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:26:22,736 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:26:22,740 - INFO -  * Restarting with stat
+2025-10-15 02:26:22,843 - WARNING -  * Debugger is active!
+2025-10-15 02:26:22,845 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:26:47,511 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:26:47,512 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:26:47,512 - INFO -  * Restarting with stat
+2025-10-15 02:26:47,615 - WARNING -  * Debugger is active!
+2025-10-15 02:26:47,618 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:30:55,262 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:30:55,262 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:30:55,263 - INFO -  * Restarting with stat
+2025-10-15 02:30:55,360 - WARNING -  * Debugger is active!
+2025-10-15 02:30:55,361 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:31:54,871 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:31:54,874 - INFO - 172.18.0.5 - - [15/Oct/2025 02:31:54] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:36:16,754 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:36:16,755 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:36:16,756 - INFO -  * Restarting with stat
+2025-10-15 02:36:16,854 - WARNING -  * Debugger is active!
+2025-10-15 02:36:16,855 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:41:38,980 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:41:38,984 - INFO - 172.18.0.5 - - [15/Oct/2025 02:41:38] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:43:15,410 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:43:15,414 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:43:15,417 - INFO -  * Restarting with stat
+2025-10-15 02:43:15,518 - WARNING -  * Debugger is active!
+2025-10-15 02:43:15,521 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:43:23,788 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:43:23,796 - INFO - 172.18.0.5 - - [15/Oct/2025 02:43:23] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:43:40,142 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:43:40,155 - INFO - 172.18.0.5 - - [15/Oct/2025 02:43:40] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:46:15,031 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:46:15,032 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:46:15,033 - INFO -  * Restarting with stat
+2025-10-15 02:46:15,133 - WARNING -  * Debugger is active!
+2025-10-15 02:46:15,133 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:46:21,122 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:46:21,130 - INFO - 172.18.0.5 - - [15/Oct/2025 02:46:21] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:46:28,907 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:46:28,911 - INFO - 172.18.0.5 - - [15/Oct/2025 02:46:28] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:49:05,167 - INFO - args: {'keyword': 'genome', 'sort': 'desc'}
+2025-10-15 02:49:05,169 - INFO - 172.18.0.5 - - [15/Oct/2025 02:49:05] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:58:55,445 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:58:55,445 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:58:55,447 - INFO -  * Restarting with stat
+2025-10-15 02:58:55,546 - WARNING -  * Debugger is active!
+2025-10-15 02:58:55,561 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 03:37:49,955 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 03:37:49,955 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 03:37:49,956 - INFO -  * Restarting with stat
+2025-10-15 03:37:50,055 - WARNING -  * Debugger is active!
+2025-10-15 03:37:50,057 - INFO -  * Debugger PIN: 205-422-706
