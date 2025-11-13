@@ -1,60 +1,99 @@
-from flask import Flask, request, jsonify
-from typing import List
-import requests
+# server.py — FastMCP版
+import os
 import json
 import logging
-from simple_query_generator import SimpleQueryGenerator
+from typing import Dict, Any
+import requests
+from fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from query_generator import SimpleQueryGenerator
 
-app = Flask(__name__)
+# ---- logging (元コード準拠) ----
+logging.basicConfig(
+    filename=os.getenv("LOG_FILE", "/app/logs/server.log"),
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
-logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+# ---- settings ----
+ES_URL = os.getenv("ES_URL", "http://localhost:9200/genome/_search")
 
+app = FastMCP("genome-mcp")  # MCPサーバー名は任意
 
-@app.route('/search_query', methods=['GET','POST'])
-def search_query():
+@app.custom_route(
+    "/search_query",
+    methods=["POST"]
+    )
+async def tool_search_query(request: Request) -> Dict[str, Any]:
     """
-    受け取ったkey:valueのリストをESのクエリに変換します
+    args: { "field1": "value1", "field2": "value2", ... }
+    return: Elasticsearch Query DSL (dict)
     """
-    args = request.get_json()
-    logging.info(f"args: {str(args)}")
-    args_list = {k: v for k,v in args.items()}
-    # ES query生成
+    #logging.info(f"search_query args: {args}")
+    payload = await request.json()
+    #logging.info("payload: %s", json.dumps(payload, ensure_ascii=False))
+    #print("search_query args_list:", json.dumps(payload, ensure_ascii=False, default=str))
+    query_generator = SimpleQueryGenerator()
+    es_q = query_generator.create_query(payload)
+    #logging.info("search_query es_q: %s", json.dumps(es_q, ensure_ascii=False, default=str))
+    #print("search_query es_q:", json.dumps(es_q, ensure_ascii=False, default=str))
+    return JSONResponse(es_q)
+
+@app.tool(
+    "search",
+)
+def tool_search(args: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    args: { "field1": "value1", ... }  -> SimpleQueryGenerator -> ES検索
+    return: Elasticsearch の検索レスポンス(JSON)
+    """
+    logging.info(f"/api (search) called. args: {args}")
+    args_list = {k: v for k, v in args.items()}
+
+    # ES query生成（Flask版と同等の処理）
     query_generator = SimpleQueryGenerator()
     es_q = query_generator.create_query(args_list)
-    logging.info(f"es_q: {json.dumps(es_q)}")
-    return json.dumps(es_q)
+    logging.info(f"/api es_q: {json.dumps(es_q, ensure_ascii=False)}")
 
+    # ESに投げる
+    headers = {"Content-Type": "application/json"}
+    # 元コードは GET+body でしたが、POSTの方が一般的です。必要ならGETに戻せます。
+    # response = requests.get(ES_URL, headers=headers, data=json.dumps(es_q).encode("utf-8"))
+    response = requests.post(ES_URL, headers=headers, data=json.dumps(es_q).encode("utf-8"))
 
-@app.route('/api')
-def search():
-    """
-    生成したElasticsearchの評価用のAPIサーバーです
-    docker composeで起動したESを検索します
-    """
-    logging.info('/api called')
-    url = "http://192.168.11.20:9200/genome_anex/_search"
-    args = request.args
-    print(request.args)
-    print([i for i in request.args.keys()])
-    logging.info(f"args: {str(args)}")
-    args_list = {k: v for k,v in args.items()}
-    # ES query生成
-    query_generator = SimpleQueryGenerator()
-    es_q = query_generator.create_query(args_list)
-    logging.info(f"es_q: {str(es_q)}")
-    q = json.dumps(es_q).encode('utf-8')
-    #q = json.dumps({"query": {"match_all": {}}, "size": 1}).encode(('utf-8'))
-    headers = {'Content-Type': 'application/json'}
-    response = requests.get(url, headers=headers, data=q)
-    if response.status_code == 200:
-        response_json = response.json()
-        return response_json
+    if response.ok:
+        return response.json()
     else:
-        print(f"Error: {response.status_code}")
-        print(response.text)
-        return ''
+        logging.error(f"ES error {response.status_code}: {response.text}")
+        # MCPツールとしてはエラー時もJSONで返すとクライアント側で扱いやすい
+        return {
+            "error": True,
+            "status_code": response.status_code,
+            "text": response.text,
+        }
+
+def normalize_keys(obj):
+    """dictキーを再帰的に文字列化し、bytesはデコード"""
+    if isinstance(obj, dict):
+        new_dict = {}
+        for k, v in obj.items():
+            # キーを安全に文字列化
+            key = str(k)
+            new_dict[key] = normalize_keys(v)
+        return new_dict
+    elif isinstance(obj, list):
+        return [normalize_keys(v) for v in obj]
+    elif isinstance(obj, (bytes, bytearray)):
+        # bytes→UTF-8文字列
+        return obj.decode("utf-8", errors="replace")
+    else:
+        return obj
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # FastMCPは標準入出力(stdio)サーバとして起動する場合
+    # app.run()
+    port = int(os.getenv("PORT", "5001"))
+    # 重要: transport="http" で 0.0.0.0 にバインド
+    app.run(transport="http", host="0.0.0.0", port=port)

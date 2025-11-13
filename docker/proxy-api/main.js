@@ -52,6 +52,9 @@ await registerPlugins()
 
 const client = new Client({
   node: process.env.ELASTICSEARCH_HOST,
+  sniffOnStart: false,
+  sniffInterval: false,
+  sniffOnConnectionFault: false,
 })
 
 
@@ -514,46 +517,65 @@ fastify.get('/dev/genome/search',  {
       properties: {
         sort: {
           type: 'string',
-          enum: ['desc', 'asc'],
+          enum: ['dateCreated', 'dateModified', 'datePublished', 'identifier'],
           default: 'desc',
-          description: '結果の並び順を指定する'
+          description: 'Specify the method for sorting search results'
+        },
+        order: {
+          type: 'string',
+          enum: ['asc', 'desc'],
+          default: 'desc',
+          description: 'Specify the sort order direction for search results'
+        },
+        size: {
+          type: 'integer',
+          default: 10,
+          description: 'Number of records displayed per page in search results'
+        },
+        from: {
+          type: 'integer',
+          default: 0,
+          description: 'Starting position of records in search results for pagination'
         },
         keyword: {
           type: 'string',
-          description: 'keywordフィールドを検索します。keywordは、identifier, title, description, organization, data type, properties.assembly_accession, properties.bioproject, properties.biosample, MBGD ortholog cluster ID, Phenotype IDのいずれかにマッチします。'
+          description: 'Search for keyword terms'
+        },
+        environment: {
+          type: 'string',
+          description: 'Specify the string to search for _meo.label'
         },
         genome_taxon: {
           type: 'string',
-          description: '_genome_taxonを検索する文字列を指定する'
+          description: 'Specify the string to search for _genome_taxon'
         },
         host_taxon: {
           type: 'string',
-          description: 'sample_host_organismを検索する文字列を指定する'
+          description: 'Specify the string to search for sample_host_organism'
         },
         quality: {
-          type: 'array',
-          items: { type: 'integer' },
-          description: 'qualityを検索する整数をカンマ区切りで指定する',
+          type: 'string',
+          description: 'Comma-separated list of integers, e.g. q=1,2,3. Specify the quality values to search for',
           // style属性は対応していないため削除
           //style: 'form',
           //explode: false
         },
         bioproject: {
           type: 'string',
-          description: 'bioprojectを検索する文字列'
+          description: 'String to search for bioproject attributes'
         },
         biosample: {
           type: 'string',
-          description: 'biosampleを検索する文字列'
+          description: 'String to search for biosample attributes'
         },
         identifier: {
           type: 'string',
-          description: 'genome_idを検索する文字列'
+          description: 'String to search for genome_id'
         },
         data_source: {
           type: 'array',
-          items: { type: 'string', enum: ['MAG', 'G'] },
-          description: 'data_sourceを検索する文字列'
+          items: { type: 'string', enum: ['INSDC', 'RefSeq', 'INSDC,RefSeq', 'RefSeq,INSDC'] },
+          description: 'String to search for data_source'
         }
       },
       additionalProperties: true
@@ -568,11 +590,12 @@ fastify.get('/dev/genome/search',  {
   }
 }, async (req, rep) => {
   const kv_pairs = req.query && Object.keys(req.query).length > 0 ? { ...req.query } : {};
+  //console.log('Received query parameters:', kv_pairs);
 
   // クエリパラメータを取得し、key:value形式のオブジェクトに変換する
   //const kv_pairs = helper.query2dict(q)
   // クエリパラメータをESのクエリに変換する
-  const res_query = await fetch('http://es_converter:5000/search_query',{
+  const upstream = await fetch('http://es_converter:5001/search_query',{
     method: 'POST',
     headers: {
 	'Content-Type': 'application/json',
@@ -580,16 +603,34 @@ fastify.get('/dev/genome/search',  {
     // TODO: kvの定義が怪しいので再確認
     body: JSON.stringify(kv_pairs),
   })
-  const query = await res_query.json();
+  const query_text = await upstream.text();
+  if (!upstream.ok) {
+    // 上流からのエラー本文をそのまま返してもよい（ここも一度読み済み）
+    req.log.error({ status: upstream.status, body: text }, 'es_converter error');
+    reply.code(502);
+    return reply.send({ error: 'Bad Gateway: es_converter failed', detail: query_text });
+  }
+
+  let query;
+  try {
+    query = JSON.parse(query_text);
+  } catch {
+    req.log.error({ body: query_text }, 'Invalid JSON from es_converter');
+    rep.code(502);
+    return rep.send({ error: 'Bad Gateway: invalid JSON from es_converter' });
+  }
   // queryの内容を確認する
   // logger出力
-  req.log.info(JSON.stringify(query, null, 2))
+  //console.log("Generated ES Query:", JSON.stringify(query, null, 2));
   // デバッグ用コンソール出力
   const res = await client.search({
     "index": "genome",
     "body": query
   });
-  return res
+  const res_body = res.body || res;
+  const safe_body = JSON.stringify(res_body, (key, value) => value);
+  //console.log("Elasticsearch Response Body:", safe_body);
+  return safe_body;
 });
 
 

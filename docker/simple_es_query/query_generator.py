@@ -1,5 +1,8 @@
 from typing import List
 import logging
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+import json
 
 logging.basicConfig(filename='/app/logs/server.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
@@ -22,17 +25,18 @@ class SimpleQueryGenerator:
     # TODO:
     - 文字列検索がwildcardクエリの部分一致が良いのか？termクエリで良いのでは？結果を比較して検討する。
     - 数値フィールドはレンジクエリでしか検索できない（デフォルトが文字列の部分一致になる）ので数値の場合eq条件で検索できるようにする
-    - aggs query：フィールドの型によって戻るべき集約の形式が違ってくるので、全部
-        - 数値：aggs.stats min,max,avg,sum
-        - テキストフィールド: aggs.terms 文章の頻度
-        - *dateのhistogramを表示するなどrangeで取得したい場合はaggs.histogramのような別のクエリが必要
+    - wildcardクエリが空白を含む文字列を正しく処理できるか確認する
     """
 
     def __init__(self):
         self.keyword_attributes = ["keyword"]
-        self.keyword_fields = ["identifier", "title", "description", "organization", "data type", "properties.assembly_accession", "properties.bioproject", "properties.biosample", "MBGD ortholog cluster ID", "Phenotype ID"]
+        self.keyword_fields = ["identifier.keyword", "title.keyword", "description.keyword", "organization.keyword", "data type", "properties.assembly_accession.keyword", 
+                               "properties.bioproject.keyword", "properties.biosample.keyword", "MBGD ortholog cluster ID.keyword", "Phenotype ID.keyword",
+                               "properties.organism_name.keyword", "properties.species_taxid.keyword", "_annotation.sample_organism.keyword", "_annotation.sample_taxid.keyword",
+                               "_annotation.sample_host_organism.keyword","_annotation.sample_host_disease.keyword", "_annotation.sample_host_location.keyword",
+                               "_meo.label", "_genome_taxon"]
         # reserved_attributesはそのままクエリに追加する。直整数を想定する
-        self.reserved_attributes = ["size", "from", "sort"]
+        self.reserved_attributes = ["size", "from", "sort", "order"]
         # matchクエリのを生成する際にワイルドカードを利用するかどうか
         self.is_wildcard = False
         self.track_total_hits = True
@@ -44,6 +48,7 @@ class SimpleQueryGenerator:
             dict: 
         """
         field = field_mapping(field)
+        '''        
         q = {
             "match": {
                 field: {
@@ -52,6 +57,11 @@ class SimpleQueryGenerator:
                 }
             }
         }
+        '''
+        q = {
+            "term": {field + ".keyword": value}
+        }
+
         return q
     
     def wildcard(self, field:str, value: str) -> dict:
@@ -126,37 +136,67 @@ class SimpleQueryGenerator:
     
     def create_query(self, query_items) -> dict:
         bool_must_list = []
+        # queryによりquery_templateは初期化されるケースがある
         query_template = {
-            "query": {"bool": {"must": bool_must_list}}
+            "query": {"bool": {"must": bool_must_list}},
+            "track_total_hits": True 
         }
         if len(query_items) == 0:
             bool_must_list.append({"match_all": {}})
             return query_template
-        elif set(query_items.keys()).issubset(set(["size", "sort", "from"])):
+        # query以外の属性のパラメーターのみが指定された場合の処理
+        elif set(query_items.keys()).issubset(set(["size", "sort", "from", "order"])):
+            query_template = {
+                "query": {"match_all": {}},
+                "track_total_hits": True 
+            }
             # size,sort,fromのみが指定された場合のmatch_all()クエリを生成するようにする
             for k,v in query_items.items():
-                query_template[k] = int(v)
-            bool_must_list= [{"match_all": {}}]
+                # sortとorderは "sort": {"dateCreated": {"order": "desc"}}, の形に変換する必要がある
+                if k == "order":
+                    continue
+                elif k == "sort":
+                    order = query_items.get("order", "desc")
+                    query_template["sort"] = {v: {"order": order}}
+                else:
+                    query_template[k] = int(v)
+            #print("query_template for only reserved attributes:", json.dumps(query_template, ensure_ascii=False, default=str))
             return query_template
         else:
+            #print("else branch entered with query_items:", json.dumps(query_items, ensure_ascii=False, default=str))
             # (key,value)のリストとしてクエリを受け取るパーツを生成する
             for k,v in query_items.items():
+                #print(f"Processing key:{k}, value:{v}")
                 # wildcardフラグ設定
+                v = str(v)
                 is_wildcard = "*" in v            
+                # sortとorderは "sort": {"dateCreated": {"order": "desc"}}, の形に変換する必要がある
+                if k == "order":
+                    continue
+                elif k == "sort":
+                    order = query_items.get("order", "desc")
+                    query_template["sort"] = {v: {"order": order}}
+                elif k in self.reserved_attributes:
+                    #print(k, "is reserved attribute, adding directly to query_template")
+                    query_template[k] = int(v)
                 # keyword属性の場合は全属性あるいは指定した属性を検索する
-                if k in self.keyword_attributes:
+                elif k in self.keyword_attributes:
                     bool_must_list.append(self.multi_match(v))
+                # quqlity属性の特別処理
+                elif k == "quality":
+                    # quality属性はカンマ区切りの整数リストとして処理する
+                    int_values = [int(q.strip()) for q in v.split(",")]
+                    bool_must_list.append({
+                        "terms": {
+                            "quality": int_values
+                        }
+                    })
                 # valueにカンマが含まれる場合、カンマで単語を分割しOR条件のクエリを生成する
                 elif "," in v:
                     values = v.split(",")
                     # TODO: should確認
                     bool_must_list.append(self.should(k, values, is_wildcard))
 
-                # 属性が予約語の場合はそのままクエリに追加する
-                elif k in self.reserved_attributes:
-                    # logging.info("reserved_attributes")
-                    # reserved_attributesの値はintに変換して追加する
-                    query_template[k] = int(v)
                 # レンジクエリの判定と処理
                 # 同じ属性に対して_gteと_lteが同時に指定された場合は一つのレンジクエリを生成する
                 elif k.endswith("_gte"):
@@ -166,6 +206,7 @@ class SimpleQueryGenerator:
                 elif k.endswith("_lte"):
                     field = k.replace("_lte", "")
                     bool_must_list.append(self.range(field, lte=v, gte=None))
+
                 # それ以外の場合はmatchクエリを生成する
                 else:
                     if is_wildcard:
@@ -175,6 +216,7 @@ class SimpleQueryGenerator:
             # 固定値
             query_template["track_total_hits"] = self.track_total_hits
             # 完成されたクエリを返す
+            #print("Generated query:", json.dumps(query_template, ensure_ascii=False, default=str))
             return query_template
 
 
@@ -196,7 +238,7 @@ def field_mapping(key:str) -> str:
             return "quality"
         case "environment":
             # project検索の場合はsample_organism
-            return "_annotation.sample_organism"
+            return "_meo.label"
         case "bioproject":
             return "properties.bioproject"
         case "biosample":
