@@ -460,7 +460,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
   })
 })
 
-// クエリのMAG IDに対応するMBGD Orthologのデータを各MAGAディレクトリより取得し返す
+// クエリのMAG IDに対応するMBGD Orthologのデータを各MAGディレクトリより取得し返す
 fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
   const genome_id = req.params.genome_id
   try {
@@ -473,7 +473,8 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
     let middle3 = figs[0].slice(3, 6)
     let final3 = figs[0].slice(6,)
     // 数字部分を3文字づつ変数に入れる
-    const jsonPath = `/srv/genome/${prefix}/${first3}/${middle3}/${final3}/${genome_id}/mbgd.json`
+    // mbgd.json->module.jsonに変更
+    const jsonPath = `/srv/genome/${prefix}/${first3}/${middle3}/${final3}/${genome_id}/module.json`
     // JSONファイルを読み込みオブジェクトに変換
     const data = await fs.promises.readFile(jsonPath, 'utf8')
     const jsonData = JSON.parse(data)
