@@ -1,0 +1,264 @@
+2025-10-15 02:03:13,129 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:03:13,129 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:03:13,130 - INFO -  * Restarting with stat
+2025-10-15 02:03:13,232 - WARNING -  * Debugger is active!
+2025-10-15 02:03:13,232 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:10:21,403 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:10:21,405 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:10:21,406 - INFO -  * Restarting with stat
+2025-10-15 02:10:21,505 - WARNING -  * Debugger is active!
+2025-10-15 02:10:21,505 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:18:42,765 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:18:42,766 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:18:42,766 - INFO -  * Restarting with stat
+2025-10-15 02:18:42,864 - WARNING -  * Debugger is active!
+2025-10-15 02:18:42,864 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:20:47,887 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:20:47,887 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:20:47,887 - INFO -  * Restarting with stat
+2025-10-15 02:20:47,981 - WARNING -  * Debugger is active!
+2025-10-15 02:20:47,981 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:26:22,736 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:26:22,736 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:26:22,740 - INFO -  * Restarting with stat
+2025-10-15 02:26:22,843 - WARNING -  * Debugger is active!
+2025-10-15 02:26:22,845 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:26:47,511 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:26:47,512 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:26:47,512 - INFO -  * Restarting with stat
+2025-10-15 02:26:47,615 - WARNING -  * Debugger is active!
+2025-10-15 02:26:47,618 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:30:55,262 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:30:55,262 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:30:55,263 - INFO -  * Restarting with stat
+2025-10-15 02:30:55,360 - WARNING -  * Debugger is active!
+2025-10-15 02:30:55,361 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:31:54,871 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:31:54,874 - INFO - 172.18.0.5 - - [15/Oct/2025 02:31:54] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:36:16,754 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:36:16,755 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:36:16,756 - INFO -  * Restarting with stat
+2025-10-15 02:36:16,854 - WARNING -  * Debugger is active!
+2025-10-15 02:36:16,855 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:41:38,980 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:41:38,984 - INFO - 172.18.0.5 - - [15/Oct/2025 02:41:38] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:43:15,410 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-15 02:43:15,414 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:43:15,417 - INFO -  * Restarting with stat
+2025-10-15 02:43:15,518 - WARNING -  * Debugger is active!
+2025-10-15 02:43:15,521 - INFO -  * Debugger PIN: 132-309-193
+2025-10-15 02:43:23,788 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:43:23,796 - INFO - 172.18.0.5 - - [15/Oct/2025 02:43:23] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:43:40,142 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:43:40,155 - INFO - 172.18.0.5 - - [15/Oct/2025 02:43:40] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:46:15,031 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:46:15,032 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:46:15,033 - INFO -  * Restarting with stat
+2025-10-15 02:46:15,133 - WARNING -  * Debugger is active!
+2025-10-15 02:46:15,133 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 02:46:21,122 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:46:21,130 - INFO - 172.18.0.5 - - [15/Oct/2025 02:46:21] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:46:28,907 - INFO - args: {'sort': 'desc'}
+2025-10-15 02:46:28,911 - INFO - 172.18.0.5 - - [15/Oct/2025 02:46:28] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:49:05,167 - INFO - args: {'keyword': 'genome', 'sort': 'desc'}
+2025-10-15 02:49:05,169 - INFO - 172.18.0.5 - - [15/Oct/2025 02:49:05] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-10-15 02:58:55,445 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 02:58:55,445 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 02:58:55,447 - INFO -  * Restarting with stat
+2025-10-15 02:58:55,546 - WARNING -  * Debugger is active!
+2025-10-15 02:58:55,561 - INFO -  * Debugger PIN: 205-422-706
+2025-10-15 03:37:49,955 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-10-15 03:37:49,955 - INFO - [33mPress CTRL+C to quit[0m
+2025-10-15 03:37:49,956 - INFO -  * Restarting with stat
+2025-10-15 03:37:50,055 - WARNING -  * Debugger is active!
+2025-10-15 03:37:50,057 - INFO -  * Debugger PIN: 205-422-706
+2025-11-06 07:02:54,832 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-11-06 07:02:54,832 - INFO - [33mPress CTRL+C to quit[0m
+2025-11-06 07:02:54,833 - INFO -  * Restarting with stat
+2025-11-06 07:02:54,940 - WARNING -  * Debugger is active!
+2025-11-06 07:02:54,941 - INFO -  * Debugger PIN: 117-531-035
+2025-11-12 04:51:17,314 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.4:5000
+2025-11-12 04:51:17,315 - INFO - [33mPress CTRL+C to quit[0m
+2025-11-12 04:51:17,315 - INFO -  * Restarting with stat
+2025-11-12 04:51:17,416 - WARNING -  * Debugger is active!
+2025-11-12 04:51:17,416 - INFO -  * Debugger PIN: 117-531-035
+2025-11-12 06:34:36,980 - INFO - args: {'sort': 'desc'}
+2025-11-12 06:34:36,990 - INFO - 172.18.0.6 - - [12/Nov/2025 06:34:36] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-11-12 06:35:13,567 - INFO - args: {'sort': 'desc'}
+2025-11-12 06:35:13,569 - INFO - 172.18.0.6 - - [12/Nov/2025 06:35:13] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-11-12 06:35:40,845 - INFO - args: {'text': 'metagenomics', 'sort': 'desc'}
+2025-11-12 06:35:40,849 - INFO - 172.18.0.6 - - [12/Nov/2025 06:35:40] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-11-12 06:56:01,097 - INFO - args: {'from': '0', 'size': '1', 'sort': 'desc'}
+2025-11-12 06:56:01,102 - INFO - 172.18.0.6 - - [12/Nov/2025 06:56:01] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-11-12 07:01:10,904 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.5:5000
+2025-11-12 07:01:10,904 - INFO - [33mPress CTRL+C to quit[0m
+2025-11-12 07:01:10,904 - INFO -  * Restarting with stat
+2025-11-12 07:01:11,003 - WARNING -  * Debugger is active!
+2025-11-12 07:01:11,003 - INFO -  * Debugger PIN: 129-809-857
+2025-11-12 07:03:54,968 - INFO - args: {'from': '0', 'size': '1', 'sort': 'desc'}
+2025-11-12 07:03:54,975 - INFO - 172.18.0.6 - - [12/Nov/2025 07:03:54] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-11-12 07:05:12,486 - INFO - args: {'from': '0', 'size': '1', 'sort': 'desc'}
+2025-11-12 07:05:12,489 - INFO - 172.18.0.6 - - [12/Nov/2025 07:05:12] "[35m[1mPOST /search_query HTTP/1.1[0m" 500 -
+2025-11-12 08:21:17,399 - INFO - StreamableHTTP session manager started
+2025-11-12 12:03:48,765 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 12:07:51,619 - INFO - StreamableHTTP session manager started
+2025-11-12 12:07:58,243 - INFO - search_query args: <starlette.requests.Request object at 0xffff86c1a890>
+2025-11-12 12:12:24,052 - INFO - search_query args: <starlette.requests.Request object at 0xffff86c1bc70>
+2025-11-12 12:13:33,609 - INFO - search_query args: <starlette.requests.Request object at 0xffff86ae0670>
+2025-11-12 12:17:57,204 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 12:18:03,219 - INFO - StreamableHTTP session manager started
+2025-11-12 12:18:13,915 - INFO - search_query args: <starlette.requests.Request object at 0xffffb7c1a920>
+2025-11-12 12:27:48,863 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 12:27:55,722 - INFO - StreamableHTTP session manager started
+2025-11-12 12:28:05,598 - INFO - search_query args: <starlette.requests.Request object at 0xffff9381a830>
+2025-11-12 12:28:05,601 - INFO - search_query es_q: {"query": {"bool": {"must": [{"match": {"type": {"query": "http", "operator": "and"}}}, {"bool": {"should": [{"match": {"asgi": "{'version': '3.0'"}}, {"match": {"asgi": " 'spec_version': '2.3'}"}}]}}, {"match": {"http_version": {"query": "1.1", "operator": "and"}}}, {"bool": {"should": [{"match": {"server": "('172.18.0.4'"}}, {"match": {"server": " 5001)"}}]}}, {"bool": {"should": [{"match": {"client": "('172.18.0.6'"}}, {"match": {"client": " 40928)"}}]}}, {"match": {"scheme": {"query": "http", "operator": "and"}}}, {"match": {"method": {"query": "POST", "operator": "and"}}}, {"match": {"root_path": {"query": "", "operator": "and"}}}, {"match": {"path": {"query": "/search_query", "operator": "and"}}}, {"match": {"raw_path": {"query": "b'/search_query'", "operator": "and"}}}, {"match": {"query_string": {"query": "b''", "operator": "and"}}}, {"bool": {"should": [{"wildcard": {"headers": "[(b'accept'"}}, {"wildcard": {"headers": " b'*/*')"}}, {"wildcard": {"headers": " (b'accept-encoding'"}}, {"wildcard": {"headers": " b'gzip"}}, {"wildcard": {"headers": " deflate"}}, {"wildcard": {"headers": " br')"}}, {"wildcard": {"headers": " (b'content-length'"}}, {"wildcard": {"headers": " b'55')"}}, {"wildcard": {"headers": " (b'content-type'"}}, {"wildcard": {"headers": " b'application/json')"}}, {"wildcard": {"headers": " (b'user-agent'"}}, {"wildcard": {"headers": " b'node-fetch')"}}, {"wildcard": {"headers": " (b'host'"}}, {"wildcard": {"headers": " b'es_converter:5001')"}}, {"wildcard": {"headers": " (b'connection'"}}, {"wildcard": {"headers": " b'close')]"}}]}}, {"match": {"state": {"query": "{}", "operator": "and"}}}, {"match": {"app": {"query": "<fastmcp.server.http.StarletteWithLifespan object at 0xffff93dc4880>", "operator": "and"}}}, {"bool": {"should": [{"match": {"starlette.exception_handlers": "({<class 'starlette.exceptions.HTTPException'>: <bound method ExceptionMiddleware.http_exception of <starlette.middleware.exceptions.ExceptionMiddleware object at 0xffff93819210>>"}}, {"match": {"starlette.exception_handlers": " <class 'starlette.exceptions.WebSocketException'>: <bound method ExceptionMiddleware.websocket_exception of <starlette.middleware.exceptions.ExceptionMiddleware object at 0xffff93819210>>}"}}, {"match": {"starlette.exception_handlers": " {})"}}]}}, {"match": {"router": {"query": "<starlette.routing.Router object at 0xffff93dc64a0>", "operator": "and"}}}, {"match": {"endpoint": {"query": "<function tool_search_query at 0xffff9390e320>", "operator": "and"}}}, {"match": {"path_params": {"query": "{}", "operator": "and"}}}]}}, "track_total_hits": true}
+2025-11-12 12:35:14,900 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 12:35:21,461 - INFO - StreamableHTTP session manager started
+2025-11-12 12:35:24,612 - INFO - search_query args: <starlette.requests.Request object at 0xffff83012920>
+2025-11-12 12:42:47,943 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 12:42:53,774 - INFO - StreamableHTTP session manager started
+2025-11-12 12:42:57,185 - INFO - search_query args: <starlette.requests.Request object at 0xffff8501ab30>
+2025-11-12 12:42:57,187 - INFO - search_query es_q: "<starlette.responses.JSONResponse object at 0xffff8501b4c0>"
+2025-11-12 13:58:02,865 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 13:58:09,742 - INFO - StreamableHTTP session manager started
+2025-11-12 13:58:12,483 - INFO - search_query args: <starlette.requests.Request object at 0xffffa630e920>
+2025-11-12 13:58:12,486 - INFO - search_query es_q: "<starlette.responses.JSONResponse object at 0xffffa630f2b0>"
+2025-11-12 14:06:22,693 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:06:27,541 - INFO - StreamableHTTP session manager started
+2025-11-12 14:06:30,467 - INFO - search_query args: <starlette.requests.Request object at 0xffffac60e800>
+2025-11-12 14:06:30,468 - INFO - search_query es_q: "<starlette.responses.JSONResponse object at 0xffffac60f190>"
+2025-11-12 14:19:24,442 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:19:30,653 - INFO - StreamableHTTP session manager started
+2025-11-12 14:19:36,561 - INFO - search_query args: <starlette.requests.Request object at 0xffff9400e8f0>
+2025-11-12 14:19:36,561 - INFO - search_query es_q: "<starlette.responses.JSONResponse object at 0xffff9400f280>"
+2025-11-12 14:25:00,243 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:25:07,327 - INFO - StreamableHTTP session manager started
+2025-11-12 14:25:10,777 - INFO - search_query args: <starlette.requests.Request object at 0xffff83212aa0>
+2025-11-12 14:25:10,777 - INFO - search_query es_q: "<starlette.responses.JSONResponse object at 0xffff83213430>"
+2025-11-12 14:27:51,843 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:27:57,205 - INFO - StreamableHTTP session manager started
+2025-11-12 14:28:00,055 - INFO - search_query args: <starlette.requests.Request object at 0xffff9a21a770>
+2025-11-12 14:32:26,873 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:32:32,304 - INFO - StreamableHTTP session manager started
+2025-11-12 14:32:36,015 - INFO - search_query args: <starlette.requests.Request object at 0xffffaf10e6b0>
+2025-11-12 14:33:47,005 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:33:52,515 - INFO - StreamableHTTP session manager started
+2025-11-12 14:34:01,847 - INFO - search_query args: <starlette.requests.Request object at 0xffffb851a5f0>
+2025-11-12 14:36:47,109 - INFO - search_query args: <starlette.requests.Request object at 0xffffb851ab60>
+2025-11-12 14:36:53,834 - INFO - search_query args: <starlette.requests.Request object at 0xffffb851a3e0>
+2025-11-12 14:40:24,510 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:40:31,448 - INFO - StreamableHTTP session manager started
+2025-11-12 14:40:34,240 - INFO - search_query args: <starlette.requests.Request object at 0xffffa7a0e800>
+2025-11-12 14:45:25,303 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:45:30,161 - INFO - StreamableHTTP session manager started
+2025-11-12 14:45:32,529 - INFO - search_query args: <starlette.requests.Request object at 0xffff89e1a8c0>
+2025-11-12 14:50:24,409 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:50:28,792 - INFO - StreamableHTTP session manager started
+2025-11-12 14:50:31,637 - INFO - search_query args: <starlette.requests.Request object at 0xffffb0e0ea70>
+2025-11-12 14:53:30,217 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:53:34,948 - INFO - StreamableHTTP session manager started
+2025-11-12 14:58:16,249 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 14:58:21,320 - INFO - StreamableHTTP session manager started
+2025-11-12 15:04:49,770 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:04:54,456 - INFO - StreamableHTTP session manager started
+2025-11-12 15:06:53,778 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:06:58,003 - INFO - StreamableHTTP session manager started
+2025-11-12 15:09:49,453 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:09:50,333 - INFO - StreamableHTTP session manager started
+2025-11-12 15:13:51,227 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:13:55,630 - INFO - StreamableHTTP session manager started
+2025-11-12 15:23:40,027 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:23:44,944 - INFO - StreamableHTTP session manager started
+2025-11-12 15:25:26,940 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:25:40,986 - INFO - StreamableHTTP session manager started
+2025-11-12 15:30:45,838 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:30:52,891 - INFO - StreamableHTTP session manager started
+2025-11-12 15:36:11,719 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:36:17,600 - INFO - StreamableHTTP session manager started
+2025-11-12 15:37:14,426 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 15:37:23,023 - INFO - StreamableHTTP session manager started
+2025-11-12 17:26:11,560 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:26:17,673 - INFO - StreamableHTTP session manager started
+2025-11-12 17:29:04,437 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:29:09,565 - INFO - StreamableHTTP session manager started
+2025-11-12 17:34:01,203 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:34:06,021 - INFO - StreamableHTTP session manager started
+2025-11-12 17:35:36,388 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:35:41,418 - INFO - StreamableHTTP session manager started
+2025-11-12 17:38:17,908 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:38:23,402 - INFO - StreamableHTTP session manager started
+2025-11-12 17:39:45,796 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:39:51,510 - INFO - StreamableHTTP session manager started
+2025-11-12 17:42:52,935 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:42:58,017 - INFO - StreamableHTTP session manager started
+2025-11-12 17:46:33,002 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:46:39,137 - INFO - StreamableHTTP session manager started
+2025-11-12 17:49:20,793 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:49:27,188 - INFO - StreamableHTTP session manager started
+2025-11-12 17:54:20,501 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 17:54:25,599 - INFO - StreamableHTTP session manager started
+2025-11-12 18:21:01,503 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 18:21:07,268 - INFO - StreamableHTTP session manager started
+2025-11-12 18:42:26,042 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 18:42:30,801 - INFO - StreamableHTTP session manager started
+2025-11-12 18:54:26,422 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 18:54:32,156 - INFO - StreamableHTTP session manager started
+2025-11-12 18:56:28,084 - INFO - StreamableHTTP session manager shutting down
+2025-11-12 18:56:33,315 - INFO - StreamableHTTP session manager started
+2025-11-13 00:22:57,030 - INFO - StreamableHTTP session manager shutting down
+2025-11-13 00:23:04,874 - INFO - StreamableHTTP session manager started
+2025-11-13 00:36:19,227 - INFO - StreamableHTTP session manager shutting down
+2025-11-13 00:36:26,471 - INFO - StreamableHTTP session manager started
+2025-11-13 00:39:56,155 - INFO - StreamableHTTP session manager shutting down
+2025-11-13 00:40:03,449 - INFO - StreamableHTTP session manager started
+2025-11-13 00:41:54,999 - INFO - StreamableHTTP session manager shutting down
+2025-11-13 00:42:01,831 - INFO - StreamableHTTP session manager started
+2025-11-13 00:44:13,136 - INFO - StreamableHTTP session manager shutting down
+2025-11-13 00:44:18,102 - INFO - StreamableHTTP session manager started
+2025-11-13 00:53:37,791 - INFO - StreamableHTTP session manager shutting down
+2025-11-13 00:53:45,019 - INFO - StreamableHTTP session manager started

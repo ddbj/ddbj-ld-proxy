@@ -5,7 +5,9 @@ import logging
 from typing import Dict, Any
 import requests
 from fastmcp import FastMCP
-from simple_query_generator import SimpleQueryGenerator
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from query_generator import SimpleQueryGenerator
 
 # ---- logging (元コード準拠) ----
 logging.basicConfig(
@@ -15,30 +17,31 @@ logging.basicConfig(
 )
 
 # ---- settings ----
-# 例: export ES_URL="http://192.168.11.20:9200/genome_anex/_search"
-ES_URL = os.getenv("ES_URL", "http://192.168.11.20:9200/genome_anex/_search")
+ES_URL = os.getenv("ES_URL", "http://localhost:9200/genome/_search")
 
-app = FastMCP("genome-anex-mcp")  # MCPサーバー名は任意
+app = FastMCP("genome-mcp")  # MCPサーバー名は任意
 
-@app.tool(
-    "search_query",
-    description="受け取った key:value の辞書から Elasticsearch の query DSL を生成します。"
-)
-def tool_search_query(args: Dict[str, Any]) -> Dict[str, Any]:
+@app.custom_route(
+    "/search_query",
+    methods=["POST"]
+    )
+async def tool_search_query(request: Request) -> Dict[str, Any]:
     """
     args: { "field1": "value1", "field2": "value2", ... }
     return: Elasticsearch Query DSL (dict)
     """
-    logging.info(f"search_query args: {args}")
-    args_list = {k: v for k, v in args.items()}
+    #logging.info(f"search_query args: {args}")
+    payload = await request.json()
+    #logging.info("payload: %s", json.dumps(payload, ensure_ascii=False))
+    #print("search_query args_list:", json.dumps(payload, ensure_ascii=False, default=str))
     query_generator = SimpleQueryGenerator()
-    es_q = query_generator.create_query(args_list)
-    logging.info(f"search_query es_q: {json.dumps(es_q, ensure_ascii=False)}")
-    return es_q
+    es_q = query_generator.create_query(payload)
+    #logging.info("search_query es_q: %s", json.dumps(es_q, ensure_ascii=False, default=str))
+    #print("search_query es_q:", json.dumps(es_q, ensure_ascii=False, default=str))
+    return JSONResponse(es_q)
 
 @app.tool(
     "search",
-    description="生成したクエリで Elasticsearch を検索します。"
 )
 def tool_search(args: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -70,7 +73,27 @@ def tool_search(args: Dict[str, Any]) -> Dict[str, Any]:
             "text": response.text,
         }
 
+def normalize_keys(obj):
+    """dictキーを再帰的に文字列化し、bytesはデコード"""
+    if isinstance(obj, dict):
+        new_dict = {}
+        for k, v in obj.items():
+            # キーを安全に文字列化
+            key = str(k)
+            new_dict[key] = normalize_keys(v)
+        return new_dict
+    elif isinstance(obj, list):
+        return [normalize_keys(v) for v in obj]
+    elif isinstance(obj, (bytes, bytearray)):
+        # bytes→UTF-8文字列
+        return obj.decode("utf-8", errors="replace")
+    else:
+        return obj
+
+
 if __name__ == "__main__":
-    # FastMCPは標準入出力(stdio)サーバとして起動します。
-    # そのため Web ポートは開きません（MCPクライアントから呼び出す想定）。
-    app.run()
+    # FastMCPは標準入出力(stdio)サーバとして起動する場合
+    # app.run()
+    port = int(os.getenv("PORT", "5001"))
+    # 重要: transport="http" で 0.0.0.0 にバインド
+    app.run(transport="http", host="0.0.0.0", port=port)
