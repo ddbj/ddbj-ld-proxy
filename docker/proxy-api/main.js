@@ -506,7 +506,7 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
   }
 })
 
-// 一時的にコメントアウト
+// DEP.
 //fastify.get('/genome/search', async (req, rep) => {
 //  if (!req.query.q) {
 //    return { hits: [] }
@@ -521,83 +521,6 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
 //  })
 //  return res
 //})
-
-
-// '/', の次の{}をswagger用に追加
-fastify.get('/', {
-  // ここからSwagger用のschema定義を追加
-  schema: {
-    summary: 'ルートパス',
-    description: 'クエリパラメータ "q" を使ってElasticsearchで検索を実行します。qが無い場合は現在時刻を返します。',
-    tags: ['search'], // APIをグループ化するためのタグ
-    querystring: { // クエリパラメータの定義
-      type: 'object',
-      properties: {
-        q: {
-          type: 'string',
-          description: '検索キーワード'
-        }
-      }
-    },
-    response: { // レスポンスの定義
-      200: {
-        description: '成功時のレスポンス',
-        type: 'object',
-        properties: {
-          hits: {
-            type: 'array',
-            description: '検索結果の配列',
-            items: { 
-              // 実際にはElasticsearchの返り値に合わせたより詳細な型を定義します
-              type: 'object' 
-            }
-          }
-        }
-      }
-    }
-  }
-  // ここまで
-}, async (req) => {
-  req.log.info(JSON.stringify(req.query))
-
-  if (!req.query.q) {
-    // hitsの値としてtodayの日付を返す
-    return { hits: [new Date().toISOString()] }
-  }
-  const q = req.query.q.toLowerCase()
-  // TODO: DEP. クエリの組み立てを別サービスに移行する
-  const res = await client.search({
-    "index": "bioproject",
-    "body": {
-      "size": 10,
-      "query": {
-        "bool": {
-          "should": [
-            {
-              "wildcard": {
-                "id": {
-                  "value": `*${q}*`
-                }
-              }
-            },
-            {
-              "wildcard": {
-                "label": {
-                  "value": `*${q}*`
-                }
-              }
-            },
-          ],
-          "minimum_should_match": 1
-        }
-      }
-    }
-})
-  return {
-    hits: res.hits.hits
-  }
-})
-
 
 
 const start = async () => {
