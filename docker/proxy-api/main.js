@@ -477,7 +477,37 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
 })
 
 // クエリのMAG IDに対応するMBGD Orthologのデータを各MAGディレクトリより取得し返す
-fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
+fastify.get('/genome/mbgd/:genome_id',{
+  "Description": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
+  "Schema": {
+    "params": {
+      "type": "object",
+      "properties": {
+        "genome_id": {
+          "type": "string",
+          "description": "The genome_id for which to retrieve MBGD module data"
+        }
+      },
+      "required": ["genome_id"]
+    },
+    "response": {
+      200: {
+        "description": "Successful response with MBGD module data",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "label": { "type": "string" }
+          }
+        }
+      },
+      500: {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+}, async (req, rep) => {
   const genome_id = req.params.genome_id
   try {
     // genome_idよりJSONファイル取得先のパスを生成する
@@ -505,22 +535,6 @@ fastify.get('/genome/mbgd/:genome_id', async (req, rep) => {
     rep.code(500).send('Internal Server Error')
   }
 })
-
-// DEP.
-//fastify.get('/genome/search', async (req, rep) => {
-//  if (!req.query.q) {
-//    return { hits: [] }
-//  }
-//  const kv_pairs = {...req.query}
-//  const keyword = kv_pairs.keyword
-//  delete kv_pairs.keyword
-//  const q = esQuery(req.query.q)
-//  const res = await client.search({
-//    "index": "bioproject",
-//    "q": q
-//  })
-//  return res
-//})
 
 
 const start = async () => {
