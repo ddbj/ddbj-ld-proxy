@@ -186,22 +186,6 @@ fastify.get('/dev/genome/search',  {
 });
 
 
-fastify.get('/bioproject/_doc/:id', async (req, reply) => {
-  if (!req.params.id) {
-    return {}
-  }
-  let id = req.params.id
-  const index = await client.get({
-    "index": "bioproject",
-    "id": id
-  })
-
-  return {
-    index
-  }
-})
-
-
 fastify.get('/project/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
     return {}
