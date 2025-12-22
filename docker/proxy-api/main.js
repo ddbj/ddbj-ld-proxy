@@ -29,7 +29,7 @@ async function registerPlugins() {
         description: 'API documentation for Microbiome Datahub',
         version: '1.0.0'
       },
-      servers: [{ url: 'http://localhost:4001' }],
+      servers: [{ url: '/api' }],
     },
     stripBasePath: true,
   })
@@ -313,12 +313,287 @@ const projectResponseSchema = {
   }
 };
 
+const projectSearchResponseSchema = {
+  type: 'object',
+  properties: {
+    took: { type: 'integer', description: '検索にかかった時間(ms)' },
+    timed_out: { type: 'boolean' },
+    _shards: {
+      type: 'object',
+      properties: {
+        total: { type: 'integer' },
+        successful: { type: 'integer' },
+        skipped: { type: 'integer' },
+        failed: { type: 'integer' }
+      }
+    },
+    hits: {
+      type: 'object',
+      properties: {
+        total: {
+          type: 'object',
+          properties: {
+            value: { type: 'integer' },
+            relation: { type: 'string' }
+          }
+        },
+        max_score: { type: ['number', 'null'] },
+        hits: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              _index: { type: 'string' },
+              _type: { type: 'string' },
+              _id: { type: 'string' },
+              _score: { type: ['number', 'null'] },
+              _ignored: { type: 'array', items: { type: 'string' } },
+              // ここにプロジェクト詳細のスキーマを定義
+              _source: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string' },
+                  identifier: { type: 'string' },
+                  organism: { type: ['string', 'null'] },
+                  title: { type: 'string' },
+                  description: { type: 'string' },
+                  "data type": { type: ['string', 'null'] },
+                  organization: { type: 'string' },
+                  publication: { type: 'array', items: { type: 'object', additionalProperties: true } },
+                  properties: { type: ['object', 'null'], additionalProperties: true },
+                  dbXrefs: { type: 'array', items: { type: ['string', 'null'] } },
+                  distribution: { type: ['string', 'null'] },
+                  Download: { type: ['string', 'null'] },
+                  status: { type: 'string' },
+                  visibility: { type: ['string', 'null'] },
+                  dateCreated: { type: 'string' },
+                  dateModified: { type: 'string' },
+                  _annotation: {
+                    type: 'object',
+                    properties: {
+                      sample_count: { type: 'integer' },
+                      sample_organism: { type: 'array', items: { type: 'string' } },
+                      sample_taxid: { type: 'array', items: { type: 'string' } },
+                      sample_host_organism: { type: 'array', items: { type: 'string' } },
+                      sample_host_organism_id: { type: 'array', items: { type: 'string' } },
+                      sample_host_disease: { type: 'array', items: { type: 'string' } },
+                      sample_host_disease_id: { type: 'array', items: { type: 'string' } },
+                      sample_host_location: { type: 'array', items: { type: 'string' } },
+                      sample_host_location_id: { type: 'array', items: { type: 'string' } },
+                      data_size: { type: 'string' },
+                      sample_ph_range: {
+                        type: 'object',
+                        properties: {
+                          min: { type: ['number', 'null'] },
+                          max: { type: ['number', 'null'] }
+                        }
+                      },
+                      sample_temperature_range: {
+                        type: 'object',
+                        properties: {
+                          min: { type: ['number', 'null'] },
+                          max: { type: ['number', 'null'] }
+                        }
+                      },
+                      genome_count: { type: 'integer' }
+                    }
+                  },
+                  has_analysis: { type: 'boolean' }
+                }
+              },
+              sort: {
+                type: 'array',
+                items: { type: 'number' }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+const genomeSearchResponseSchema = {
+  type: 'object',
+  properties: {
+    took: { type: 'integer' },
+    timed_out: { type: 'boolean' },
+    _shards: {
+      type: 'object',
+      properties: {
+        total: { type: 'integer' },
+        successful: { type: 'integer' },
+        skipped: { type: 'integer' },
+        failed: { type: 'integer' }
+      }
+    },
+    hits: {
+      type: 'object',
+      properties: {
+        total: {
+          type: 'object',
+          properties: {
+            value: { type: 'integer' },
+            relation: { type: 'string' }
+          }
+        },
+        max_score: { type: ['number', 'null'] },
+        hits: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              _index: { type: 'string' },
+              _type: { type: 'string' },
+              _id: { type: 'string' },
+              _score: { type: ['number', 'null'] },
+              _source: {
+                type: 'object',
+                properties: {
+                  type: { type: 'string' },
+                  identifier: { type: 'string' },
+                  organism: { type: 'string' },
+                  title: { type: 'string' },
+                  description: { type: 'string' },
+                  "data type": { type: 'string' },
+                  organization: { type: 'string' },
+                  publication: { type: 'array', items: { type: 'object', additionalProperties: true } },
+                  properties: {
+                    type: 'object',
+                    properties: {
+                      assembly_accession: { type: 'string' },
+                      bioproject: { type: 'string' },
+                      biosample: { type: 'string' },
+                      wgs_master: { type: 'string' },
+                      refseq_category: { type: 'string' },
+                      taxid: { type: 'string' },
+                      species_taxid: { type: 'string' },
+                      organism_name: { type: 'string' },
+                      infraspecific_name: { type: 'string' },
+                      isolate: { type: 'string' },
+                      version_status: { type: 'string' },
+                      assembly_level: { type: 'string' },
+                      release_type: { type: 'string' },
+                      genome_rep: { type: 'string' },
+                      seq_rel_date: { type: 'string' },
+                      asm_name: { type: 'string' },
+                      asm_submitter: { type: 'string' },
+                      gbrs_paired_asm: { type: 'string' },
+                      paired_asm_comp: { type: 'string' },
+                      ftp_path: { type: 'string' },
+                      excluded_from_refseq: { type: 'string' },
+                      relation_to_type_material: { type: 'string' },
+                      asm_not_live_date: { type: 'string' },
+                      assembly_type: { type: 'string' },
+                      group: { type: 'string' },
+                      genome_size: { type: 'string' },
+                      genome_size_ungapped: { type: 'string' },
+                      gc_percent: { type: 'string' },
+                      replicon_count: { type: 'string' },
+                      scaffold_count: { type: 'string' },
+                      contig_count: { type: 'string' },
+                      annotation_provider: { type: 'string' },
+                      annotation_name: { type: 'string' },
+                      annotation_date: { type: 'string' },
+                      total_gene_count: { type: 'string' },
+                      protein_coding_gene_count: { type: 'string' },
+                      non_coding_gene_count: { type: 'string' },
+                      pubmed_id: { type: 'string' }
+                    }
+                  },
+                  dbXrefs: { type: 'array', items: { type: 'string' } },
+                  distribution: { type: ['string', 'null'] },
+                  Download: { type: ['string', 'null'] },
+                  status: { type: 'string' },
+                  visibility: { type: ['string', 'null'] },
+                  dateCreated: { type: 'string' },
+                  dateModified: { type: 'string' },
+                  datePublished: { type: 'string' },
+                  _annotation: {
+                    type: 'object',
+                    properties: {
+                      sample_count: { type: 'integer' },
+                      sample_organism: { type: 'array', items: { type: 'string' } },
+                      sample_taxid: { type: 'array', items: { type: 'string' } },
+                      sample_host_organism: { type: 'array', items: { type: 'string' } },
+                      sample_host_location: { type: 'array', items: { type: 'string' } },
+                      data_size: { type: 'string' },
+                      sample_ph_range: {
+                        type: 'object',
+                        properties: {
+                          min: { type: ['number', 'null'] },
+                          max: { type: ['number', 'null'] }
+                        }
+                      },
+                      sample_temperature_range: {
+                        type: 'object',
+                        properties: {
+                          min: { type: ['number', 'null'] },
+                          max: { type: ['number', 'null'] }
+                        }
+                      },
+                      completeness: { type: 'integer' },
+                      genome_count: { type: 'integer' }
+                    }
+                  },
+                  data_type: { type: 'string' },
+                  data_source: { type: 'string' },
+                  _dfast: { type: 'object', additionalProperties: true },
+                  has_analysis: { type: 'boolean' },
+                  _dfastqc: { type: 'object', additionalProperties: true },
+                  _bac2feature: {
+                    type: 'object',
+                    properties: {
+                      phenotypes: { type: ['string', 'null'] },
+                      cell_diameter: { type: ['number', 'null'] },
+                      cell_length: { type: ['number', 'null'] },
+                      doubling_h: { type: ['number', 'null'] },
+                      growth_tmp: { type: ['number', 'null'] },
+                      optimum_tmp: { type: ['number', 'null'] },
+                      optimum_ph: { type: ['number', 'null'] },
+                      genome_size: { type: ['number', 'null'] },
+                      gc_content: { type: ['number', 'null'] },
+                      coding_genes: { type: ['number', 'null'] },
+                      rRNA16S_genes: { type: ['number', 'null'] },
+                      tRNA_genes: { type: ['number', 'null'] },
+                      gram_stain: { type: ['integer', 'null'] },
+                      sporulation: { type: ['integer', 'null'] },
+                      motility: { type: ['number', 'null'] },
+                      range_salinity: { type: ['number', 'null'] },
+                      facultative_respiration: { type: ['number', 'null'] },
+                      anaerobic_respiration: { type: ['number', 'null'] },
+                      aerobic_respiration: { type: ['number', 'null'] },
+                      mesophilic_range_tmp: { type: ['number', 'null'] },
+                      thermophilic_range_tmp: { type: ['number', 'null'] },
+                      psychrophilic_range_tmp: { type: ['number', 'null'] },
+                      bacillus_cell_shape: { type: ['number', 'null'] },
+                      coccus_cell_shape: { type: ['number', 'null'] },
+                      filament_cell_shape: { type: ['number', 'null'] },
+                      coccobacillus_cell_shape: { type: ['number', 'null'] },
+                      vibrio_cell_shape: { type: ['number', 'null'] },
+                      spiral_cell_shape: { type: ['number', 'null'] }
+                    }
+                  },
+                  _genome_taxon: { type: 'array', items: { type: 'string' } },
+                  quality: { type: 'integer' },
+                  quality_label: { type: 'string' }
+                }
+              },
+              sort: { type: 'array', items: { type: 'number' } }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search',  {
-  summary: 'アイテムを検索します',
-  description: 'クエリパラメータを用いた検索を行います。',
+  description: 'Perform a REST-style search of the genome index using query parameters',
   schema: {
+    summary: 'Perform a REST-style search of the genome index using query parameters',
     querystring: {
       type: 'object',
       properties: {
@@ -443,6 +718,7 @@ fastify.get('/dev/genome/search',  {
 fastify.get('/project/_doc/:id', {
   "description": "Returns the project index document for the specified ID",
   "schema": {
+    "summary": "Returns the project index document for the specified ID",
     "params": {
       "type": "object",
       "properties": {
@@ -472,8 +748,6 @@ fastify.get('/project/_doc/:id', {
   }
 })
 
-
-
 fastify.get('/project/_search', async (req, reply) => {
   if (!req.query.q) {
     return { hits: [] }
@@ -487,7 +761,14 @@ fastify.get('/project/_search', async (req, reply) => {
   return res
 })
 
-fastify.post('/project', async (req, reply) => {
+fastify.post('/project', {
+  "schema": {
+    "summary": "API that mediates Elasticsearch search queries against project indexes",
+    "response": {
+      200: projectSearchResponseSchema
+    }
+  }
+},async (req, reply) => {
   const res = await client.search({
     "index": "project",
     "body": req.body
@@ -496,10 +777,9 @@ fastify.post('/project', async (req, reply) => {
   return res
 })
 
-
 fastify.get('/genome/_doc/:id',{
-  "description": "Returns the genome index document for the specified ID",
   "schema": {
+    "summary": "Returns the genome index document for the specified ID",
     "params": {
       "type": "object",
       "properties": {
@@ -538,7 +818,15 @@ fastify.get('/genome/_search', async (req, reply) => {
   return res
 })
 
-fastify.post('/genome', async (req, reply) => {
+fastify.post('/genome', {
+
+  "schema": {
+    "summary": "API that mediates Elasticsearch search queries against the genome index",
+    "response": {
+      200: genomeSearchResponseSchema
+    }
+  }
+},async (req, reply) => {
   const res = await client.search({
     "index": "genome",
     "body": req.body
@@ -768,17 +1056,17 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', async (req, rep) 
 
 // クエリのMAG IDに対応するMBGD Orthologのデータを各MAGディレクトリより取得し返す
 fastify.get('/genome/mbgd/:genome_id',{
-  "description": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
   "schema": {
+    "summary": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
     "params": {
       "type": "object",
       "properties": {
         "genome_id": {
           "type": "string",
-          "description": "The genome id for which to retrieve MBGD module data"
+          "description": "Target genome ID to retrieve the associated MBGD KEGG modules"
         }
       },
-      "required": ["genome id"]
+      "required": ["genome_id"]
     },
     "response": {
       200: {
@@ -822,7 +1110,6 @@ fastify.get('/genome/mbgd/:genome_id',{
     rep.code(500).send('Internal Server Error')
   }
 })
-
 
 const start = async () => {
   try {
