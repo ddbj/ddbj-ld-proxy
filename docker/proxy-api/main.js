@@ -591,11 +591,9 @@ const genomeSearchResponseSchema = {
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search',  {
-  operationId: 'searchGenomeIndexByParams',
-  summary: 'REST-style search of the genome index using query parameters',
-  description: 'Searches the genome index via a feature that converts values passed as URL parameters into Elasticsearch queries and returns genome information.',
+  summary: 'アイテムを検索します',
+  description: 'クエリパラメータを用いた検索を行います。',
   schema: {
-    summary: 'REST-style search of the genome index using query parameters',
     querystring: {
       type: 'object',
       properties: {
@@ -639,7 +637,7 @@ fastify.get('/dev/genome/search',  {
         },
         quality: {
           type: 'string',
-          description: 'Comma-separated list of integers, e.g. q=1,2,3. Specify the quality values to search for',
+          description: 'Comma-separated list of quality scores. Each value must be an integer between 0 and 5 (inclusive). Multiple values can be specified by separating them with commas. Examples: "0,1,2" or "3,4,5".',
           // style属性は対応していないため削除
           //style: 'form',
           //explode: false
@@ -716,27 +714,8 @@ fastify.get('/dev/genome/search',  {
   return safe_body;
 });
 
-fastify.get('/project/_doc/:id', {
-  "operationId": "getProjectById",
-  "summary": "Returns the project index document for the specified ID",
-  "description": "Returns the project index document for the specified ID",
-  "schema": {
-    "summary": "Returns the project index document for the specified ID",
-    "params": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "The project id for which to retrieve "
-        }
-      },
-      "required": ["id"]
-    },
-    "response": {
-      200: projectResponseSchema
-    }
-  }
-}, async (req, reply) => {
+
+fastify.get('/project/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
     return {}
   }
@@ -782,15 +761,7 @@ fastify.get('/project/_search', {
   return res
 })
 
-fastify.post('/project', {
-  "schema": {
-    "operationId": "searchProjectIndexByESQuery",
-    "summary": "API that mediates Elasticsearch search queries against project indexes",
-    "response": {
-      200: projectSearchResponseSchema
-    }
-  }
-},async (req, reply) => {
+fastify.post('/project', async (req, reply) => {
   const res = await client.search({
     "index": "project",
     "body": req.body
@@ -799,25 +770,8 @@ fastify.post('/project', {
   return res
 })
 
-fastify.get('/genome/_doc/:id',{
-  "schema": {
-    "operationId": "getGenomeById",
-    "summary": "Returns the genome index document for the specified ID",
-    "params": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "The genome id for which to retrieve "
-        }
-      },
-      "required": ["id"]
-    },
-    "response": {
-      200: genomeResponseSchema
-    }
-  }
-}, async (req, reply) => {
+
+fastify.get('/genome/_doc/:id', async (req, reply) => {
   if (!req.params.id) {
     return {}
   }
@@ -859,16 +813,7 @@ fastify.get('/genome/_search',{
   return res
 })
 
-fastify.post('/genome', {
-
-  "schema": {
-    "operationId": "searchGenomeIndexByESQuery",
-    "summary": "API that mediates Elasticsearch search queries against the genome index",
-    "response": {
-      200: genomeSearchResponseSchema
-    }
-  }
-},async (req, reply) => {
+fastify.post('/genome', async (req, reply) => {
   const res = await client.search({
     "index": "genome",
     "body": req.body
@@ -1228,10 +1173,8 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', {
 
 // クエリのMAG IDに対応するMBGD Orthologのデータを各MAGディレクトリより取得し返す
 fastify.get('/genome/mbgd/:genome_id',{
-  "schema": {
-    "operationId": "getMBGDModulesByGenomeId",
-    "summary": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
-    "description": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
+  "Description": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
+  "Schema": {
     "params": {
       "type": "object",
       "properties": {
