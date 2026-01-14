@@ -591,9 +591,10 @@ const genomeSearchResponseSchema = {
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search',  {
-  summary: 'アイテムを検索します',
-  description: 'クエリパラメータを用いた検索を行います。',
-  schema: {
+    schema: {
+      "operationId": "searchGenomeIndexWithQueryParameters",
+      "summary": "search genome index with query parameters",
+      "description": "REST-style URL parameters to the API, convert them into an Elasticsearch query, search the genome index, and return the search results in JSON format.",
     querystring: {
       type: 'object',
       properties: {
@@ -714,8 +715,26 @@ fastify.get('/dev/genome/search',  {
   return safe_body;
 });
 
-
-fastify.get('/project/_doc/:id', async (req, reply) => {
+fastify.get('/project/_doc/:id', {
+  "schema": {
+    "operationId": "getProjectByID",
+    "summary": "API that retrieves a project index document by its ID",
+    "description": "Fetches a specific project index document from Elasticsearch using the provided ID.",
+    "params": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the project index document to retrieve"
+        }
+      },
+      "required": ["id"]
+    },
+    "response": {
+      200: projectResponseSchema
+    }
+  }
+}, async (req, reply) => {
   if (!req.params.id) {
     return {}
   }
@@ -734,6 +753,7 @@ fastify.get('/project/_search', {
   "schema": {
     "operationId": "searchProjectIndexByURIParameter",
     "summary": "API that mediates simple query string searches against the project index",
+    "description": "Performs a search on the project index in Elasticsearch using a simple query string provided as a URI parameter.",
     "querystring": {
       "type": "object",
       "properties": {
@@ -761,7 +781,16 @@ fastify.get('/project/_search', {
   return res
 })
 
-fastify.post('/project', async (req, reply) => {
+fastify.post('/project', {
+  "schema": {
+    "operationId": "searchProjectIndexWithESQueryBody",
+    "summary": "API that performs searches against the project index using a Elasticsearch request body",
+    "description": "Executes a search on the project index in Elasticsearch using a Elasticsearch query provided in the request body.",
+    "response": {
+      200: projectSearchResponseSchema
+    }
+  } 
+}, async (req, reply) => {
   const res = await client.search({
     "index": "project",
     "body": req.body
@@ -771,7 +800,26 @@ fastify.post('/project', async (req, reply) => {
 })
 
 
-fastify.get('/genome/_doc/:id', async (req, reply) => {
+fastify.get('/genome/_doc/:id', {
+  "schema": {
+    "operationId": "getGenomeByID",
+    "summary": "API that retrieves a genome index document by its ID",
+    "description": "Fetches a specific genome index document from Elasticsearch using the provided ID.",
+    "params": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the genome index document to retrieve"
+        }
+      },
+      "required": ["id"]
+    },
+    "response": {
+      200: genomeResponseSchema
+    }
+  }
+}, async (req, reply) => {
   if (!req.params.id) {
     return {}
   }
@@ -813,7 +861,16 @@ fastify.get('/genome/_search',{
   return res
 })
 
-fastify.post('/genome', async (req, reply) => {
+fastify.post('/genome', {
+  "schema": {
+    "operationId": "searchGenomeIndexWithESQueryBody",
+    "summary": "API that performs searches against the genome index using a Elasticsearch request body",
+    "description": "Executes a search on the genome index in Elasticsearch using a Elasticsearch query provided in the request body.",
+    "response": {
+      200: genomeSearchResponseSchema
+    }
+  } 
+}, async (req, reply) => {
   const res = await client.search({
     "index": "genome",
     "body": req.body
@@ -1016,7 +1073,28 @@ fastify.get('/dl/genome/metadata/:ids', {
 })
 
 // TODO: 現在サイトでDLに利用されているか確認する
-fastify.get('/dl/project/composition/:ids', async (req, rep) => {
+fastify.get('/dl/project/composition/:ids', {
+  "schema": {
+    "operationId": "downloadTaxonomicCompositionsByIds",
+    "summary": "Download the taxonomic composition files for given project IDs as a ZIP archive",
+    "params": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "string",
+          "description": "Comma-separated list of project IDs to download compositions for"
+        }
+      },
+      "required": ["ids"]
+    },
+    "response": {
+      200: {
+        "description": "ZIP archive containing the composition files for the requested project IDs",
+        "type": "string"
+      }
+    }
+  }
+}, async (req, rep) => {
   if (!req.params.ids) {
     rep
       .code(400)
@@ -1173,8 +1251,10 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', {
 
 // クエリのMAG IDに対応するMBGD Orthologのデータを各MAGディレクトリより取得し返す
 fastify.get('/genome/mbgd/:genome_id',{
-  "Description": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
-  "Schema": {
+  "schema": {
+    "operationId": "getMBGDModulesByGenomeID",
+    "summary": "Retrieve MBGD module data for a specified genome_id",
+    "description": "Returns the MBGD module ID and label data corresponding to the specified genome_id",
     "params": {
       "type": "object",
       "properties": {
