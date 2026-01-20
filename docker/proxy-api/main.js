@@ -159,7 +159,7 @@ const genomeResponseSchema = {
                 max: { type: ['number', 'null'] }
               }
             },
-            completeness: { type: 'integer' },
+            completeness: { type: ['number', 'null'] },
             genome_count: { type: 'integer' }
           }
         },
@@ -183,8 +183,8 @@ const genomeResponseSchema = {
             coding_genes: { type: 'number' },
             rRNA16S_genes: { type: 'number' },
             tRNA_genes: { type: 'number' },
-            gram_stain: { type: 'integer' },
-            sporulation: { type: 'integer' },
+            gram_stain: { type: ['number', 'null'] },
+            sporulation: { type: ['number', 'null'] },
             motility: { type: 'number' },
             range_salinity: { type: ['number', 'null'] },
             facultative_respiration: { type: 'number' },
@@ -532,7 +532,7 @@ const genomeSearchResponseSchema = {
                           max: { type: ['number', 'null'] }
                         }
                       },
-                      completeness: { type: 'integer' },
+                      completeness: { type: 'number' },
                       genome_count: { type: 'integer' }
                     }
                   },
@@ -556,8 +556,8 @@ const genomeSearchResponseSchema = {
                       coding_genes: { type: ['number', 'null'] },
                       rRNA16S_genes: { type: ['number', 'null'] },
                       tRNA_genes: { type: ['number', 'null'] },
-                      gram_stain: { type: ['integer', 'null'] },
-                      sporulation: { type: ['integer', 'null'] },
+                      gram_stain: { type: ['number', 'null'] },
+                      sporulation: { type: ['number', 'null'] },
                       motility: { type: ['number', 'null'] },
                       range_salinity: { type: ['number', 'null'] },
                       facultative_respiration: { type: ['number', 'null'] },
