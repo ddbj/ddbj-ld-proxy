@@ -179,10 +179,9 @@ class SimpleQueryGenerator:
                 elif k in self.reserved_attributes:
                     #print(k, "is reserved attribute, adding directly to query_template")
                     query_template[k] = int(v)
-                # keyword属性の場合は全属性あるいは指定した属性を検索する
-                elif k in self.keyword_attributes:
-                    bool_must_list.append(self.multi_match(v))
+
                 # quqlity属性の特別処理
+                # TODO: Bug! Fix it!!
                 elif k == "quality":
                     # quality属性はカンマ区切りの整数リストとして処理する
                     int_values = [int(q.strip()) for q in v.split(",")]
@@ -209,6 +208,9 @@ class SimpleQueryGenerator:
                 # mag_completeness属性が指定された場合はレンジクエリで引数の値以上を検索する
                 elif k == "mag_completeness":
                     bool_must_list.append(self.range(k, lte=None, gte=v))
+                # keyword属性の場合は全属性あるいは指定した属性を検索する. 既出の属性とバッティングする可能性があるためブロックの最下部に配置する。
+                elif k in self.keyword_attributes:
+                    bool_must_list.append(self.multi_match(v))
                 # それ以外の場合はmatchクエリを生成する
                 else:
                     if is_wildcard:
