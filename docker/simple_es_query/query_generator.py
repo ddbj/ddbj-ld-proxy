@@ -73,7 +73,9 @@ class SimpleQueryGenerator:
         field = field_mapping(field)
         q = {
             "wildcard": {
-                f"{field}.keyword": f"*{value}*"
+                # wildcardクエリでは.keywordを検索対象にしない
+                # f"{field}.keyword": f"*{value}*"
+                f"{field}": f"*{value}*"
             }
         }
         return q
@@ -208,10 +210,13 @@ class SimpleQueryGenerator:
                 # mag_completeness属性が指定された場合はレンジクエリで引数の値以上を検索する
                 elif k == "mag_completeness":
                     bool_must_list.append(self.range(k, lte=None, gte=v))
+                # host_taxon属性が指定された場合は正確なscientific nameが入力されないケースも考慮しfield_mappingの返り値をwildcardクエリで渡す
+                elif k == "host_taxon":
+                    bool_must_list.append(self.wildcard(k, v))
                 # keyword属性の場合は全属性あるいは指定した属性を検索する. 既出の属性とバッティングする可能性があるためブロックの最下部に配置する。
                 elif k in self.keyword_attributes:
                     bool_must_list.append(self.multi_match(v))
-                # それ以外の場合はmatchクエリを生成する
+                # それ以外の場合はmatchもしくはwildcardクエリを生成する
                 else:
                     if is_wildcard:
                         bool_must_list.append(self.wildcard(k, v))
@@ -220,7 +225,7 @@ class SimpleQueryGenerator:
             # 固定値
             query_template["track_total_hits"] = self.track_total_hits
             # 完成されたクエリを返す
-            #print("Generated query:", json.dumps(query_template, ensure_ascii=False, default=str))
+            # print("Generated query:", json.dumps(query_template, ensure_ascii=False, default=str))
             return query_template
 
 
