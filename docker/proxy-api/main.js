@@ -658,6 +658,10 @@ fastify.get('/dev/genome/search',  {
         data_source: {
           type: 'string',
           description: 'Comma-separated list of data sources to filter by. Allowable values are INSDC and RefSeq. Multiple values can be specified by separating them with commas.',
+        },
+        mag_completeness: {
+          type: 'number',
+          description: 'Search for records where completeness is greater than or equal to the entered value.'
         }
       },
       additionalProperties: true

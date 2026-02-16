@@ -206,7 +206,9 @@ class SimpleQueryGenerator:
                 elif k.endswith("_lte"):
                     field = k.replace("_lte", "")
                     bool_must_list.append(self.range(field, lte=v, gte=None))
-
+                # mag_completeness属性が指定された場合はレンジクエリで引数の値以上を検索する
+                elif k == "mag_completeness":
+                    bool_must_list.append(self.range(k, lte=None, gte=v))
                 # それ以外の場合はmatchクエリを生成する
                 else:
                     if is_wildcard:
