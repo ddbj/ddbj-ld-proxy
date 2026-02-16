@@ -73,12 +73,27 @@ class SimpleQueryGenerator:
         field = field_mapping(field)
         q = {
             "wildcard": {
-                # wildcardクエリでは.keywordを検索対象にしない
-                # f"{field}.keyword": f"*{value}*"
-                f"{field}": f"*{value}*"
+                f"{field}.keyword": f"*{value}*"
             }
         }
         return q
+    
+    def match_text(self, field:str, value: str) -> str:
+        """
+        Scientific nameのように空白で分割された値が想定されるフィールドに
+        完全な名前もしくは名前の一部分でもマッチするようなクエリを返す
+        """
+        field = field_mapping(field)
+        q = {
+            "match": {
+                f"{field}": {
+                    "query": f"{value}",
+                    "operator": "and"
+                    }
+            }
+        }
+        return q
+
 
     def should(self, field: str, values: List[str], is_wildcard=False) -> dict:
         """
@@ -210,9 +225,9 @@ class SimpleQueryGenerator:
                 # mag_completeness属性が指定された場合はレンジクエリで引数の値以上を検索する
                 elif k == "mag_completeness":
                     bool_must_list.append(self.range(k, lte=None, gte=v))
-                # host_taxon属性が指定された場合は正確なscientific nameが入力されないケースも考慮しfield_mappingの返り値をwildcardクエリで渡す
+                # host_taxon属性が指定された場合は正確なscientific nameが入力されないケースを考慮し"match"でtextフィールドに対し検索する
                 elif k == "host_taxon":
-                    bool_must_list.append(self.wildcard(k, v))
+                    bool_must_list.append(self.match_text(k, v))
                 # keyword属性の場合は全属性あるいは指定した属性を検索する. 既出の属性とバッティングする可能性があるためブロックの最下部に配置する。
                 elif k in self.keyword_attributes:
                     bool_must_list.append(self.multi_match(v))
