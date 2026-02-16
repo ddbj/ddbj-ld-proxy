@@ -588,6 +588,31 @@ const genomeSearchResponseSchema = {
   }
 };
 
+const KEYWORD_TARGET_FIELDS = [
+  'identifier.keyword',
+  'title.keyword',
+  'description.keyword',
+  'organization.keyword',
+  'data type',
+  'properties.assembly_accession.keyword',
+  'properties.bioproject.keyword',
+  'properties.biosample.keyword',
+  'properties.organism_name.keyword',
+  'properties.species_taxid.keyword',
+  '_annotation.sample_organism.keyword',
+  '_annotation.sample_taxid.keyword',
+  '_annotation.sample_host_organism.keyword',
+  '_annotation.sample_host_disease.keyword',
+  '_annotation.sample_host_location.keyword',
+  '_meo.label',
+  '_genome_taxon'
+];
+
+const KEYWORD_TARGET_FIELDS_MD = KEYWORD_TARGET_FIELDS
+  .map((f) => `- \`${f}\``)
+  .join('\n');
+
+
 // RESTのパラメータを引数にsimple_es_query_generatorサービスが返すESのクエリを利用して
 // Elasticsearchの検索を行う
 fastify.get('/dev/genome/search',  {
@@ -622,7 +647,12 @@ fastify.get('/dev/genome/search',  {
         },
         keyword: {
           type: 'string',
-          description: 'Search for keyword terms'
+            description: [
+              'Free-text search across predefined metadata fields.',
+              '',
+              '**Target fields**',
+              KEYWORD_TARGET_FIELDS_MD
+            ].join('\n')
         },
         environment: {
           type: 'string',
