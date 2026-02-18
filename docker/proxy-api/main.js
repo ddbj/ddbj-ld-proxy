@@ -1183,12 +1183,15 @@ fastify.get('/dl/project/composition/:ids', {
   })
 })
 
-fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', {
+
+//fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', { // この記述は廃止
+fastify.get('/dl/sequence/:type/:ids', {
   "schema": {
     "operationId": "downloadSequencesByTypeAndIds",
     "summary": "Download sequence files of specified type for given genome IDs as a ZIP archive",
     "params": {
       "type": "object",
+       "required": ["type", "ids"],
       "properties": {
         "type": {
           "type": "string",
@@ -1199,8 +1202,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', {
           "type": "string",
           "description": "Comma-separated list of genome IDs to download sequences for"
         }
-      },
-      "required": ["type", "ids"]
+      }
     },
     "response": {
       200: {
@@ -1232,6 +1234,7 @@ fastify.get('/dl/sequence/:type(^(genome|cds|protein)$)/:ids', {
     case "protein":
       file_name = "dfast/protein.faa"
   }
+
   const pathMap = new Map()
   // ファイルのパスを定義する
   const pathList = project_id_list.map(id => {
