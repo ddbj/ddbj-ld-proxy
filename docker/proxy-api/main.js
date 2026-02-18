@@ -1275,15 +1275,20 @@ fastify.get('/dl/sequence/:type/:ids', {
   })
   archive.finalize()
 
-  output.on('close', () => {
-    //rep.type('application/zip')
-    let contentName = 'inline; filename="sequence' + '_' + type + '.zip"'; 
-    rep.headers({
-      'Content-Type': 'application/zip',
-      'Content-Disposition': contentName
-    })
-    rep.send(fs.createReadStream(zipFilePath))
-  })
+await new Promise((resolve, reject) => {
+  output.on('close', resolve)
+  output.on('error', reject)
+  archive.on('error', reject)
+})
+
+// ★ここだけ変更：イベント内じゃなく、ここで返す
+let contentName = `inline; filename="sequence_${type}.zip"`;
+rep.headers({
+  'Content-Type': 'application/zip',
+  'Content-Disposition': contentName
+})
+return rep.send(fs.createReadStream(zipFilePath))
+
 })
 
 // クエリのMAG IDに対応するMBGD Orthologのデータを各MAGディレクトリより取得し返す
