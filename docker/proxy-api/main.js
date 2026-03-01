@@ -204,7 +204,8 @@ const genomeResponseSchema = {
         _genome_taxon: { type: 'array', items: { type: 'string' } },
         quality: { type: 'integer' },
         quality_label: { type: 'string' }
-      }
+      },
+      additionalProperties: true
     }
   }
 };
